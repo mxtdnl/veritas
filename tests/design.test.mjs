@@ -140,7 +140,7 @@ test("design rules: no gradients, shadows, rounded corners or network", () => {
   assert.equal(/gradient/i.test(html), false, "no gradients");
   assert.equal(/box-shadow|text-shadow|drop-shadow/i.test(html), false, "no shadows");
   for (const m of html.matchAll(/border-radius\s*:\s*([^;]+);/g)) assert.equal(m[1].trim(), "0", "square corners only");
-  assert.equal(/<link\b|<script[^>]+src=|<img\b|url\(\s*['"]?https?:|@import/i.test(html), false, "no external resources");
+  assert.equal(/<link\b(?![^>]*\brel="icon"[^>]*\bhref="data:image\/png;base64,)|<script[^>]+src=|<img\b|url\(\s*['"]?https?:|@import/i.test(html), false, "no external resources");
   assert.equal(/(src|href)\s*=\s*["']https?:/i.test(html), false, "no network URLs");
 });
 
