@@ -513,3 +513,42 @@ test("machine: restart returns to setup and keeps the setup choices", () => {
   assert.equal(s.seed, 5);
   assert.deepEqual(plain(s.history), []);
 });
+
+test("caughtBy: every CAUGHT move marks exact words in the Law Book line that caught it; null otherwise", () => {
+  let caught = 0;
+  for (const bill of BILLS) {
+    for (const list of bill === "b_trust" ? LISTS : [null]) {
+      for (const move of MOVES) {
+        const r = MODEL.moveResult(bill, list, move);
+        const by = MODEL.caughtBy(bill, list, move);
+        if (r !== "CAUGHT") { assert.equal(by, null, `${bill}/${list}/${move}`); continue; }
+        caught += 1;
+        const book = MODEL.lawBook(base({ bill, list, check: "k_tick", move, moveResult: r }));
+        const line = book.find((p) => p.id === by.id);
+        assert.ok(line, `${bill}/${list}/${move}: line ${by.id} exists`);
+        assert.ok(by.words && line.text.includes(by.words), `${bill}/${list}/${move}: "${by.words}" in "${line.text}"`);
+      }
+    }
+  }
+  assert.equal(caught, 7, "b_tough × 3 moves + b_trust (l_wide, l_all) × 2 moves");
+  assert.deepEqual(plain(MODEL.caughtBy("b_tough", null, "m_lite")), { id: "act-1", words: "use any app" });
+  assert.deepEqual(plain(MODEL.caughtBy("b_trust", "l_wide", "m_quest")), { id: "reg-list", words: "games" });
+});
+
+test("heldClause: the {held} wording for each case, null until decided, and it matches the Law Book precedent", () => {
+  const s = base({ bill: "b_tough", check: "k_tick", move: "m_comply" });
+  assert.equal(MODEL.heldClause(s, 1), null);
+  assert.equal(MODEL.heldClause(s, 2), null);
+  const expect = { uphold: "§2 stands", reinterpret: "§2 must be read more narrowly, to respect rights",
+    declare: "§2 breaks rights, but it stays in force", strike: "§2 is struck down" };
+  for (const [ruling, held] of Object.entries(expect)) {
+    const t = { ...s, case1: { id: "marlow", ruling } };
+    assert.equal(MODEL.heldClause(t, 1), held);
+    assert.equal(MODEL.lawBook(t).find((p) => p.id === "prec-1").text,
+      `Marlow v Attorney General — Held: ${held}. Future courts in Veritas must follow this.`);
+  }
+  const k = base({ bill: "b_narrow", check: "k_tick", move: "m_quest", case1: { id: "kim", ruling: "uphold" }, case2: { ruling: "literal" } });
+  assert.equal(MODEL.heldClause(k, 1), "§1 stands");
+  assert.equal(MODEL.heldClause(k, 2), "Glimmer Quest is not covered by the Act");
+  assert.equal(MODEL.heldClause({ ...k, case2: { ruling: "purposive" } }, 2), "Glimmer Quest is covered by the Act, because its real purpose is the same");
+});

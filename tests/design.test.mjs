@@ -209,3 +209,66 @@ test("Phase 3 authored CONTENT groups are flagged", () => {
   assert.equal(CONTENT.bills.question, "Choose a Bill");
   assert.equal(CONTENT.clerk.button, "Skip act — the Clerk decides");
 });
+
+test("locked option card: visible, not a button, padlocked, lock text in full", () => {
+  const html = DESIGN.optionCard({ letter: "D", text: "Strike down — cancel the section", value: "strike", action: "select",
+    locked: true, lockText: CONTENT.lockText });
+  assert.ok(html.startsWith('<div class="card card--locked" aria-disabled="true"'));
+  assert.ok(!html.includes("data-action"), "a locked card cannot be pressed");
+  assert.ok(html.includes('class="padlock"'));
+  assert.ok(html.includes(">D</text>"), "keeps letter and shape");
+  assert.ok(html.includes(DESIGN.esc(CONTENT.lockText)));
+});
+
+test("Law Book: marks exact words and adds a note line", () => {
+  const html = DESIGN.lawBook([{ author: "PARL", num: "§1", text: "Under-16s may not use any app <here>.", stamps: ["ENACTED"],
+    mark: "use any app", note: "Only Parliament can change it." }]);
+  assert.ok(html.includes('Under-16s may not <mark class="caught">use any app</mark> &lt;here&gt;.'));
+  assert.ok(html.includes('<span class="prov__note">Only Parliament can change it.</span>'));
+  const none = DESIGN.lawBook([{ author: "PARL", num: "§1", text: "Rule.", stamps: [], mark: "absent" }]);
+  assert.ok(!none.includes("<mark"), "no mark when the words are not in the line");
+  assert.ok(DESIGN.lawBook([], null, { compact: true }).includes("lawbook--compact"));
+});
+
+test("case folder: Held line can type itself out; no Held text leaves the ruled line empty", () => {
+  assert.ok(DESIGN.caseFolder({ ref: "R", name: "N", facts: "F", held: "§1 stands.", type: true }).includes("held__text--type"));
+  assert.ok(!DESIGN.caseFolder({ ref: "R", name: "N", facts: "F", held: "" }).includes("held__text"));
+});
+
+test("constitution card: letter, name, inspired-by and the §5 summary, verbatim", () => {
+  for (const c of ["A", "B"]) {
+    const html = DESIGN.charter(c, false);
+    const k = CONTENT.constitutions[c];
+    assert.ok(html.includes(`Constitution ${c} — ${DESIGN.esc(k.name)}`));
+    assert.ok(html.includes(`(${k.inspired})`));
+    assert.ok(html.includes(DESIGN.esc(k.summary)));
+    assert.ok(!html.includes("charter--reveal"));
+  }
+  assert.ok(DESIGN.charter("A", true).includes("charter--reveal"));
+});
+
+test("Clerk card: a decision can carry a note (Decided by the Clerk) and a stamp", () => {
+  const html = DESIGN.clerkCard({ kicker: "k", reason: "r",
+    decisions: [{ label: "Case 1 ruling", text: "Strike down", note: CONTENT.clerk.decided, html: DESIGN.stamp("CAUGHT") }] });
+  assert.ok(html.includes(`<span class="clerk__note">${CONTENT.clerk.decided}</span>`));
+  assert.ok(html.includes('aria-label="CAUGHT"'));
+});
+
+test("idScope: the same input renders the same markup, so unchanged regions are not rebuilt", () => {
+  DESIGN.idScope("b");
+  const a = DESIGN.seal("COURT", 52) + DESIGN.envelope(true);
+  DESIGN.idScope("b");
+  const b = DESIGN.seal("COURT", 52) + DESIGN.envelope(true);
+  assert.equal(a, b);
+  assert.ok(a.includes('id="vxbs1h"'));
+  DESIGN.idScope("");
+});
+
+test("Phase 4 authored CONTENT groups are flagged; caught words are exact substrings of the Law Book lines", () => {
+  for (const k of ["caught", "actExtra"]) assert.equal(CONTENT[k].authored, true, k);
+  const tough = CONTENT.bills.b_tough.sections[0];
+  for (const w of Object.values(CONTENT.caught.b_tough)) assert.ok(tough.includes(w), w);
+  for (const l of ["l_wide", "l_all"]) {
+    for (const w of Object.values(CONTENT.caught[l])) assert.ok(CONTENT.regulations.list[l].includes(w), `${l}: ${w}`);
+  }
+});
