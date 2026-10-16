@@ -28,3 +28,13 @@ export function loadModel(path = INDEX) {
     filename: "index.html",
   });
 }
+
+// DESIGN is a DOM-free sub-block of APP (component builders); it depends on CONTENT and MODEL.
+export function loadDesign(path = INDEX) {
+  const { html, content, model } = loadSource(path);
+  const design = extractBlock(html, "DESIGN");
+  const context = vm.createContext({});
+  return vm.runInContext(`${content}\n${model}\n${design}\n({ CONTENT, MODEL, DESIGN });`, context, {
+    filename: "index.html",
+  });
+}

@@ -7,7 +7,8 @@
 
 <!-- ===== BLOCK 1: STYLE ===== -->
 <style>
-:root {
+/* ---- Tokens: light ("Vellum", default) ---- */
+:root, [data-theme="light"] {
   --paper: #F2EADB;
   --paper-2: #E6D9C2;
   --paper-3: #FBF7EF;
@@ -21,9 +22,13 @@
   --stamp: #B0261C;
   --force: #1E4D3A;
   --tape: #C2362B;
+  color-scheme: light;
+}
+:root {
   --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
   --typewriter: "Courier New", ui-monospace, monospace;
 }
+/* ---- Tokens: dark ("Night Sitting") ---- */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     --paper: #14161B;
@@ -31,40 +36,233 @@
     --paper-3: #252935;
     --ink: #ECE4D3;
     --ink-2: #B6AE9C;
+    --rule: #8C7A5B;
     --parl: #7FB08D;
     --min: #D8A84E;
     --court: #D9707E;
     --biz: #B79AD0;
     --stamp: #E5574B;
+    --force: #74B596;
+    --tape: #E0503F;
+    color-scheme: dark;
   }
 }
-:root[data-theme="dark"] {
+:root[data-theme="dark"], [data-theme="dark"] {
   --paper: #14161B;
   --paper-2: #1D2028;
   --paper-3: #252935;
   --ink: #ECE4D3;
   --ink-2: #B6AE9C;
+  --rule: #8C7A5B;
   --parl: #7FB08D;
   --min: #D8A84E;
   --court: #D9707E;
   --biz: #B79AD0;
   --stamp: #E5574B;
+  --force: #74B596;
+  --tape: #E0503F;
+  color-scheme: dark;
 }
+
+/* ---- Base ---- */
 html { font-size: clamp(18px, 1.15vw + 6px, 28px); }
 body {
   margin: 0;
   background: var(--paper);
   color: var(--ink);
   font-family: var(--serif);
+  font-size: 1rem;
   line-height: 1.4;
 }
+[data-theme] { background: var(--paper); color: var(--ink); }
 #app { min-height: 100vh; padding: 2rem; box-sizing: border-box; }
-h1 {
+h1, h2, h3 {
   font-variant: small-caps;
   letter-spacing: 0.08em;
   font-weight: normal;
   margin: 0 0 0.5rem;
 }
+h1 { font-size: 2.2rem; }
+h2 { font-size: 1.5rem; }
+h3 { font-size: 1.15rem; }
+button { font: inherit; color: inherit; }
+.btn {
+  border: 1px solid var(--ink);
+  border-radius: 0;
+  background: var(--paper-3);
+  padding: 0.25em 0.8em;
+  cursor: pointer;
+}
+.btn:hover { background: var(--paper-2); }
+:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+.tw { font-family: var(--typewriter); }
+.seal { display: inline-block; vertical-align: middle; flex: none; }
+
+/* ---- Chrome: procedure ribbon with red tape ---- */
+.chrome {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+  gap: 0.6rem 1.2rem; padding: 0.5rem 0 0.7rem; border-bottom: 3px double var(--rule);
+}
+.ribbon ol { list-style: none; display: flex; flex-wrap: wrap; align-items: center; gap: 0.35rem; margin: 0; padding: 0; }
+.ribbon__arrow { color: var(--ink-2); }
+.ribbon__stage {
+  position: relative; padding: 0.15em 0.7em 0.15em 1.35em;
+  border: 1px solid var(--rule); background: var(--paper-3);
+  font-variant: small-caps; letter-spacing: 0.08em;
+}
+.ribbon__stage.is-tied { border-color: var(--ink); font-weight: bold; }
+.tape { position: absolute; left: 0.4em; top: -0.3em; bottom: -0.3em; width: 0.34em; pointer-events: none; }
+.tape__band {
+  position: absolute; inset: 0; background: var(--tape);
+  transform: scaleY(0); transition: transform 380ms ease-in;
+}
+.tape__knot {
+  position: absolute; left: 50%; top: 50%; width: 1.25em; height: 1.55em; margin: -0.5em 0 0 -0.625em;
+  overflow: visible; opacity: 0; transform: translateY(0.7em) rotate(28deg) scale(0.55);
+  transition: opacity 300ms ease-in, transform 380ms ease-in;
+}
+.is-tied .tape__band { transform: scaleY(1); transition: transform 300ms ease-out 260ms; }
+.is-tied .tape__knot { opacity: 1; transform: none; transition: opacity 200ms ease-out 480ms, transform 260ms ease-out 480ms; }
+
+/* ---- Chrome: role plate ---- */
+.plate {
+  display: flex; align-items: center; gap: 0.5em;
+  border: 3px double var(--rule); background: var(--paper-3); padding: 0.15em 0.8em 0.15em 0.3em;
+}
+.plate__kicker { display: block; font-size: 0.8em; color: var(--ink-2); font-variant: small-caps; letter-spacing: 0.08em; }
+.plate__role { display: block; font-size: 1.05em; line-height: 1.2; }
+
+/* ---- Chrome: clock (brass at 25:00, oxblood at 30:00; rule weight also changes) ---- */
+.clock {
+  font-variant-numeric: tabular-nums; padding: 0.1em 0.5em; border: 1px solid transparent;
+  white-space: nowrap;
+}
+.clock__limit { color: var(--ink-2); }
+.clock--brass { color: var(--min); border: 1px solid var(--min); }
+.clock--oxblood { color: var(--court); border: 3px double var(--court); font-weight: bold; }
+.clock--brass .clock__limit, .clock--oxblood .clock__limit { color: inherit; }
+
+/* ---- Glossary drawer ---- */
+.drawer {
+  position: fixed; top: 0; right: 0; bottom: 0; width: min(30rem, 92vw); box-sizing: border-box;
+  background: var(--paper-3); color: var(--ink); border-left: 3px double var(--rule);
+  padding: 1.2rem 1.4rem; overflow: auto; z-index: 20;
+  transform: translateX(105%); visibility: hidden;
+  transition: transform 220ms ease-in, visibility 0s linear 220ms;
+}
+.drawer.is-open { transform: none; visibility: visible; transition: transform 220ms ease-out, visibility 0s; }
+.drawer__head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; border-bottom: 3px double var(--ink); margin-bottom: 0.8rem; }
+.drawer__head h2 { margin: 0; }
+.drawer__head h2:focus { outline: none; }
+
+/* ---- Rubber stamps ---- */
+.stamp { display: inline-block; vertical-align: middle; overflow: visible; transform: rotate(var(--rot, -6deg)); }
+.stamp--land { animation: stamp-land 250ms cubic-bezier(0.2, 0.7, 0.3, 1) both; }
+@keyframes stamp-land {
+  0%   { opacity: 0; transform: rotate(var(--rot)) scale(1.35); }
+  64%  { opacity: 1; transform: rotate(var(--rot)) scale(1); }
+  80%  { transform: rotate(var(--rot)) translate(0, 2px); }
+  100% { transform: rotate(var(--rot)); }
+}
+
+/* ---- Option cards ---- */
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); gap: 1rem; }
+.card {
+  position: relative; display: flex; gap: 0.7em; align-items: flex-start; text-align: left;
+  padding: 1em 1.6em 1em 1.1em; background: var(--paper-3); border: 1px solid var(--ink-2); border-radius: 0;
+  font-size: 1rem; line-height: 1.3; cursor: pointer;
+}
+.card.is-selected { border: 4px solid var(--ink); padding: calc(1em - 3px) calc(1.6em - 3px) calc(1em - 3px) calc(1.1em - 3px); }
+.card__mark { flex: none; }
+.card__tick { position: absolute; right: -0.5em; top: -0.7em; }
+.shape { width: 1.7em; height: 1.7em; display: inline-block; vertical-align: middle; }
+
+/* ---- Vote tally strip ---- */
+.tally {
+  display: flex; flex-wrap: wrap; gap: 0.6rem 1.6rem; align-items: center;
+  border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); padding: 0.45rem 0;
+}
+.tally__item { display: flex; align-items: center; gap: 0.3em; }
+.tally__btn {
+  width: 1.6em; height: 1.6em; padding: 0; border: 1px solid var(--ink-2); border-radius: 0;
+  background: var(--paper-3); cursor: pointer; line-height: 1;
+}
+.tally__box {
+  width: 2.6em; box-sizing: border-box; text-align: center; font: inherit; font-variant-numeric: tabular-nums;
+  border: 2px solid var(--ink); border-radius: 0; background: var(--paper-3); color: var(--ink); padding: 0.1em;
+  -moz-appearance: textfield; appearance: textfield;
+}
+.tally__box::-webkit-inner-spin-button, .tally__box::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+
+/* ---- The Law Book: raised document with marginal seal gutter ---- */
+.lawbook {
+  position: relative; isolation: isolate;
+  padding: 1rem 1.2rem 1.2rem 0; margin: 0 8px 8px 0;
+}
+/* Two sheets: ::before is the sheet beneath, offset; ::after is the top sheet. Stacked paper, not a shadow. */
+.lawbook::before, .lawbook::after { content: ""; position: absolute; inset: 0; border: 1px solid var(--rule); }
+.lawbook::before { z-index: -2; transform: translate(7px, 7px); background: var(--paper-2); }
+.lawbook::after { z-index: -1; background: var(--paper-3); }
+.lawbook__head { margin-left: 5rem; border-bottom: 3px double var(--ink); padding-bottom: 0.2rem; }
+.lawbook__head h2 { margin: 0; }
+.lawbook__list { list-style: none; margin: 0; padding: 0; }
+.prov { display: grid; grid-template-columns: 4.2rem 1fr auto; gap: 0 0.8rem; align-items: stretch; }
+.prov > * { padding: 0.55rem 0; }
+.prov__gutter { display: flex; justify-content: center; align-items: flex-start; border-right: 3px double var(--rule); }
+.prov__body { border-bottom: 1px solid var(--rule); }
+.prov__stamps { display: flex; flex-direction: column; align-items: flex-end; gap: 0.3rem; border-bottom: 1px solid var(--rule); min-width: 1px; }
+.prov__num { font-weight: bold; margin-right: 0.3em; }
+.prov--struck .prov__text { text-decoration: line-through; text-decoration-thickness: 0.12em; text-decoration-color: var(--stamp); color: var(--ink-2); }
+
+/* ---- Case folder ---- */
+.folder { position: relative; margin-top: 1.7em; background: var(--paper-2); border: 1px solid var(--rule); padding: 1rem 1.4rem 1.1rem; }
+.folder__tab {
+  position: absolute; top: -1.65em; left: 1.2rem; height: 1.65em; box-sizing: border-box; padding: 0.15em 1.2em 0;
+  background: var(--paper-2); border: 1px solid var(--rule); border-bottom: 0;
+}
+.folder__name { font-style: italic; font-variant: normal; letter-spacing: 0; font-size: 1.2rem; }
+.folder__facts { margin: 0 0 0.6rem; }
+.folder__args { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: 0.4rem 1.2rem; margin: 0; }
+.folder__args dt { font-variant: small-caps; letter-spacing: 0.08em; color: var(--ink-2); }
+.folder__args dd { margin: 0; }
+.held { display: flex; gap: 0.6em; align-items: baseline; margin: 1rem 0 0; }
+.held__label { font-variant: small-caps; letter-spacing: 0.08em; font-weight: bold; }
+.held__line { flex: 1; min-height: 1.4em; border-bottom: 1px solid var(--ink); }
+
+/* ---- Wax-sealed envelope ---- */
+.env { display: block; width: min(100%, 24rem); }
+.env svg { display: block; width: 100%; height: auto; overflow: visible; }
+.env__crack { stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 300ms ease-in, opacity 150ms linear 320ms; }
+.env--open .env__crack { stroke-dashoffset: 0; opacity: 0; }
+.env__waxA, .env__waxB { transform-box: fill-box; transform-origin: 50% 50%; transition: transform 250ms ease-out 300ms; }
+.env--open .env__waxA { transform: translate(4px, -5px) rotate(6deg); }
+.env--open .env__waxB { transform: translate(-3px, 6px) rotate(-5deg); }
+.env__flap { transform-box: fill-box; transform-origin: 50% 0; transition: transform 500ms ease-in-out 600ms; }
+.env--open .env__flap { transform: scaleY(-1); }
+
+/* ---- Reduced motion: stamps fade only; everything else changes instantly ---- */
+@media (prefers-reduced-motion: reduce) {
+  .stamp--land { animation: stamp-fade 200ms ease-out both; }
+  @keyframes stamp-fade { from { opacity: 0; } to { opacity: 1; } }
+  .tape__band, .tape__knot, .is-tied .tape__band, .is-tied .tape__knot,
+  .drawer, .drawer.is-open, .env__crack, .env__waxA, .env__waxB, .env__flap { transition: none; }
+}
+
+/* ---- Review gallery (?gallery=1) ---- */
+.gallery section { margin: 2.2rem 0; }
+.gallery__bar { display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: center; margin: 0.6rem 0; }
+.gallery__note { color: var(--ink-2); max-width: 48rem; }
+.gallery__row { display: flex; flex-wrap: wrap; gap: 1.6rem 2rem; align-items: center; }
+.gallery__fig { margin: 0; text-align: center; }
+.gallery__fig figcaption { color: var(--ink-2); font-size: 0.85em; }
+.gallery__stamps { display: flex; flex-wrap: wrap; gap: 1.6rem 2.4rem; align-items: center; padding: 0.8rem 0.4rem; }
+.gallery__swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr)); gap: 0.6rem; }
+.gallery__swatch { display: flex; align-items: center; gap: 0.5em; font-size: 0.85em; }
+.gallery__chip { width: 1.6em; height: 1.6em; border: 1px solid var(--ink); flex: none; }
+.gallery__themes { display: grid; grid-template-columns: repeat(auto-fit, minmax(22rem, 1fr)); gap: 1rem; }
+.gallery__pane { padding: 1rem 1.2rem; border: 1px solid var(--rule); }
+.gallery__pane > * + * { margin-top: 1rem; }
+.gallery__env { padding-top: 7rem; }
 </style>
 </head>
 
@@ -72,13 +270,14 @@ h1 {
 <!-- ===== BLOCK 2: SVG DEFS ===== -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
   <defs>
-    <filter id="stamp-ink" x="-5%" y="-5%" width="110%" height="110%">
-      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="3" result="noise"/>
-      <feDisplacementMap in="SourceGraphic" in2="noise" scale="2"/>
+    <!-- Rubber-stamp ink: rough edges (turbulence + displacement), then worn speckle. -->
+    <filter id="stamp-ink" x="-8%" y="-12%" width="116%" height="124%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves="3" seed="7" result="warp"/>
+      <feDisplacementMap in="SourceGraphic" in2="warp" scale="4.5" xChannelSelector="R" yChannelSelector="G" result="rough"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.55" numOctaves="2" seed="11" result="grain"/>
+      <feColorMatrix in="grain" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -4.2 3.05" result="holes"/>
+      <feComposite in="rough" in2="holes" operator="in"/>
     </filter>
-    <pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-      <line x1="0" y1="0" x2="0" y2="6" stroke="currentColor" stroke-width="1"/>
-    </pattern>
   </defs>
 </svg>
 
@@ -89,7 +288,132 @@ h1 {
 /* CONTENT:START */
 const CONTENT = {
   title: "The Republic of Veritas",
-  subtitle: "Who makes the law? Should I care?"
+  subtitle: "Who makes the law? Should I care?",
+
+  // Spec §8 (persistent chrome), verbatim.
+  chrome: {
+    stages: ["Bill", "Rules", "Gap", "Court", "Monday"],
+    youAreNow: "You are now:",
+    sessionLimit: "30:00",
+    lawBook: "The Law Book",
+    held: "Held:"
+  },
+
+  // Spec §2 "Class plays" column, verbatim.
+  roles: {
+    PARL: "Members of Parliament",
+    MIN: "The Minister",
+    GLIMMER: "Glimmer's board",
+    COURT: "Supreme Court judges",
+    CITIZENS: "Citizens"
+  },
+
+  // Spec §9.3 item 2, verbatim.
+  stamps: {
+    ENACTED: "ENACTED",
+    IN_FORCE: "IN FORCE",
+    REGULATION_IN_FORCE: "REGULATION — IN FORCE",
+    LOOPHOLE: "LOOPHOLE",
+    ARGUABLE: "ARGUABLE — SEE YOU IN COURT",
+    CAUGHT: "CAUGHT",
+    COMPLIED: "COMPLIED",
+    REINTERPRETED: "REINTERPRETED",
+    INCOMPATIBLE_IN_FORCE: "INCOMPATIBLE — STILL IN FORCE",
+    VOID: "VOID",
+    CLERK: "DECIDED BY THE CLERK"
+  },
+
+  // Ring text engraved around each seal.
+  seals: {
+    authored: true,
+    PARL: "The Parliament of Veritas",
+    MIN: "Ministry for Digital Affairs",
+    COURT: "The Supreme Court of Veritas",
+    GLIMMER: "Veritas Ventures Ltd · Glimmer",
+    CLERK: "The Clerk of Parliament"
+  },
+
+  // Control labels and screen-reader text.
+  ui: {
+    authored: true,
+    ribbonLabel: "Procedure",
+    clockLabel: "Elapsed session time",
+    sealOf: "Seal:",
+    glossaryTitle: "Glossary",
+    glossaryClose: "Close (Esc)",
+    tallyLabel: "Vote tally",
+    tallyMore: "One more vote for",
+    tallyFewer: "One fewer vote for",
+    tallyBox: "Votes for",
+    selected: "Selected",
+    envelope: "Sealed envelope: the constitution of Veritas"
+  },
+
+  // Review-only gallery (?gallery=1). Sample copy is taken from the spec where noted.
+  gallery: {
+    authored: true,
+    title: "Chancery & Seal",
+    intro: "Review-only gallery of the design system. Not part of the lesson.",
+    themeButton: "Switch theme (D)",
+    glossaryButton: "Open glossary (G)",
+    prevStage: "Previous stage",
+    nextStage: "Next stage",
+    replay: "Replay stamps",
+    crack: "Crack the seal",
+    reseal: "Reseal",
+    lightPane: "Vellum (light)",
+    darkPane: "Night Sitting (dark)",
+    clockNote: "Live clock, then 12:04, 25:00 and 30:00.",
+    glossaryNote: "The drawer is a shell; definitions arrive in a later phase.",
+    sections: {
+      tokens: "Tokens",
+      chrome: "Chrome",
+      seals: "Seals",
+      stamps: "Stamps",
+      cards: "Option cards",
+      tally: "Vote tally strip",
+      lawBook: "The Law Book",
+      folders: "Case folders",
+      envelope: "Wax-sealed envelope",
+      glossary: "Glossary drawer",
+      themes: "Both themes"
+    },
+    // Spec §4.0, verbatim.
+    hookOptions: [
+      { letter: "A", text: "Only Parliament" },
+      { letter: "B", text: "Parliament and the government" },
+      { letter: "C", text: "Parliament, the government and judges" },
+      { letter: "D", text: "Not sure" }
+    ],
+    // Spec §4.1 (b_tough), §4.2 (k_face) and §4.4; the "Held" wording is authored.
+    lawBook: [
+      { author: "PARL", num: "§1", text: "Under-16s may not use any app that lets users share things with other users.", stamps: ["ENACTED"] },
+      { author: "PARL", num: "§2", text: "An under-16 who breaks this rule commits a crime.", stamps: ["VOID"], struck: true },
+      { author: "PARL", num: "§3", text: "The Minister will decide how apps check users' ages.", stamps: ["ENACTED"] },
+      { author: "MIN", num: "", text: "A face scan estimates the user's age.", stamps: ["REGULATION_IN_FORCE", "CLERK"] },
+      { author: "COURT", num: "", text: "Marlow v Attorney General — Held: §2 struck down. Future courts in Veritas must follow this.", stamps: [] }
+    ],
+    folders: [
+      {
+        ref: "VSC/2026/001", name: "Kim v Attorney General",
+        facts: "Rae Kim, 15, runs a popular wildlife-photo account. It has been closed.",
+        args: [
+          { who: "Claimant says", text: "Young people have a right to express themselves and join communities." },
+          { who: "Government says", text: "Parliament judged the harm to children to be greater." }
+        ],
+        held: ""
+      },
+      {
+        ref: "VSC/2026/002", name: "Marlow v Attorney General",
+        facts: "Jo Marlow, 15, was charged with a crime for using a photo app.",
+        args: [
+          { who: "Claimant says", text: "A criminal record at 15 can follow you for life. The punishment doesn't fit." },
+          { who: "Government says", text: "Parliament was elected to protect children. Without a real penalty, the rule means nothing." }
+        ],
+        held: "Strike down. Section 2 is void."
+      }
+    ]
+  }
 };
 /* CONTENT:END */
 
@@ -125,35 +449,599 @@ const MODEL = (function () {
 
 /* ===== BLOCK 5: APP ===== */
 /* APP:START */
+
+/* DESIGN:START */
+// "Chancery & Seal" component builders. Each returns an HTML/SVG string.
+// No DOM access here, so tests can load this block in node:vm.
+const DESIGN = (function () {
+  var TAU = Math.PI * 2;
+  var uidCount = 0;
+
+  // Per-instance ids keep each SVG's own patterns and clip paths self-contained,
+  // so currentColor (and the theme) resolves where the SVG sits.
+  function uid(prefix) { uidCount += 1; return "vx" + prefix + uidCount; }
+  function n1(x) { return (Math.round(x * 10) / 10).toString(); }
+  function esc(s) {
+    return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  }
+  function gcd(a, b) { while (b) { var t = b; b = a % b; a = t; } return a; }
+  function pathFrom(pts) {
+    var d = "M" + n1(pts[0][0]) + " " + n1(pts[0][1]);
+    for (var i = 1; i < pts.length; i++) d += "L" + n1(pts[i][0]) + " " + n1(pts[i][1]);
+    return d + "Z";
+  }
+
+  // Hypotrochoid x = (R-r)cos t + d cos((R-r)t/r), y = (R-r)sin t - d sin((R-r)t/r),
+  // remapped radially so the whole curve fills the annulus [rin, rout] about (cx, cy).
+  function hypotrochoid(R, r, d, rin, rout, phase, cx, cy) {
+    var g = gcd(R, r), turns = r / g, k = (R - r) / r;
+    var lo = R - r - d, hi = R - r + d;
+    var steps = 32 * ((R - r) / g + turns);
+    var pts = [];
+    for (var i = 0; i < steps; i++) {
+      var t = TAU * turns * i / steps;
+      var x = (R - r) * Math.cos(t) + d * Math.cos(k * t);
+      var y = (R - r) * Math.sin(t) - d * Math.sin(k * t);
+      var rho = Math.sqrt(x * x + y * y);
+      var th = Math.atan2(y, x) + phase;
+      var rr = rin + (rho - lo) / (hi - lo) * (rout - rin);
+      pts.push([cx + rr * Math.cos(th), cy + rr * Math.sin(th)]);
+    }
+    return pathFrom(pts);
+  }
+
+  // Sine "barleycorn" rim wave between two circles.
+  function rimWave(n, mid, amp, phase) {
+    var steps = n * 16, pts = [];
+    for (var i = 0; i < steps; i++) {
+      var th = TAU * i / steps;
+      var rr = mid + amp * Math.sin(n * th + phase);
+      pts.push([100 + rr * Math.cos(th), 100 + rr * Math.sin(th)]);
+    }
+    return pathFrom(pts);
+  }
+
+  // Distinct guilloché parameter set per author.
+  var SEALS = {
+    PARL:    { colour: "var(--parl)",  R: 15, r: 4, d: 3.4, copies: 2, rim: 30, rimCopies: 2 },
+    MIN:     { colour: "var(--min)",   R: 12, r: 5, d: 4.2, copies: 3, rim: 24, rimCopies: 3 },
+    COURT:   { colour: "var(--court)", R: 20, r: 7, d: 5.8, copies: 2, rim: 40, rimCopies: 2 },
+    GLIMMER: { colour: "var(--biz)",   R: 11, r: 3, d: 2.5, copies: 2, rim: 22, rimCopies: 1 },
+    CLERK:   { colour: "var(--ink-2)", R: 9,  r: 2, d: 1.8, copies: 3, rim: 18, rimCopies: 2 }
+  };
+
+  // Line-engraved emblems drawn inside r = 44 about (100, 100). H = hatch fill, X = cross-hatch fill.
+  function emblem(author, H, X) {
+    var s = "";
+    if (author === "PARL") {
+      // Hemicycle: four tiers of seats, radial gangways, Speaker's table, floor.
+      var cy = 114, radii = [14, 22, 30, 38], i, a;
+      s += '<path fill="url(#' + H + ')" stroke="none" d="M62 ' + cy + 'A38 38 0 0 1 138 ' + cy + 'L130 ' + cy + 'A30 30 0 0 0 70 ' + cy + 'Z"/>';
+      for (i = 0; i < radii.length; i++) {
+        s += '<path d="M' + (100 - radii[i]) + " " + cy + "A" + radii[i] + " " + radii[i] + " 0 0 1 " + (100 + radii[i]) + " " + cy + '"/>';
+      }
+      for (a = 0; a <= 180; a += 18) {
+        var c = Math.cos(a * Math.PI / 180), sn = Math.sin(a * Math.PI / 180);
+        s += '<path d="M' + n1(100 + 14 * c) + " " + n1(cy - 14 * sn) + "L" + n1(100 + 38 * c) + " " + n1(cy - 38 * sn) + '"/>';
+      }
+      s += '<rect x="94" y="104" width="12" height="7" fill="url(#' + X + ')"/>';
+      s += '<path stroke-width="1.6" d="M58 ' + cy + 'H142"/><path d="M62 118.5H138M68 123H132"/>';
+    } else if (author === "MIN") {
+      // Despatch box (lid, hatched front, lock plate, handle) and a key.
+      s += '<path d="M90 75V70H110V75"/>';
+      s += '<rect x="69" y="75" width="62" height="8" fill="url(#' + X + ')"/>';
+      s += '<rect x="72" y="83" width="56" height="31" fill="url(#' + H + ')"/>';
+      s += '<rect x="94" y="89" width="12" height="11" fill="var(--paper-3)"/><circle cx="100" cy="93.5" r="1.8"/><path d="M100 95.3V98"/>';
+      s += '<circle cx="78" cy="125" r="6.5"/><circle cx="78" cy="125" r="2.6"/>';
+      s += '<path d="M84.4 123.4H124M84.4 126.6H118.5V132H122V128.5H124V123.4"/>';
+    } else if (author === "COURT") {
+      // Balance scales over a fluted column.
+      s += '<rect x="92" y="94" width="16" height="33"/><path d="M96 95V126M100 95V126M104 95V126"/>';
+      s += '<rect x="88" y="88" width="24" height="6" fill="url(#' + X + ')"/>';
+      s += '<rect x="87" y="127" width="26" height="5"/><rect x="84" y="132" width="32" height="5" fill="url(#' + H + ')"/>';
+      s += '<path stroke-width="1.4" d="M100 88V66M68 70H132"/><circle cx="100" cy="63" r="2.6"/>';
+      s += '<path d="M70 70L61 88M70 70L79 88M130 70L121 88M130 70L139 88"/>';
+      s += '<path fill="url(#' + H + ')" d="M59 88Q70 98 81 88Z"/><path fill="url(#' + H + ')" d="M119 88Q130 98 141 88Z"/>';
+    } else if (author === "GLIMMER") {
+      // Fine print, with a magnifying glass enlarging part of it.
+      for (var y = 74; y <= 128; y += 6) {
+        var hw = Math.sqrt(Math.max(0, 38 * 38 - (y - 100) * (y - 100))) - 3;
+        s += '<path stroke-width="0.6" stroke-dasharray="7 2 4 2 10 2 5 2" d="M' + n1(100 - hw) + " " + y + "H" + n1(100 + hw) + '"/>';
+      }
+      s += '<rect x="19" y="-4" width="26" height="8" fill="url(#' + X + ')" transform="translate(92 92) rotate(45)"/>';
+      s += '<circle cx="92" cy="92" r="19" fill="var(--paper-3)" stroke-width="2.6"/><circle cx="92" cy="92" r="15.8"/>';
+      s += '<path stroke-width="1.7" stroke-dasharray="5 2.5 9 2.5 4 2.5" d="M78 86H106M77 93H107M79 100H105"/>';
+    } else if (author === "CLERK") {
+      // Open ledger with ruled pages, and a quill.
+      s += '<path fill="url(#' + H + ')" d="M64 106V111C76 107 90 107 100 113C110 107 124 107 136 111V106C124 102 110 102 100 108C90 102 76 102 64 106Z"/>';
+      s += '<path d="M100 108C90 102 76 102 64 106V82C76 78 90 78 100 84ZM100 108C110 102 124 102 136 106V82C124 78 110 78 100 84Z"/>';
+      s += '<path stroke-width="0.6" d="M70 88C78 86 88 86 95 89M70 94C78 92 88 92 95 95M70 100C78 98 88 98 95 101M105 89C112 86 122 86 130 88"/>';
+      s += '<path stroke-width="1.2" d="M109 98L127 64"/>';
+      s += '<path fill="url(#' + X + ')" d="M127 64C134 71 125 86 114 90C114 80 119 70 127 64Z"/>';
+      s += '<path d="M109 98L111.5 93"/>';
+    }
+    return s;
+  }
+
+  var sealCache = {};
+  function sealGeometry(author) {
+    if (sealCache[author]) return sealCache[author];
+    var p = SEALS[author], g = gcd(p.R, p.r), lobes = p.R / g, s = "", i;
+    for (i = 0; i < p.copies; i++) {
+      s += '<path d="' + hypotrochoid(p.R, p.r, p.d, 53, 72, (TAU / lobes) * i / p.copies, 100, 100) + '"/>';
+    }
+    for (i = 0; i < p.rimCopies; i++) {
+      s += '<path d="' + rimWave(p.rim, 47.5, 2.6 - i * 0.6, Math.PI * i / p.rimCopies) + '"/>';
+    }
+    sealCache[author] = s;
+    return s;
+  }
+
+  function seal(author, size) {
+    var p = SEALS[author];
+    if (!p) throw new Error("Unknown seal author: " + author);
+    var px = size || 96, id = uid("s");
+    var ring = CONTENT.seals[author] + " · ";
+    var circ = TAU * 80;
+    return '<svg class="seal seal--' + author + '" viewBox="0 0 200 200" width="' + px + '" height="' + px +
+      '" role="img" aria-label="' + esc(CONTENT.ui.sealOf + " " + CONTENT.seals[author]) + '" style="color:' + p.colour + '">' +
+      "<defs>" +
+      '<pattern id="' + id + 'h" width="3.2" height="3.2" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">' +
+      '<path d="M0 0V3.2" stroke="currentColor" stroke-width="0.7"/></pattern>' +
+      '<pattern id="' + id + 'x" width="3.2" height="3.2" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">' +
+      '<path d="M0 0V3.2M0 0H3.2" stroke="currentColor" stroke-width="0.6"/></pattern>' +
+      '<path id="' + id + 'r" d="M100 180A80 80 0 1 1 100 20A80 80 0 1 1 100 180"/>' +
+      "</defs>" +
+      '<g fill="none" stroke="currentColor">' +
+      '<circle cx="100" cy="100" r="97" stroke-width="2"/><circle cx="100" cy="100" r="93.5" stroke-width="0.6"/>' +
+      '<circle cx="100" cy="100" r="74.5" stroke-width="1"/><circle cx="100" cy="100" r="72.5" stroke-width="0.4"/>' +
+      '<g stroke-width="0.45">' + sealGeometry(author) + "</g>" +
+      '<circle cx="100" cy="100" r="44" stroke-width="1.1"/>' +
+      '<g stroke-width="0.9" stroke-linejoin="round">' + emblem(author, id + "h", id + "x") + "</g>" +
+      "</g>" +
+      '<text fill="currentColor" style="font-family:var(--serif);font-variant:small-caps;font-size:15px">' +
+      '<textPath href="#' + id + 'r" startOffset="1%" textLength="' + n1(circ * 0.97) + '" lengthAdjust="spacing">' +
+      esc(ring) + "</textPath></text>" +
+      "</svg>";
+  }
+
+  // Stamps: green for "the law is live"; red for everything else. The word always carries the meaning.
+  var STAMP_TONE = { ENACTED: "force", IN_FORCE: "force", REGULATION_IN_FORCE: "force", COMPLIED: "force" };
+
+  // Seeded rotation in [-9, -4) degrees.
+  function stampAngle(key, salt) {
+    var rand = MODEL.mulberry32(MODEL.hashString(key + "|" + (salt || "")));
+    return -4 - 5 * rand();
+  }
+
+  // opts: { salt, land, scale }
+  function stamp(key, opts) {
+    opts = opts || {};
+    var word = CONTENT.stamps[key];
+    if (!word) throw new Error("Unknown stamp: " + key);
+    var lines = word.split(" — ");
+    var big = lines[0].length > 14 ? 26 : 32, small = 19, pad = 20;
+    var widths = lines.map(function (l, i) { return l.length * (i ? small : big) * 0.68; });
+    var tw = Math.max.apply(null, widths), w = tw + pad * 2;
+    var h = pad * 2 + big + (lines.length - 1) * (small + 8);
+    var text = "", y = pad + big * 0.84;
+    lines.forEach(function (l, i) {
+      if (i) y += small + 8;
+      text += '<text x="' + n1(w / 2) + '" y="' + n1(y) + '" text-anchor="middle" font-size="' + (i ? small : big) +
+        '" textLength="' + n1(widths[i]) + '" lengthAdjust="spacingAndGlyphs">' + esc(l) + "</text>";
+    });
+    var tone = STAMP_TONE[key] || "stamp";
+    var em = (h / 32) * (opts.scale || 1);
+    return '<svg class="stamp stamp--' + tone + (opts.land ? " stamp--land" : "") + '" viewBox="0 0 ' + n1(w) + " " + n1(h) +
+      '" role="img" aria-label="' + esc(word) + '" style="--rot:' + stampAngle(key, opts.salt).toFixed(2) + "deg;color:var(--" + tone +
+      ");height:" + em.toFixed(3) + 'em">' +
+      '<g filter="url(#stamp-ink)">' +
+      '<rect x="3" y="3" width="' + n1(w - 6) + '" height="' + n1(h - 6) + '" fill="none" stroke="currentColor" stroke-width="4.5"/>' +
+      '<rect x="10" y="10" width="' + n1(w - 20) + '" height="' + n1(h - 20) + '" fill="none" stroke="currentColor" stroke-width="1.5"/>' +
+      '<g fill="currentColor" style="font-family:var(--serif);font-weight:bold;letter-spacing:0.06em">' + text + "</g>" +
+      "</g></svg>";
+  }
+
+  // Stamped tick for a selected option card.
+  function tick(salt, land) {
+    return '<svg class="stamp card__tick' + (land ? " stamp--land" : "") + '" viewBox="0 0 60 60" aria-hidden="true" style="--rot:' +
+      stampAngle("TICK", salt).toFixed(2) + 'deg;color:var(--stamp);height:2.3em">' +
+      '<g filter="url(#stamp-ink)" fill="none" stroke="currentColor">' +
+      '<circle cx="30" cy="30" r="26" stroke-width="3.5"/><circle cx="30" cy="30" r="21.5" stroke-width="1.2"/>' +
+      '<path d="M17 31L27 41L44 18" stroke-width="6.5" stroke-linecap="square" stroke-linejoin="miter"/>' +
+      "</g></svg>";
+  }
+
+  // Voting-card shapes (spec §7.2): A square, B circle, C triangle, D diamond.
+  var SHAPES = {
+    A: '<rect x="5" y="5" width="30" height="30"/>',
+    B: '<circle cx="20" cy="20" r="16"/>',
+    C: '<path d="M20 3L37.5 35H2.5Z"/>',
+    D: '<path d="M20 1.5L38.5 20L20 38.5L1.5 20Z"/>'
+  };
+  function shape(letter) {
+    var ty = letter === "C" ? 31 : 26.5, fs = letter === "C" ? 14 : 17;
+    return '<svg class="shape" viewBox="0 0 40 40" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2.6" stroke-linejoin="miter">' +
+      SHAPES[letter] + '</g><text x="20" y="' + ty + '" text-anchor="middle" font-size="' + fs +
+      '" font-weight="bold" fill="currentColor" style="font-family:var(--serif)">' + letter + "</text></svg>";
+  }
+
+  // opts: { letter, text, selected, action, value, land }
+  function optionCard(o) {
+    return '<button type="button" class="card' + (o.selected ? " is-selected" : "") + '" data-action="' + esc(o.action) +
+      '" data-value="' + esc(o.value) + '" data-focus="card-' + esc(o.value) + '" aria-pressed="' + (o.selected ? "true" : "false") + '">' +
+      '<span class="card__mark">' + shape(o.letter) + "</span>" +
+      '<span class="card__text">' + esc(o.text) + "</span>" +
+      (o.selected ? tick(o.value, o.land) : "") + "</button>";
+  }
+
+  // options: [{ letter }]; counts: { A: n, ... }
+  function tallyStrip(options, counts, action) {
+    var ui = CONTENT.ui;
+    return '<div class="tally" role="group" aria-label="' + esc(ui.tallyLabel) + '">' + options.map(function (o) {
+      var L = esc(o.letter), v = counts[o.letter] || 0;
+      return '<div class="tally__item">' + shape(o.letter) +
+        '<button type="button" class="tally__btn" data-action="' + action + '" data-option="' + L + '" data-delta="-1" data-focus="tally-' + L +
+        '-dec" aria-label="' + esc(ui.tallyFewer + " " + o.letter) + '">−</button>' +
+        '<input class="tally__box" type="number" min="0" inputmode="numeric" value="' + v + '" data-tally="' + L +
+        '" data-focus="tally-' + L + '" aria-label="' + esc(ui.tallyBox + " " + o.letter) + '">' +
+        '<button type="button" class="tally__btn" data-action="' + action + '" data-option="' + L + '" data-delta="1" data-focus="tally-' + L +
+        '-inc" aria-label="' + esc(ui.tallyMore + " " + o.letter) + '">+</button></div>';
+    }).join("") + "</div>";
+  }
+
+  // provisions: [{ author, num, text, stamps: [key], struck }]
+  function lawBook(provisions) {
+    return '<article class="lawbook" aria-label="' + esc(CONTENT.chrome.lawBook) + '">' +
+      '<header class="lawbook__head"><h2>' + esc(CONTENT.chrome.lawBook) + "</h2></header>" +
+      '<ol class="lawbook__list">' + provisions.map(function (p, i) {
+        return '<li class="prov' + (p.struck ? " prov--struck" : "") + '">' +
+          '<div class="prov__gutter">' + seal(p.author, 52) + "</div>" +
+          '<div class="prov__body">' + (p.num ? '<span class="prov__num">' + esc(p.num) + "</span>" : "") +
+          '<span class="prov__text">' + esc(p.text) + "</span></div>" +
+          '<div class="prov__stamps">' + (p.stamps || []).map(function (k) {
+            return stamp(k, { salt: "lb" + i, scale: 0.62 });
+          }).join("") + "</div></li>";
+      }).join("") + "</ol></article>";
+  }
+
+  // c: { ref, name, facts, args: [{who, text}], held }
+  function caseFolder(c) {
+    return '<article class="folder"><div class="folder__tab tw">' + esc(c.ref) + "</div>" +
+      '<h3 class="folder__name">' + esc(c.name) + "</h3>" +
+      '<p class="folder__facts">' + esc(c.facts) + "</p>" +
+      (c.args && c.args.length ? '<dl class="folder__args">' + c.args.map(function (a) {
+        return "<div><dt>" + esc(a.who) + "</dt><dd>" + esc(a.text) + "</dd></div>";
+      }).join("") + "</dl>" : "") +
+      '<p class="held"><span class="held__label">' + esc(CONTENT.chrome.held) + '</span><span class="held__line tw">' + esc(c.held || "") + "</span></p>" +
+      "</article>";
+  }
+
+  // Wax blob outline: a circle with a seeded-looking but fixed wobble.
+  function waxPath(cx, cy, r) {
+    var pts = [];
+    for (var i = 0; i < 72; i++) {
+      var th = TAU * i / 72;
+      var rr = r + 1.8 * Math.sin(5 * th) + 1.2 * Math.sin(9 * th + 1) + 0.8 * Math.sin(13 * th + 2);
+      pts.push([cx + rr * Math.cos(th), cy + rr * Math.sin(th)]);
+    }
+    return pathFrom(pts);
+  }
+
+  var CRACK = [[124, 110], [136, 116], [142, 108], [151, 119], [158, 112], [166, 124], [173, 117], [182, 127], [197, 122]];
+  function crackRegion(far) {
+    var d = "M" + CRACK.map(function (p) { return p[0] + " " + p[1]; }).join("L");
+    return d + "L202 " + far + "L118 " + far + "Z";
+  }
+
+  // Envelope; the constitution is sealed with wax that cracks along an SVG path.
+  // Add the class env--open (after insertion) to crack the seal and open the flap.
+  function envelope(enterOpen) {
+    var id = uid("e"), wax = waxPath(160, 118, 30);
+    var waxBody = '<path d="' + wax + '" fill="var(--court)"/>' +
+      '<g fill="none" stroke="var(--paper-3)" opacity="0.55"><circle cx="160" cy="118" r="22" stroke-width="1.2"/>' +
+      '<path stroke-width="0.5" d="' + hypotrochoid(9, 2, 1.8, 9, 19, 0, 160, 118) + '"/></g>';
+    return '<div class="env"' + (enterOpen ? ' data-enter="env--open"' : "") + ">" +
+      '<svg viewBox="0 0 320 200" role="img" aria-label="' + esc(CONTENT.ui.envelope) + '" style="color:var(--rule)">' +
+      "<defs>" +
+      '<pattern id="' + id + 'h" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">' +
+      '<path d="M0 0V4" stroke="currentColor" stroke-width="0.6"/></pattern>' +
+      '<clipPath id="' + id + 'a"><path d="' + crackRegion(70) + '"/></clipPath>' +
+      '<clipPath id="' + id + 'b"><path d="' + crackRegion(170) + '"/></clipPath>' +
+      "</defs>" +
+      '<rect x="10" y="0" width="300" height="190" fill="var(--paper-3)" stroke="var(--ink-2)" stroke-width="1.5"/>' +
+      '<path d="M10 0L120 104L10 190Z" fill="url(#' + id + 'h)"/><path d="M310 0L200 104L310 190Z" fill="url(#' + id + 'h)"/>' +
+      '<path d="M10 190L160 100L310 190" fill="none" stroke="var(--ink-2)" stroke-width="1"/>' +
+      '<g class="env__waxB" clip-path="url(#' + id + 'b)">' + waxBody + "</g>" +
+      '<g class="env__flap">' +
+      '<path d="M10 0L160 118L310 0Z" fill="var(--paper-3)" stroke="var(--ink-2)" stroke-width="1.5"/>' +
+      '<path d="M24 0L160 107L296 0" fill="none" stroke="var(--rule)" stroke-width="0.6"/>' +
+      '<g class="env__waxA" clip-path="url(#' + id + 'a)">' + waxBody + "</g>" +
+      "</g>" +
+      '<path class="env__crack" pathLength="1" fill="none" stroke="var(--ink)" stroke-width="1.6" d="M' +
+      CRACK.map(function (p) { return p[0] + " " + p[1]; }).join("L") + '"/>' +
+      "</svg></div>";
+  }
+
+  // Ribbon is built once and its tied stage switched by class, so the tape can untie and retie.
+  function ribbon() {
+    var knot = '<svg class="tape__knot" viewBox="0 0 24 30" aria-hidden="true">' +
+      '<g fill="var(--tape)" stroke="var(--ink)" stroke-width="0.6" stroke-linejoin="round">' +
+      '<path d="M11 12L6.5 27.5L9 26L10.2 28.5L13 12.5Z"/><path d="M13 12L17.5 27L15 25.8L13.8 28.2L11 12.5Z"/>' +
+      '<path d="M12 10C7 3.5 1.5 6 3 11C4.5 15 9 13 12 10Z"/><path d="M12 10C17 3.5 22.5 6 21 11C19.5 15 15 13 12 10Z"/>' +
+      '<rect x="9.8" y="8" width="4.4" height="4.4"/></g></svg>';
+    return '<nav class="ribbon" aria-label="' + esc(CONTENT.ui.ribbonLabel) + '"><ol>' +
+      CONTENT.chrome.stages.map(function (s, i) {
+        return (i ? '<li class="ribbon__arrow" aria-hidden="true">→</li>' : "") +
+          '<li class="ribbon__stage" data-stage="' + i + '"><span class="tape" aria-hidden="true"><span class="tape__band"></span>' +
+          knot + "</span>" + esc(s) + "</li>";
+      }).join("") + "</ol></nav>";
+  }
+
+  // roleKey: a key of CONTENT.roles; sealAuthor may be null (Citizens carry no seal).
+  function rolePlate(roleKey, sealAuthor) {
+    return '<div class="plate">' + (sealAuthor ? seal(sealAuthor, 54) : "") +
+      '<div><span class="plate__kicker">' + esc(CONTENT.chrome.youAreNow) + '</span><span class="plate__role">' +
+      esc(CONTENT.roles[roleKey]) + "</span></div></div>";
+  }
+
+  function formatClock(sec) {
+    sec = Math.max(0, Math.floor(sec));
+    var m = Math.floor(sec / 60), s = sec % 60;
+    return (m < 10 ? "0" : "") + m + ":" + (s < 10 ? "0" : "") + s;
+  }
+  function clockLevel(sec) { return sec >= 1800 ? "oxblood" : sec >= 1500 ? "brass" : "normal"; }
+  function clock(sec, live) {
+    return '<div class="clock clock--' + clockLevel(sec) + '" role="timer" aria-label="' + esc(CONTENT.ui.clockLabel) + '"' +
+      (live ? " data-clock-live" : "") + '><span class="clock__time">' + formatClock(sec) +
+      '</span><span class="clock__limit"> / ' + esc(CONTENT.chrome.sessionLimit) + "</span></div>";
+  }
+
+  function glossaryDrawer() {
+    return '<div class="drawer__head"><h2 id="glossary-title" tabindex="-1">' + esc(CONTENT.ui.glossaryTitle) + "</h2>" +
+      '<button type="button" class="btn" data-action="glossary-close">' + esc(CONTENT.ui.glossaryClose) + "</button></div>" +
+      '<dl class="glossary"></dl>';
+  }
+
+  return {
+    SEALS: SEALS, esc: esc, hypotrochoid: hypotrochoid, seal: seal, stamp: stamp, stampAngle: stampAngle, tick: tick,
+    shape: shape, optionCard: optionCard, tallyStrip: tallyStrip, lawBook: lawBook, caseFolder: caseFolder,
+    envelope: envelope, ribbon: ribbon, rolePlate: rolePlate, formatClock: formatClock, clockLevel: clockLevel,
+    clock: clock, glossaryDrawer: glossaryDrawer
+  };
+})();
+/* DESIGN:END */
+
 (function () {
-  var state = { screen: "title", history: [] };
+  var D = DESIGN;
+  var isGallery = false;
+  try { isGallery = new URLSearchParams(window.location.search).get("gallery") === "1"; } catch (e) { isGallery = false; }
+
+  var STAGE_ROLES = [["PARL", "PARL"], ["MIN", "MIN"], ["GLIMMER", "GLIMMER"], ["COURT", "COURT"], ["CITIZENS", null]];
+  // UI-only actions do not enter the Back history.
+  var UI_ACTIONS = { "glossary-toggle": 1, "glossary-close": 1, "theme-toggle": 1 };
+  var startedAt = Date.now();
+
+  var state = {
+    screen: isGallery ? "gallery" : "title",
+    history: [],
+    ui: { glossary: false, theme: null },
+    gallery: isGallery ? { stage: 0, selected: "C", tally: { A: 3, B: 5, C: 14, D: 2 }, envOpen: false, landN: 0 } : null
+  };
+
+  function assign(a, b) { return Object.assign({}, a, b); }
+  function clamp(x, lo, hi) { return Math.max(lo, Math.min(hi, x)); }
+
+  function reduce(s, a) {
+    var ui = s.ui, g = s.gallery, t;
+    switch (a.type) {
+      case "glossary-toggle": return assign(s, { ui: assign(ui, { glossary: !ui.glossary }) });
+      case "glossary-close": return ui.glossary ? assign(s, { ui: assign(ui, { glossary: false }) }) : s;
+      case "theme-toggle": return assign(s, { ui: assign(ui, { theme: a.effective === "dark" ? "light" : "dark" }) });
+    }
+    if (!g) return s;
+    switch (a.type) {
+      case "g-stage": return assign(s, { gallery: assign(g, { stage: clamp(g.stage + a.delta, 0, 4) }) });
+      case "g-select": return assign(s, { gallery: assign(g, { selected: a.value }) });
+      case "g-tally":
+        t = assign(g.tally, {});
+        t[a.option] = Math.max(0, a.value != null ? a.value : (t[a.option] || 0) + a.delta);
+        return assign(s, { gallery: assign(g, { tally: t }) });
+      case "g-replay": return assign(s, { gallery: assign(g, { landN: g.landN + 1 }) });
+      case "g-envelope": return assign(s, { gallery: assign(g, { envOpen: !g.envOpen }) });
+    }
+    return s;
+  }
 
   function dispatch(action) {
-    var next = Object.assign({}, state, { history: state.history.concat([state]) });
-    // Phase 0: no actions change state yet.
+    var next = reduce(state, action);
+    if (next === state) return state;
+    if (!UI_ACTIONS[action.type]) next = assign(next, { history: state.history.concat([state]) });
     state = next;
     render();
     return state;
   }
 
+  // Replace an element's markup only when it changed; keep focus on the same control.
+  function patch(el, html) {
+    if (el.__html === html) return;
+    var active = document.activeElement;
+    var key = active && el.contains(active) ? active.getAttribute("data-focus") : null;
+    el.innerHTML = html;
+    el.__html = html;
+    if (key) {
+      var again = el.querySelector('[data-focus="' + key + '"]');
+      if (again) again.focus();
+    }
+  }
+
+  // Elements marked data-enter="cls" receive cls after insertion, so CSS transitions run.
+  function runEnters(root) {
+    var els = root.querySelectorAll("[data-enter]");
+    for (var i = 0; i < els.length; i++) {
+      var el = els[i], cls = el.getAttribute("data-enter");
+      el.removeAttribute("data-enter");
+      void el.getBoundingClientRect();
+      el.classList.add(cls);
+    }
+  }
+
+  function elapsed() { return (Date.now() - startedAt) / 1000; }
+
+  function setRibbon(nav, index) {
+    var stages = nav.querySelectorAll(".ribbon__stage");
+    for (var i = 0; i < stages.length; i++) {
+      var tied = i === index;
+      stages[i].classList.toggle("is-tied", tied);
+      if (tied) stages[i].setAttribute("aria-current", "step"); else stages[i].removeAttribute("aria-current");
+    }
+  }
+
+  var glossaryReturn = null;
+  function renderGlossary() {
+    var el = document.getElementById("glossary");
+    if (!el) {
+      el = document.createElement("aside");
+      el.id = "glossary";
+      el.className = "drawer";
+      el.setAttribute("aria-labelledby", "glossary-title");
+      el.innerHTML = D.glossaryDrawer();
+      document.body.appendChild(el);
+    }
+    var open = state.ui.glossary, was = el.classList.contains("is-open");
+    if (open === was) return;
+    el.classList.toggle("is-open", open);
+    if (open) {
+      glossaryReturn = document.activeElement;
+      el.querySelector("#glossary-title").focus();
+    } else if (glossaryReturn && glossaryReturn.focus) {
+      glossaryReturn.focus();
+      glossaryReturn = null;
+    }
+  }
+
+  function renderTitle(app) {
+    app.__gallery = false;
+    patch(app, "<h1>" + D.esc(CONTENT.title) + "</h1><p>" + D.esc(CONTENT.subtitle) + "</p>");
+  }
+
+  var SLOTS = ["chrome", "tokens", "seals", "stamps", "cards", "tally", "lawBook", "folders", "envelope", "glossary", "themes"];
+  var TOKENS = ["paper", "paper-2", "paper-3", "ink", "ink-2", "rule", "parl", "min", "court", "biz", "stamp", "force", "tape"];
+  var AUTHORS = ["PARL", "MIN", "COURT", "GLIMMER", "CLERK"];
+
+  function renderGallery(app) {
+    var G = CONTENT.gallery, g = state.gallery, S = G.sections;
+    if (!app.__gallery) {
+      app.__gallery = true;
+      app.__html = null;
+      app.innerHTML = '<div class="gallery"><header><h1>' + D.esc(G.title) + '</h1><p class="gallery__note">' + D.esc(G.intro) +
+        '</p><div class="gallery__bar"><button type="button" class="btn" data-action="theme-toggle">' + D.esc(G.themeButton) +
+        '</button><button type="button" class="btn" data-action="glossary-toggle">' + D.esc(G.glossaryButton) + "</button></div></header>" +
+        SLOTS.map(function (k) { return '<section><h2>' + D.esc(S[k]) + '</h2><div data-slot="' + k + '"></div></section>'; }).join("") +
+        "</div>";
+    }
+    function slot(k) { return app.querySelector('[data-slot="' + k + '"]'); }
+
+    // Chrome: the ribbon is mounted once so the tape can untie between stages.
+    var chrome = slot("chrome");
+    if (!chrome.__mounted) {
+      chrome.__mounted = true;
+      chrome.innerHTML = '<div class="gallery__bar"><button type="button" class="btn" data-action="g-stage" data-delta="-1">' + D.esc(G.prevStage) +
+        '</button><button type="button" class="btn" data-action="g-stage" data-delta="1">' + D.esc(G.nextStage) + "</button></div>" +
+        '<div class="chrome">' + D.ribbon() + '<div data-part="plate"></div>' + D.clock(elapsed(), true) + "</div>" +
+        '<p class="gallery__note">' + D.esc(G.clockNote) + '</p><div class="gallery__row">' + D.clock(724) + D.clock(1500) + D.clock(1800) + "</div>";
+    }
+    setRibbon(chrome.querySelector(".ribbon"), g.stage);
+    patch(chrome.querySelector('[data-part="plate"]'), D.rolePlate(STAGE_ROLES[g.stage][0], STAGE_ROLES[g.stage][1]));
+
+    patch(slot("tokens"), '<div class="gallery__swatches">' + TOKENS.map(function (t) {
+      return '<div class="gallery__swatch"><span class="gallery__chip" style="background:var(--' + t + ')"></span><code>--' + t + "</code></div>";
+    }).join("") + "</div>");
+
+    patch(slot("seals"), '<div class="gallery__row">' + AUTHORS.map(function (a) {
+      return '<figure class="gallery__fig">' + D.seal(a, 200) + "<figcaption>" + a + "</figcaption></figure>";
+    }).join("") + '</div><div class="gallery__row">' + AUTHORS.map(function (a) { return D.seal(a, 64) + D.seal(a, 40); }).join("") + "</div>");
+
+    patch(slot("stamps"), '<div class="gallery__bar"><button type="button" class="btn" data-action="g-replay">' + D.esc(G.replay) +
+      '</button></div><div class="gallery__stamps" data-n="' + g.landN + '">' +
+      Object.keys(CONTENT.stamps).map(function (k) { return D.stamp(k, { land: true }); }).join("") + "</div>");
+
+    patch(slot("cards"), '<div class="cards">' + G.hookOptions.map(function (o) {
+      return D.optionCard({ letter: o.letter, text: o.text, value: o.letter, action: "g-select", selected: g.selected === o.letter, land: true });
+    }).join("") + "</div>");
+
+    patch(slot("tally"), D.tallyStrip(G.hookOptions, g.tally, "g-tally"));
+    patch(slot("lawBook"), D.lawBook(G.lawBook));
+    patch(slot("folders"), G.folders.map(D.caseFolder).join(""));
+
+    patch(slot("envelope"), '<div class="gallery__bar"><button type="button" class="btn" data-action="g-envelope">' +
+      D.esc(g.envOpen ? G.reseal : G.crack) + '</button></div><div class="gallery__env">' + D.envelope(g.envOpen) + "</div>");
+
+    patch(slot("glossary"), '<p class="gallery__note">' + D.esc(G.glossaryNote) + '</p><button type="button" class="btn" data-action="glossary-toggle">' +
+      D.esc(G.glossaryButton) + "</button>");
+
+    patch(slot("themes"), '<div class="gallery__themes">' + [["light", G.lightPane], ["dark", G.darkPane]].map(function (p) {
+      return '<div class="gallery__pane" data-theme="' + p[0] + '"><h3>' + D.esc(p[1]) + '</h3><div class="gallery__row">' +
+        AUTHORS.map(function (a) { return D.seal(a, 72); }).join("") + '</div><div class="gallery__stamps">' +
+        D.stamp("ENACTED") + D.stamp("LOOPHOLE") + D.stamp("INCOMPATIBLE_IN_FORCE", { scale: 0.8 }) + "</div>" +
+        D.optionCard({ letter: "C", text: G.hookOptions[2].text, value: "pane-" + p[0], action: "noop", selected: true }) +
+        D.lawBook(G.lawBook.slice(1, 4)) + D.clock(1500) + D.clock(1800) + "</div>";
+    }).join("") + "</div>");
+  }
+
   function render() {
+    var root = document.documentElement;
+    if (state.ui.theme) root.setAttribute("data-theme", state.ui.theme); else root.removeAttribute("data-theme");
+    renderGlossary();
     var app = document.getElementById("app");
-    app.innerHTML = "";
-    var h1 = document.createElement("h1");
-    h1.textContent = CONTENT.title;
-    var p = document.createElement("p");
-    p.textContent = CONTENT.subtitle;
-    app.appendChild(h1);
-    app.appendChild(p);
+    if (state.screen === "gallery") renderGallery(app); else renderTitle(app);
+    runEnters(app);
+  }
+
+  function effectiveTheme() {
+    if (state.ui.theme) return state.ui.theme;
+    try { return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; } catch (e) { return "light"; }
+  }
+
+  function tickClocks() {
+    var sec = elapsed(), els = document.querySelectorAll("[data-clock-live]");
+    for (var i = 0; i < els.length; i++) {
+      els[i].className = "clock clock--" + D.clockLevel(sec);
+      els[i].querySelector(".clock__time").textContent = D.formatClock(sec);
+    }
   }
 
   document.addEventListener("click", function (e) {
     var el = e.target.closest("[data-action]");
     if (!el) return;
-    dispatch({ type: el.getAttribute("data-action") });
+    var type = el.getAttribute("data-action");
+    var action = { type: type };
+    if (el.hasAttribute("data-delta")) action.delta = Number(el.getAttribute("data-delta"));
+    if (el.hasAttribute("data-value")) action.value = el.getAttribute("data-value");
+    if (el.hasAttribute("data-option")) action.option = el.getAttribute("data-option");
+    if (type === "theme-toggle") action.effective = effectiveTheme();
+    dispatch(action);
+  });
+
+  document.addEventListener("change", function (e) {
+    var el = e.target.closest("[data-tally]");
+    if (!el || !state.gallery) return;
+    var v = parseInt(el.value, 10);
+    dispatch({ type: "g-tally", option: el.getAttribute("data-tally"), value: isNaN(v) ? 0 : v });
+  });
+
+  document.addEventListener("keydown", function (e) {
+    if (e.ctrlKey || e.metaKey || e.altKey) return;
+    var tag = e.target && e.target.tagName;
+    var typing = tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT";
+    if (e.key === "Escape") { dispatch({ type: "glossary-close" }); return; }
+    if (typing) return;
+    if (e.key === "g" || e.key === "G") { e.preventDefault(); dispatch({ type: "glossary-toggle" }); }
+    else if (e.key === "d" || e.key === "D") { e.preventDefault(); dispatch({ type: "theme-toggle", effective: effectiveTheme() }); }
   });
 
   render();
+  window.setInterval(tickClocks, 1000);
 })();
 /* APP:END */
 </script>
