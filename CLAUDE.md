@@ -55,7 +55,7 @@ State rules: one `state` object; `dispatch(action)` returns a new state; previou
 - Respect `prefers-reduced-motion`.
 
 ## Verification before declaring a phase done
-1. `node --test tests/` passes.
+1. `node --test` passes (run from the repo root; `node --test tests/` fails on Node 22).
 2. If a headless browser (e.g. Playwright) is available, load `index.html`, confirm no console errors, and check the screens you built at 1280×720 and 1920×1080. If it is not available, say so — do not claim visual checks you did not run.
 3. Add tests for every model branch you add or change.
 
