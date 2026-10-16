@@ -484,6 +484,28 @@ mark.caught {
 .script dt { font-variant: small-caps; letter-spacing: 0.08em; color: var(--ink-2); }
 .script dd { margin: 0; }
 
+/* ---- Glossary links, the drawer's list, Resume offer, teacher notes ---- */
+.gloss {
+  background: none; border: 0; border-radius: 0; padding: 0; font: inherit; letter-spacing: inherit; color: inherit; text-align: inherit;
+  cursor: pointer; text-decoration: underline dotted; text-decoration-thickness: 0.09em; text-underline-offset: 0.2em;
+}
+.gloss:hover { text-decoration-style: solid; }
+.glossary { margin: 0; }
+.glossary dt { margin-top: 0.8rem; font-variant: small-caps; letter-spacing: 0.08em; font-weight: bold; }
+.glossary dd { margin: 0.1rem 0 0; }
+.glossary dt, .glossary dd { padding-left: 0.6rem; border-left: 3px solid transparent; }
+.glossary .is-target { border-left-color: var(--ink); }
+.resume { border: 3px double var(--rule); background: var(--paper-3); padding: 0.4rem 1rem 0.8rem; margin: 0 0 1.2rem; }
+.resume h2 { margin: 0; }
+.setup__keys { margin: 1.4rem 0 0; font-size: 0.85rem; color: var(--ink-2); }
+.notes { max-width: 52rem; margin: 0 auto; }
+.notes__bar { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-bottom: 1rem; }
+.notes h2 { margin-top: 1.5rem; border-bottom: 3px double var(--ink); }
+.notes li { margin-bottom: 0.6rem; }
+
+/* ---- Voting cards: on screen only the print sheet is hidden ---- */
+.printsheet { display: none; }
+
 @media (max-width: 900px) {
   .game__main.has-book, .cards--bills, .branches, .gz { grid-template-columns: minmax(0, 1fr); }
   .gz__plate, .gz__note { border-left: 0; padding-left: 0; margin-left: 0; }
@@ -493,6 +515,32 @@ mark.caught {
   .prov--new > .prov__body { animation: none; }
   .enact__row .stamp--land { animation-delay: 0s; }
   mark.caught, .charter--reveal, .held__text--type { animation: none; }
+}
+
+/* ---- Print (spec §7.2, §12): the voting-card sheet, and the teacher notes ---- */
+@page { size: A4 portrait; margin: 10mm; }
+@media print {
+  html, body, #app { background: #fff; color: #000; }
+  .drawer, .script, .noprint { display: none !important; }
+  #app { padding: 0; min-height: 0; }
+  .notes { max-width: none; font-size: 11pt; line-height: 1.35; }
+  .notes h1 { font-size: 20pt; }
+  .notes h2 { font-size: 14pt; break-after: avoid; border-bottom-color: #000; }
+  .notes li, .notes p { break-inside: avoid; }
+  body[data-print="cards"] #app { display: none !important; }
+  body[data-print="cards"] .printsheet { display: block; font-family: var(--serif); color: #000; background: #fff; }
+  /* One A4 sheet: four cards in a 2 × 2 grid; the dashed lines are shared cut lines. */
+  .printsheet__grid {
+    display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; height: 262mm;
+    border-top: 0.4mm dashed #000; border-left: 0.4mm dashed #000;
+  }
+  .pcard {
+    display: flex; flex-direction: column; align-items: center; justify-content: center; box-sizing: border-box;
+    border-right: 0.4mm dashed #000; border-bottom: 0.4mm dashed #000; break-inside: avoid;
+  }
+  .pcard__shape { width: 78mm; height: 78mm; display: block; }
+  .pcard__name { margin: 4mm 0 0; font-size: 20pt; font-weight: bold; letter-spacing: 0.08em; }
+  .printsheet__cut { margin: 3mm 0 0; font-size: 9pt; text-align: center; }
 }
 
 /* ---- Review gallery (?gallery=1) ---- */
@@ -905,20 +953,77 @@ const CONTENT = {
   },
 
   // Spec §8 glossary terms; definitions are authored (each ≤ 20 words).
+  // forms: the words that count as a use of the term (matched whole-word, case-insensitively);
+  // exact: match only the capitalised forms given, and not a numbered act ("Act III" is part of the session, not a law).
   glossary: [
-    { term: "Act", authored: true, def: "A law passed by Parliament. A Bill becomes an Act once Parliament votes for it." },
-    { term: "Bill", authored: true, def: "A proposed law. Parliament debates it and votes on it. If it passes, it becomes an Act." },
-    { term: "Parliament", authored: true, def: "The people we elect to make laws. They debate Bills and vote on them." },
-    { term: "Government", authored: true, def: "The ministers who run the country and put laws into action." },
-    { term: "Minister", authored: true, def: "A member of the government in charge of one area, such as digital affairs." },
-    { term: "Regulation", authored: true, def: "A detailed rule made by a minister, using a power an Act gives them. It is law too." },
-    { term: "Court", authored: true, def: "Where judges decide what the law means when people disagree." },
-    { term: "Constitution", authored: true, def: "A country's most basic rules. They say who makes law and who has the last word." },
-    { term: "Strike down", authored: true, def: "When judges cancel a law because it breaks the constitution. Only some countries allow this." },
-    { term: "Reinterpret", authored: true, def: "When judges read a law's words more narrowly, so that it respects people's rights." },
-    { term: "Precedent", authored: true, def: "A court decision that future courts must follow in similar cases. Veritas works this way." },
-    { term: "Loophole", authored: true, def: "A gap in the words of a law that lets someone avoid it without breaking it." }
+    { term: "Act", authored: true, forms: ["Act", "Acts"], exact: true, def: "A law passed by Parliament. A Bill becomes an Act once Parliament votes for it." },
+    { term: "Bill", authored: true, forms: ["bill", "bills"], def: "A proposed law. Parliament debates it and votes on it. If it passes, it becomes an Act." },
+    { term: "Parliament", authored: true, forms: ["parliament"], def: "The people we elect to make laws. They debate Bills and vote on them." },
+    { term: "Government", authored: true, forms: ["government", "governments"], def: "The ministers who run the country and put laws into action." },
+    { term: "Minister", authored: true, forms: ["minister", "ministers"], def: "A member of the government in charge of one area, such as digital affairs." },
+    { term: "Regulation", authored: true, forms: ["regulation", "regulations"], def: "A detailed rule made by a minister, using a power an Act gives them. It is law too." },
+    { term: "Court", authored: true, forms: ["court", "courts"], def: "Where judges decide what the law means when people disagree." },
+    { term: "Constitution", authored: true, forms: ["constitution", "constitutions"], def: "A country's most basic rules. They say who makes law and who has the last word." },
+    { term: "Strike down", authored: true, forms: ["strike down", "strikes down", "struck down"], def: "When judges cancel a law because it breaks the constitution. Only some countries allow this." },
+    { term: "Reinterpret", authored: true, forms: ["reinterpret", "reinterprets", "reinterpreted"], def: "When judges read a law's words more narrowly, so that it respects people's rights." },
+    { term: "Precedent", authored: true, forms: ["precedent", "precedents"], def: "A court decision that future courts must follow in similar cases. Veritas works this way." },
+    { term: "Loophole", authored: true, forms: ["loophole", "loopholes"], def: "A gap in the words of a law that lets someone avoid it without breaking it." }
   ],
+
+  // Spec §12 (teacher notes) and §1.3 (accuracy qualifications), verbatim. *x* is italic, **x** is bold.
+  teacher: {
+    anchorsHeading: "Real-world anchors (for the facilitator)",
+    anchors: [
+      "UK: courts cannot cancel Acts — Human Rights Act 1998 ss.3–4. Courts can quash ministers' rules that exceed their powers, e.g. *R (Public Law Project) v Lord Chancellor* [2016] UKSC 39.",
+      "USA: *Marbury v Madison* (1803) — the Supreme Court asserts power to review Acts of Congress. Germany: the Federal Constitutional Court can declare statutes void.",
+      "France: the Constitution divides rule-making between Parliament (Art. 34) and the government (Art. 37); the Constitutional Council reviews laws (Art. 61; Art. 61-1 since 2010).",
+      "Judge-made law: *Donoghue v Stevenson* [1932] AC 562 created the modern law of negligence.",
+      "Scenario parallel: Australia's Online Safety Amendment (Social Media Minimum Age) Act 2024 requires age-restricted platforms to take \"reasonable steps\" to stop under-16s holding accounts, with penalties on platforms, not children or parents. Ministerial rules (2025, amended March 2026) excluded categories such as online gaming and standalone messaging — though messaging services with social-media features may still be covered. The Act's focus on *accounts* parallels the Glimmer Lite gap."
+    ],
+    simplificationsHeading: "Simplifications to name if asked",
+    simplifications: "Veritas has one chamber, no head-of-state assent, no appeals, no international law. Constitution summaries are \"loosely inspired by\", not descriptions of, real countries. Whether judges or elected representatives *should* have the last word is a genuine, unresolved debate.",
+    qualificationsHeading: "Accuracy qualifications (taught, not hidden)",
+    qualifications: [
+      "**Courts cannot cancel Acts of Parliament everywhere.** In the UK, courts must read legislation compatibly with Convention rights \"so far as it is possible\" (Human Rights Act 1998, s.3) or may declare it incompatible (s.4); the Act stays in force. Constitution A models this.",
+      "**The executive usually makes law only with permission** — from an Act (e.g. UK statutory instruments) or a constitution. In Veritas, every rule the Minister makes is made under a power in the Act.",
+      "**Binding judge-made precedent is a common-law feature** (UK, USA, Canada, Australia). In civil-law systems court decisions are influential but not formally binding in the same way. Veritas follows precedent; teacher notes say so.",
+      "**Judges cannot rewrite clear words.** When an Act's words plainly leave a gap, closing it is Parliament's job. Act III/IV models this."
+    ]
+  },
+
+  // Spec §8 Keyboard line, verbatim (shown on Setup).
+  keys: {
+    label: "Keyboard:",
+    line: "→ / Space next · ← back · 1–4 select card · K skip act (confirm) · S script panel · G glossary · D light/dark · F fullscreen · R restart (confirm)"
+  },
+
+  // Screen names, verbatim from spec §8 (and §7.5, §4.4 for the Clerk and no-case cards); used by the Resume offer.
+  screens: {
+    authored: true,
+    setup: "Setup", title: "Title", hook: "Hook vote", branches: "Three branches", bills: "Act I Bills",
+    list: "Act II List", check: "Act II Age check", gap: "Act III Gap", unseal: "Act IV Unseal", case1: "Case 1",
+    case2: "Case 2", nocase: "No-case card", clerk: "Clerk result card", gazette: "Gazette",
+    countries: "Three countries", revote: "Re-vote", discussion: "Discussion", end: "End"
+  },
+  resume: {
+    authored: true,
+    heading: "Saved session found",
+    text: "A session was saved at {screen}, {time} in.",
+    resume: "Resume",
+    discard: "Discard it"
+  },
+  teacherExtra: {
+    authored: true,
+    back: "← Back to setup",
+    print: "Print teacher notes"
+  },
+  // Print sheet for the voting cards (spec §7.2): one A4 sheet, four cards.
+  printCards: {
+    authored: true,
+    sheet: "The Republic of Veritas — voting cards",
+    cut: "Cut along the dashed lines. Raise one card on \"3, 2, 1\".",
+    shapes: { A: "Square", B: "Circle", C: "Triangle", D: "Diamond" }
+  },
 
   // Spec §7.4: one entry per screen. Authored unless noted; say ≤ 40 words.
   script: {
@@ -1041,8 +1146,7 @@ const CONTENT = {
   setupExtra: {
     authored: true,
     heading: "Setup",
-    choose: "Live constitution:",
-    stub: "Not available in this build yet."
+    choose: "Live constitution:"
   },
 
   // Control labels and screen-reader text.
@@ -1076,7 +1180,7 @@ const CONTENT = {
     lightPane: "Vellum (light)",
     darkPane: "Night Sitting (dark)",
     clockNote: "Live clock, then 12:04, 25:00 and 30:00.",
-    glossaryNote: "The drawer is a shell; definitions arrive in a later phase.",
+    glossaryNote: "The drawer lists all twelve terms. Terms in the lesson text open it.",
     sections: {
       tokens: "Tokens",
       chrome: "Chrome",
@@ -1856,10 +1960,112 @@ const DESIGN = (function () {
       '</span><span class="clock__limit"> / ' + esc(CONTENT.chrome.sessionLimit) + "</span></div>";
   }
 
+  function slug(term) { return term.toLowerCase().replace(/[^a-z]+/g, "-"); }
+
+  // The drawer lists every term (spec §8). A term opened from the lesson text is marked by class, so focus is not disturbed.
   function glossaryDrawer() {
     return '<div class="drawer__head"><h2 id="glossary-title" tabindex="-1">' + esc(CONTENT.ui.glossaryTitle) + "</h2>" +
       '<button type="button" class="btn" data-action="glossary-close">' + esc(CONTENT.ui.glossaryClose) + "</button></div>" +
-      '<dl class="glossary"></dl>';
+      '<dl class="glossary">' + CONTENT.glossary.map(function (g) {
+        return '<dt id="gloss-' + slug(g.term) + '" data-term="' + esc(g.term) + '">' + esc(g.term) + '</dt><dd data-term="' + esc(g.term) + '">' +
+          esc(g.def) + "</dd>";
+      }).join("") + "</dl>";
+  }
+
+  // ---- Glossary links: the first use of each term on a screen opens its definition (spec §8) ----
+  var termPats = null;
+  function termPatterns() {
+    if (termPats) return termPats;
+    termPats = CONTENT.glossary.map(function (g) {
+      var alt = g.forms.slice().sort(function (a, b) { return b.length - a.length; })
+        .map(function (f) { return f.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); }).join("|");
+      // An exact term ("Act") is the capitalised word only, and not the start of a numbered act ("Act III").
+      return { term: g.term, re: new RegExp("\\b(?:" + alt + ")\\b" + (g.exact ? "(?! (?:I|II|III|IV)\\b)" : ""), g.exact ? "" : "i") };
+    });
+    return termPats;
+  }
+
+  // Inside a button (an option card) a link cannot be a second button, so it is a plain span; the click still reaches it.
+  function glossLink(term, shown, inside) {
+    var attrs = ' class="gloss" data-action="glossary-open" data-value="' + esc(term) + '"';
+    return inside ? "<span" + attrs + ">" + shown + "</span>"
+      : '<button type="button"' + attrs + ' data-focus="gloss-' + slug(term) + '">' + shown + "</button>";
+  }
+
+  function linkText(text, pats, seen, inside) {
+    var hits = [];
+    pats.forEach(function (p) {
+      if (seen[p.term]) return;
+      var m = p.re.exec(text);
+      if (m) hits.push({ term: p.term, at: m.index, len: m[0].length });
+    });
+    if (!hits.length) return text;
+    hits.sort(function (a, b) { return a.at - b.at; });
+    var out = "", pos = 0;
+    hits.forEach(function (x) {
+      if (x.at < pos) return; // overlaps an earlier link; the term stays unseen for the next piece of text
+      seen[x.term] = true;
+      out += text.slice(pos, x.at) + glossLink(x.term, text.substr(x.at, x.len), inside);
+      pos = x.at + x.len;
+    });
+    return out + text.slice(pos);
+  }
+
+  // Links the first use of each glossary term in the text of an HTML string. seen ({ term: true }) carries
+  // across the pieces of one screen. Drawings (svg), the DATA line (pre) and existing controls' markup are left alone.
+  function linkTerms(html, seen) {
+    seen = seen || {};
+    var pats = termPatterns(), parts = html.split(/(<[^>]*>)/), out = "", svg = 0, hold = 0, ctl = 0;
+    for (var i = 0; i < parts.length; i++) {
+      var part = parts[i];
+      if (i % 2) {
+        var m = /^<(\/?)([a-zA-Z][a-zA-Z0-9]*)/.exec(part);
+        if (m) {
+          var name = m[2].toLowerCase(), d = m[1] ? -1 : 1;
+          if (name === "svg") svg += d;
+          else if (name === "button" || name === "a") ctl += d;
+          else if (name === "pre" || name === "script" || name === "style" || name === "textarea") hold += d;
+        }
+        out += part;
+      } else out += svg > 0 || hold > 0 || !part ? part : linkText(part, pats, seen, ctl > 0);
+    }
+    return out;
+  }
+
+  // Spec §12 uses *italic* and **bold** (case names, lead-ins).
+  function inlineMd(s) {
+    return esc(s).replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>").replace(/\*(.+?)\*/g, "<em>$1</em>");
+  }
+
+  // Teacher notes (spec §12 verbatim, then §1.3). The same markup is read on screen and printed.
+  function teacherNotes() {
+    var T = CONTENT.teacher, X = CONTENT.teacherExtra;
+    function li(t) { return "<li>" + inlineMd(t) + "</li>"; }
+    return '<article class="notes"><div class="notes__bar noprint">' +
+      '<button type="button" class="btn" data-action="view-close" data-focus="view-close">' + esc(X.back) + "</button>" +
+      '<button type="button" class="btn btn--primary" data-action="print-notes" data-focus="print-notes">' + esc(X.print) + "</button></div>" +
+      "<h1>" + esc(CONTENT.setup.teacherNotes) + "</h1>" +
+      "<section><h2>" + esc(T.anchorsHeading) + "</h2><ul>" + T.anchors.map(li).join("") + "</ul></section>" +
+      "<section><h2>" + esc(T.simplificationsHeading) + "</h2><p>" + inlineMd(T.simplifications) + "</p></section>" +
+      "<section><h2>" + esc(T.qualificationsHeading) + "</h2><ol>" + T.qualifications.map(li).join("") + "</ol></section></article>";
+  }
+
+  // One voting card for the print sheet (spec §7.2): a solid black shape with the letter reversed out, so it
+  // reads in black and white and from the back of a room. Drawn in SVG so it prints without background graphics.
+  function printCard(letter) {
+    var ty = letter === "C" ? 77.5 : 66.25, fs = letter === "C" ? 35 : 42.5, name = CONTENT.printCards.shapes[letter];
+    return '<div class="pcard"><svg class="pcard__shape" viewBox="0 0 100 100" role="img" aria-label="' + esc(letter + " — " + name) + '">' +
+      '<g transform="scale(2.5)" fill="#000" stroke="#000" stroke-width="1" stroke-linejoin="miter">' + SHAPES[letter] + "</g>" +
+      '<text x="50" y="' + ty + '" text-anchor="middle" font-size="' + fs + '" font-weight="bold" fill="#fff" style="font-family:var(--serif)">' +
+      letter + "</text></svg>" +
+      '<p class="pcard__name">' + esc(letter + " — " + name) + "</p></div>";
+  }
+
+  // One A4 sheet, four cards in a 2 × 2 grid with shared dashed cut lines.
+  function printSheet() {
+    var P = CONTENT.printCards;
+    return '<section class="printsheet" id="print-cards" aria-hidden="true"><div class="printsheet__grid">' +
+      ["A", "B", "C", "D"].map(printCard).join("") + '</div><p class="printsheet__cut">' + esc(P.sheet + ". " + P.cut) + "</p></section>";
   }
 
   // The Gazette's engraved Parliament building (spec §9.3 item 7): portico, dome, wings, steps.
@@ -1962,7 +2168,8 @@ const DESIGN = (function () {
     shape: shape, optionCard: optionCard, statute: statute, hemicycle: hemicycle, clerkCard: clerkCard, padlock: padlock, charter: charter,
     tallyStrip: tallyStrip, lawBook: lawBook, caseFolder: caseFolder,
     envelope: envelope, ribbon: ribbon, rolePlate: rolePlate, formatClock: formatClock, clockLevel: clockLevel,
-    clock: clock, glossaryDrawer: glossaryDrawer
+    clock: clock, glossaryDrawer: glossaryDrawer, slug: slug, linkTerms: linkTerms, inlineMd: inlineMd,
+    teacherNotes: teacherNotes, printCard: printCard, printSheet: printSheet
   };
 })();
 /* DESIGN:END */
@@ -2219,6 +2426,92 @@ const MACHINE = (function () {
 })();
 /* MACHINE:END */
 
+/* PERSIST:START */
+// Saved session (spec §8 Persistence). DOM-free: the caller supplies the storage, which may be missing or throw.
+// Nothing here ever throws; with no usable storage the app simply runs without Resume.
+const PERSIST = (function () {
+  var KEY = "veritas:v2:session", VERSION = 1;
+
+  // keys: the fields every game state has (Object.keys(MACHINE.initial())), so a record from another build is refused.
+  function valid(rec, keys) {
+    if (!rec || rec.v !== VERSION || typeof rec.elapsed !== "number" || !isFinite(rec.elapsed) || rec.elapsed < 0) return false;
+    var g = rec.game;
+    if (!g || typeof g !== "object" || typeof CONTENT.screens[g.screen] !== "string" || g.screen === "setup") return false;
+    for (var i = 0; i < keys.length; i++) if (!g.hasOwnProperty(keys[i])) return false;
+    return (g.constitution === "A" || g.constitution === "B") && Array.isArray(g.history) && Array.isArray(g.skipped) &&
+      !!g.tallies && typeof g.tallies === "object" && !!g.byClerk && typeof g.byClerk === "object";
+  }
+
+  function create(getStorage, keys) {
+    function store() { try { return getStorage() || null; } catch (e) { return null; } }
+    return {
+      save: function (game, elapsed) {
+        try {
+          var s = store();
+          if (!s) return false;
+          s.setItem(KEY, JSON.stringify({ v: VERSION, game: game, elapsed: elapsed }));
+          return true;
+        } catch (e) { return false; }
+      },
+      load: function () {
+        try {
+          var s = store(), raw = s && s.getItem(KEY);
+          if (!raw) return null;
+          var rec = JSON.parse(raw);
+          return valid(rec, keys) ? rec : null;
+        } catch (e) { return null; }
+      },
+      clear: function () {
+        try { var s = store(); if (s) s.removeItem(KEY); return true; } catch (e) { return false; }
+      }
+    };
+  }
+
+  return { KEY: KEY, VERSION: VERSION, valid: valid, create: create };
+})();
+/* PERSIST:END */
+
+/* KEYS:START */
+// Keyboard map (spec §8): → / Space next · ← back · 1–4 select card · K skip act (confirm) · S script panel ·
+// G glossary · D light/dark · F fullscreen · R restart (confirm). Pure: a key and the screen's context give an action
+// (or null). The one action that is not state, { type: "fullscreen" }, is carried out by the caller.
+// ctx: { typing, gallery, screen (game screen), confirm ('skip'|'restart'|null), glossary, view, canSkip, values (card values) }
+const KEYS = (function () {
+  function resolve(key, ctx) {
+    if (key === "Escape") {
+      if (ctx.confirm) return { type: "confirm-no" };
+      if (ctx.glossary) return { type: "glossary-close" };
+      if (ctx.view) return { type: "view-close" };
+      return null;
+    }
+    if (ctx.typing) return null;
+    // One-step confirmation: Enter or Y confirms, N cancels; other keys wait.
+    if (ctx.confirm && !ctx.gallery) {
+      if (key === "Enter" || key === "y" || key === "Y") return { type: ctx.confirm === "skip" ? "skipAct" : "restart" };
+      if (key === "n" || key === "N") return { type: "confirm-no" };
+      return null;
+    }
+    if (key === "g" || key === "G") return { type: "glossary-toggle" };
+    if (key === "d" || key === "D") return { type: "theme-toggle" };
+    if (key === "f" || key === "F") return { type: "fullscreen" };
+    if (ctx.gallery || ctx.view) return null;
+    if (key === "s" || key === "S") return { type: "script-toggle" };
+    if (ctx.screen === "setup") return null;
+    if (key === "ArrowRight" || key === " ") return { type: "next" };
+    if (key === "ArrowLeft") return { type: "back" };
+    if (/^[1-4]$/.test(key)) {
+      var n = Number(key) - 1;
+      if (ctx.screen === "discussion") return { type: "select", value: n };
+      return ctx.values && ctx.values[n] != null ? { type: "select", value: ctx.values[n] } : null;
+    }
+    if ((key === "k" || key === "K") && ctx.canSkip) return { type: "confirm-ask", value: "skip" };
+    if (key === "r" || key === "R") return { type: "confirm-ask", value: "restart" };
+    return null;
+  }
+  return { resolve: resolve };
+})();
+/* KEYS:END */
+
 (function () {
   var D = DESIGN;
   var isGallery = false;
@@ -2226,7 +2519,10 @@ const MACHINE = (function () {
 
   var STAGE_ROLES = [["PARL", "PARL"], ["MIN", "MIN"], ["GLIMMER", "GLIMMER"], ["COURT", "COURT"], ["CITIZENS", null]];
   // UI-only actions do not enter the Back history.
-  var UI_ACTIONS = { "glossary-toggle": 1, "glossary-close": 1, "theme-toggle": 1, "confirm-ask": 1, "confirm-no": 1, stub: 1, "script-toggle": 1, "copy-note": 1 };
+  var UI_ACTIONS = {
+    "glossary-toggle": 1, "glossary-open": 1, "glossary-close": 1, "theme-toggle": 1, "confirm-ask": 1, "confirm-no": 1,
+    "script-toggle": 1, "copy-note": 1, "view-notes": 1, "view-close": 1, resume: 1, "resume-discard": 1
+  };
   var startedAt = Date.now();
   var urlSeed = null;
   try {
@@ -2234,11 +2530,15 @@ const MACHINE = (function () {
     if (qs != null && qs !== "" && !isNaN(Number(qs))) urlSeed = Number(qs);
   } catch (e) { urlSeed = null; }
 
+  // Saved session: every call is safe with storage missing, blocked or full.
+  var persist = PERSIST.create(function () { return window.localStorage; }, Object.keys(MACHINE.initial()));
+
   var state = {
     screen: isGallery ? "gallery" : "game",
     history: [],
-    ui: { glossary: false, theme: null, confirm: null, note: null, script: false },
+    ui: { glossary: false, term: null, theme: null, confirm: null, script: false, view: null },
     game: MACHINE.initial({ seed: urlSeed }),
+    saved: isGallery ? null : persist.load(),
     gallery: isGallery ? { stage: 0, selected: "C", tally: { A: 3, B: 5, C: 14, D: 2 }, envOpen: false, landN: 0 } : null
   };
 
@@ -2248,21 +2548,31 @@ const MACHINE = (function () {
   function reduce(s, a) {
     var ui = s.ui, g = s.gallery, t;
     switch (a.type) {
-      case "glossary-toggle": return assign(s, { ui: assign(ui, { glossary: !ui.glossary }) });
-      case "glossary-close": return ui.glossary ? assign(s, { ui: assign(ui, { glossary: false }) }) : s;
+      case "glossary-toggle": return assign(s, { ui: assign(ui, { glossary: !ui.glossary, term: null }) });
+      // A glossary link in the lesson text opens the drawer at its term.
+      case "glossary-open": return assign(s, { ui: assign(ui, { glossary: true, term: a.value || null }) });
+      case "glossary-close": return ui.glossary ? assign(s, { ui: assign(ui, { glossary: false, term: null }) }) : s;
       case "script-toggle": return assign(s, { ui: assign(ui, { script: !ui.script }) });
       case "theme-toggle": return assign(s, { ui: assign(ui, { theme: a.effective === "dark" ? "light" : "dark" }) });
       case "confirm-ask": return assign(s, { ui: assign(ui, { confirm: a.value }) });
       case "confirm-no": return ui.confirm ? assign(s, { ui: assign(ui, { confirm: null }) }) : s;
-      // Setup stubs for Print voting cards and Teacher notes (built in a later phase).
-      case "stub": return assign(s, { ui: assign(ui, { note: a.value }) });
+      // Teacher notes are read from Setup, before the session starts.
+      case "view-notes": return !g && s.game.screen === "setup" ? assign(s, { ui: assign(ui, { view: "notes" }) }) : s;
+      case "view-close": return ui.view ? assign(s, { ui: assign(ui, { view: null }) }) : s;
+      // Resume offer (Setup only): carry on from the saved session, with its clock.
+      case "resume":
+        if (g || !s.saved || s.game.screen !== "setup") return s;
+        startedAt = Date.now() - s.saved.elapsed * 1000;
+        return assign(s, { game: s.saved.game, saved: null, ui: assign(ui, { view: null, confirm: null }) });
+      case "resume-discard": return s.saved ? assign(s, { saved: null }) : s;
       // End screen: how the DATA line was copied ("copied" to the clipboard, or "selected" for Ctrl+C).
       case "copy-note": return assign(s, { ui: assign(ui, { copy: a.value }) });
     }
     if (!g) {
       var game = MACHINE.step(s.game, a);
       if (a.type === "start" && game !== s.game) startedAt = Date.now();
-      return game === s.game && !ui.confirm ? s : assign(s, { game: game, ui: assign(ui, { confirm: null, copy: null }) });
+      var fresh = a.type === "start" || a.type === "restart";
+      return game === s.game && !ui.confirm ? s : assign(s, { game: game, saved: fresh ? null : s.saved, ui: assign(ui, { confirm: null, copy: null }) });
     }
     switch (a.type) {
       case "g-stage": return assign(s, { gallery: assign(g, { stage: clamp(g.stage + a.delta, 0, 4) }) });
@@ -2277,12 +2587,21 @@ const MACHINE = (function () {
     return s;
   }
 
+  // Save after every change to the session. Setup is never saved (it would overwrite a session still on offer);
+  // a restart, or discarding the offer, clears the save.
+  function persistAfter(action, before) {
+    if (state.gallery) return;
+    if (action.type === "restart" || action.type === "resume-discard") persist.clear();
+    else if (state.game !== before.game && state.game.screen !== "setup") persist.save(state.game, elapsed());
+  }
+
   function dispatch(action) {
-    var next = reduce(state, action);
+    var before = state, next = reduce(state, action);
     if (next === state) return state;
     // The game keeps its own Back history (MACHINE.step); the gallery keeps this one.
     if (state.gallery && !UI_ACTIONS[action.type]) next = assign(next, { history: state.history.concat([state]) });
     state = next;
+    persistAfter(action, before);
     render();
     return state;
   }
@@ -2332,6 +2651,13 @@ const MACHINE = (function () {
       el.setAttribute("aria-labelledby", "glossary-title");
       el.innerHTML = D.glossaryDrawer();
       document.body.appendChild(el);
+    }
+    // A term opened from the lesson text is marked (heavier rule, not colour alone) and scrolled into view.
+    var term = state.ui.term, marks = el.querySelectorAll("[data-term]");
+    for (var i = 0; i < marks.length; i++) marks[i].classList.toggle("is-target", !!term && marks[i].getAttribute("data-term") === term);
+    if (state.ui.glossary && term) {
+      var target = el.querySelector("dt.is-target");
+      try { if (target) target.scrollIntoView({ block: "nearest" }); } catch (e) { /* scrolling is a nicety */ }
     }
     var open = state.ui.glossary, was = el.classList.contains("is-open");
     if (open === was) return;
@@ -2514,13 +2840,23 @@ const MACHINE = (function () {
     return h;
   }
 
+  // Offered on Setup when an earlier session was saved (spec §8).
+  function resumePanel(saved) {
+    var R = CONTENT.resume;
+    return '<section class="resume" aria-label="' + D.esc(R.heading) + '"><h2>' + D.esc(R.heading) + "</h2>" +
+      p(fill(R.text, { screen: CONTENT.screens[saved.game.screen], time: D.formatClock(saved.elapsed) })) +
+      '<div class="setup__actions">' + btn(R.resume, "resume", null, "btn--primary") + btn(R.discard, "resume-discard") + "</div></section>";
+  }
+
   function setupHtml(g) {
     var C = CONTENT, S = C.setupExtra, esc = D.esc;
     function choice(label, action, value, on) {
       return '<button type="button" class="choice" data-action="' + action + '" data-value="' + value + '" data-focus="' + action + "-" + value +
         '" aria-pressed="' + on + '"><span class="choice__box" aria-hidden="true"></span>' + esc(label) + "</button>";
     }
-    var h = '<div class="setup"><h1>' + esc(C.title) + '</h1><p class="setup__sub">' + esc(C.subtitle) + "</p><h2>" + esc(S.heading) + "</h2>";
+    var h = '<div class="setup"><h1>' + esc(C.title) + '</h1><p class="setup__sub">' + esc(C.subtitle) + "</p>";
+    if (state.saved) h += resumePanel(state.saved);
+    h += "<h2>" + esc(S.heading) + "</h2>";
     h += "<fieldset><legend>" + esc(C.setup.constitution) + '</legend><div class="setup__choices">' +
       ["random", "sealedChoose", "open"].map(function (m) { return choice(C.setup.modes[m], "set-mode", m, g.mode === m); }).join("") + "</div></fieldset>";
     if (g.mode !== "random") {
@@ -2531,8 +2867,8 @@ const MACHINE = (function () {
     h += '<label class="setup__label">' + esc(C.setup.classLabel) +
       '<input type="text" data-field="label" data-focus="label" autocomplete="off"></label>';
     h += '<div class="setup__actions">' + btn(C.setup.start, "start", null, "btn--primary") +
-      btn(C.setup.printCards, "stub", "print") + btn(C.setup.teacherNotes, "stub", "notes") + "</div>";
-    if (state.ui.note) h += p(S.stub, "setup__note");
+      btn(C.setup.printCards, "print-cards") + btn(C.setup.teacherNotes, "view-notes") + "</div>";
+    h += '<p class="setup__keys"><strong>' + esc(C.keys.label) + "</strong> " + esc(C.keys.line) + "</p>";
     return h + "</div>";
   }
 
@@ -2704,8 +3040,20 @@ const MACHINE = (function () {
     return h;
   }
 
+  // Teacher notes (spec §12): replaces the whole page; the same markup prints.
+  function renderNotes(app) {
+    if (app.__view === "notes") return;
+    app.__view = "notes";
+    app.__game = false;
+    app.className = "is-notes";
+    app.innerHTML = D.teacherNotes();
+    var first = app.querySelector("button");
+    if (first) first.focus();
+  }
+
   function renderGame(app) {
     var g = state.game;
+    app.__view = null;
     if (!app.__game) {
       app.__game = true;
       app.className = "is-game";
@@ -2739,14 +3087,18 @@ const MACHINE = (function () {
     main.classList.toggle("is-court", showBook && isCourt(g));
     main.classList.toggle("is-folder", g.screen === "case1" || g.screen === "case2");
     book.hidden = !showBook;
+    // Glossary links: the first use of each term on the screen, reading the Law Book (left) and then the stage.
+    // Setup is for the facilitator, so it carries none.
+    var seen = {};
+    function linked(html) { return setup ? html : D.linkTerms(html, seen); }
     D.idScope("b");
-    patch(book, showBook ? lawBookView(g, freshKeys(g)) : "");
+    patch(book, showBook ? linked(lawBookView(g, freshKeys(g))) : "");
     var stage = region("stage");
     D.idScope("s");
     stage.classList.toggle("stage--dense", place === "gap" || isCourt(g));
-    patch(stage, stageHtml(g));
+    patch(stage, linked(stageHtml(g)));
     var script = region("script");
-    script.hidden = setup || !state.ui.script;
+    script.hidden = !state.ui.script;
     patch(script, script.hidden ? "" : scriptHtml(g));
     D.idScope("");
     // The label's value stays out of the markup, so committing it (on blur) does not rebuild Setup
@@ -2830,7 +3182,10 @@ const MACHINE = (function () {
     if (state.ui.theme) root.setAttribute("data-theme", state.ui.theme); else root.removeAttribute("data-theme");
     renderGlossary();
     var app = document.getElementById("app");
-    if (state.screen === "gallery") renderGallery(app); else renderGame(app);
+    if (!document.getElementById("print-cards")) document.body.insertAdjacentHTML("beforeend", D.printSheet());
+    if (state.screen === "gallery") renderGallery(app);
+    else if (state.ui.view === "notes") renderNotes(app);
+    else renderGame(app);
     runEnters(app);
   }
 
@@ -2858,8 +3213,37 @@ const MACHINE = (function () {
     if (type === "theme-toggle") action.effective = effectiveTheme();
     if (type === "start") action.date = new Date().toISOString().slice(0, 10);
     if (type === "copy-data") { copyData(); return; }
+    if (type === "print-cards" || type === "print-notes") { printNow(type === "print-cards" ? "cards" : "notes"); return; }
     dispatch(action);
   });
+
+  // Printing: body[data-print] chooses what the print stylesheet shows (the voting-card sheet, or the page itself).
+  // Print is always light, whatever the theme; the attribute only matters in print, so it is cleared afterwards.
+  var themeHeld = false, themeBefore = null;
+  function printNow(kind) {
+    document.body.setAttribute("data-print", kind);
+    try { window.print(); } catch (e) { /* printing unavailable */ }
+  }
+  window.addEventListener("beforeprint", function () {
+    var root = document.documentElement;
+    if (!themeHeld) { themeHeld = true; themeBefore = root.getAttribute("data-theme"); }
+    root.setAttribute("data-theme", "light");
+  });
+  window.addEventListener("afterprint", function () {
+    var root = document.documentElement;
+    document.body.removeAttribute("data-print");
+    if (!themeHeld) return;
+    themeHeld = false;
+    if (themeBefore == null) root.removeAttribute("data-theme"); else root.setAttribute("data-theme", themeBefore);
+  });
+
+  function toggleFullscreen() {
+    function quiet(r) { if (r && r.catch) r.catch(function () { /* refused: nothing to do */ }); }
+    try {
+      if (document.fullscreenElement) quiet(document.exitFullscreen());
+      else quiet(document.documentElement.requestFullscreen());
+    } catch (e) { /* fullscreen unavailable */ }
+  }
 
   // Select the DATA line so the facilitator can press Ctrl+C. The note renders first, so the selection survives it.
   function selectData() {
@@ -2890,31 +3274,19 @@ const MACHINE = (function () {
 
   document.addEventListener("keydown", function (e) {
     if (e.ctrlKey || e.metaKey || e.altKey) return;
-    var tag = e.target && e.target.tagName;
-    var typing = tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT";
-    if (e.key === "Escape") { dispatch({ type: state.ui.confirm ? "confirm-no" : "glossary-close" }); return; }
-    if (typing) return;
-    // One-step confirmation: Enter or Y confirms, N cancels; other keys wait.
-    if (state.ui.confirm && !state.gallery) {
-      if (e.key === "Enter" || e.key === "y" || e.key === "Y") { e.preventDefault(); dispatch({ type: state.ui.confirm === "skip" ? "skipAct" : "restart" }); }
-      else if (e.key === "n" || e.key === "N") { e.preventDefault(); dispatch({ type: "confirm-no" }); }
-      return;
-    }
-    if (e.key === "g" || e.key === "G") { e.preventDefault(); dispatch({ type: "glossary-toggle" }); }
-    else if (e.key === "d" || e.key === "D") { e.preventDefault(); dispatch({ type: "theme-toggle", effective: effectiveTheme() }); }
-    if (state.gallery) return;
-    var g = state.game;
-    if (g.screen === "setup") return;
-    if (e.key === "ArrowRight" || e.key === " ") { e.preventDefault(); dispatch({ type: "next" }); }
-    else if (e.key === "ArrowLeft") { e.preventDefault(); dispatch({ type: "back" }); }
-    else if (e.key >= "1" && e.key <= "4") {
-      var o = MACHINE.options(g)[Number(e.key) - 1];
-      if (g.screen === "discussion") dispatch({ type: "select", value: e.key - 1 });
-      else if (o) dispatch({ type: "select", value: o.value });
-    }
-    else if (e.key === "s" || e.key === "S") { e.preventDefault(); dispatch({ type: "script-toggle" }); }
-    else if ((e.key === "k" || e.key === "K") && canSkip(g)) { e.preventDefault(); dispatch({ type: "confirm-ask", value: "skip" }); }
-    else if (e.key === "r" || e.key === "R") { e.preventDefault(); dispatch({ type: "confirm-ask", value: "restart" }); }
+    var tag = e.target && e.target.tagName, ui = state.ui, g = state.game, play = !state.gallery;
+    var action = KEYS.resolve(e.key, {
+      typing: tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT",
+      gallery: !!state.gallery, screen: play ? g.screen : null,
+      confirm: ui.confirm, glossary: ui.glossary, view: ui.view,
+      canSkip: play && canSkip(g),
+      values: play ? MACHINE.options(g).map(function (o) { return o.value; }) : []
+    });
+    if (!action) return;
+    e.preventDefault();
+    if (action.type === "fullscreen") { toggleFullscreen(); return; }
+    if (action.type === "theme-toggle") action.effective = effectiveTheme();
+    dispatch(action);
   });
 
   render();

@@ -48,3 +48,15 @@ export function loadMachine(path = INDEX) {
     filename: "index.html",
   });
 }
+
+// Loads any DOM-free APP sub-blocks (e.g. "MACHINE", "PERSIST", "KEYS") with CONTENT, MODEL and DESIGN.
+export function loadBlocks(names, path = INDEX) {
+  const { html, content, model } = loadSource(path);
+  const design = extractBlock(html, "DESIGN");
+  const machine = extractBlock(html, "MACHINE");
+  const parts = names.map((n) => extractBlock(html, n));
+  const context = vm.createContext({});
+  return vm.runInContext(
+    `${content}\n${model}\n${design}\n${machine}\n${parts.join("\n")}\n({ CONTENT, MODEL, DESIGN, MACHINE, ${names.join(", ")} });`,
+    context, { filename: "index.html" });
+}
