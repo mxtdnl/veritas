@@ -172,11 +172,10 @@ test("lawBook: statuses for each ruling, on the challenged section only", () => 
         assert.equal(p.author, "PARL");
         assert.equal(p.status, n === sec ? expect[ruling] : "ENACTED", `${bill} ${ruling} §${n}`);
       }
+      // REVIEW B1: Parliament's words always stay; a reinterpreted section carries the court's reading beside them.
       const ch = lb.find((x) => x.id === "act-" + sec);
-      if (ruling === "reinterpret") {
-        assert.equal(ch.text, CONTENT.cases[id].reinterpret);
-        assert.equal(ch.original, CONTENT.bills[bill].sections[sec - 1]);
-      } else assert.equal(ch.text, CONTENT.bills[bill].sections[sec - 1]);
+      assert.equal(ch.text, CONTENT.bills[bill].sections[sec - 1]);
+      assert.equal(ch.reading, ruling === "reinterpret" ? CONTENT.cases[id].reinterpret : undefined);
       for (const r of lb.filter((p) => p.author === "MIN")) assert.equal(r.status, "REGULATION_IN_FORCE");
       const prec = lb.find((p) => p.id === "prec-1");
       assert.equal(prec.author, "COURT");
@@ -313,7 +312,9 @@ test("autoDecide Act IV: rights-broken ruling per constitution, Read the purpose
           const id = MODEL.case1For(bill);
           const s = base({ constitution, bill, list, check: "k_face", move, moveResult: mr });
           const want = { case1: { id, ruling: constitution === "A" ? "declare" : "strike" } };
-          if (mr === "ARGUABLE") want.case2 = { ruling: "purposive" };
+          // REVIEW B2: under B the Clerk strikes down Kim's §1, which leaves Case 2 no rule to read.
+          const voids = constitution === "B" && id === "kim";
+          if (mr === "ARGUABLE" && !voids) want.case2 = { ruling: "purposive" };
           assert.deepEqual(plain(MODEL.autoDecide("IV", s)), want, `${constitution} ${bill} ${list} ${move}`);
           // Part-way: Case 1 already ruled by the class.
           const after1 = { ...s, case1: { id, ruling: "uphold" } };
@@ -500,7 +501,9 @@ test("machine: Act IV cannot be skipped until the constitution is unsealed", () 
   const s = run(u, "next", "skipAct");
   assert.equal(s.screen, "clerk");
   assert.deepEqual(plain(s.case1), { id: "kim", ruling: "strike" });
-  assert.equal(run(s, "next").screen, "gazette");
+  // REVIEW M7: the no-case card is not a vote, so it still follows the Clerk's Act IV card.
+  assert.equal(run(s, "next").screen, "nocase");
+  assert.equal(run(s, "next", "next").screen, "gazette");
 });
 
 test("machine: restart returns to setup and keeps the setup choices", () => {

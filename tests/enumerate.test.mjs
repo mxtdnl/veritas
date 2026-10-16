@@ -109,6 +109,18 @@ test("enumeration: every path satisfies spec §11 criteria 1–7 and 10", (t) =>
         }
         assert.equal(s.list !== null, s.bill === "b_trust", where);
 
+        // REVIEW B2: no path has Case 1 striking down §1 and then a Case 2 ruling; Glimmer then has no rule to break.
+        const void1 = MODEL.ruleVoid(s);
+        if (void1) {
+          assert.equal(s.case2, null, where);
+          if (s.moveResult !== "COMPLIED") assert.equal(MODEL.glimmerStatus(s), "NO_RULE", where);
+        }
+
+        // REVIEW B1: §1 or §2 is never replaced; Parliament's words stay, with any reading carried beside them.
+        for (const p of plain(MODEL.lawBook(s)).filter((x) => x.author === "PARL")) {
+          assert.equal(p.text, CONTENT.bills[s.bill].sections[Number(p.id.slice(4)) - 1], where);
+        }
+
         // 2. At least one live Minister regulation and at least one Court precedent.
         const book = plain(MODEL.lawBook(s));
         assert.ok(book.some((p) => p.author === "MIN" && p.status === "REGULATION_IN_FORCE"), where);
@@ -124,11 +136,13 @@ test("enumeration: every path satisfies spec §11 criteria 1–7 and 10", (t) =>
         if (s.move === "m_lite") assert.equal(s.moveResult, s.bill === "b_tough" ? "CAUGHT" : "LOOPHOLE", where);
         assert.equal(s.moveResult, MODEL.moveResult(s.bill, s.list, s.move), where);
 
-        // 5. Case 2 appears iff Act III was ARGUABLE (shown, or ruled by the Clerk when Act IV is skipped).
-        const arguable = s.moveResult === "ARGUABLE";
+        // 5. Case 2 appears iff Act III was ARGUABLE (shown, or ruled by the Clerk when Act IV is skipped) and §1 still
+        // stands (REVIEW B2). The no-case card follows a clear LOOPHOLE, or an ARGUABLE move once §1 is void, whether or
+        // not Act IV was skipped (REVIEW M7).
+        const arguable = s.moveResult === "ARGUABLE" && !void1;
         assert.equal(!!s.case2, arguable, where);
         assert.equal(screens.includes("case2"), arguable && !pattern.has("IV"), where);
-        assert.equal(screens.includes("nocase"), s.moveResult === "LOOPHOLE" && !pattern.has("IV"), where);
+        assert.equal(screens.includes("nocase"), s.moveResult === "LOOPHOLE" || (s.moveResult === "ARGUABLE" && void1), where);
 
         // 6. The three-countries panel shows a different available option set for A and for B.
         const panel = plain(MODEL.threeCountries(s));
