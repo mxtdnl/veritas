@@ -16,7 +16,7 @@ Veritas is imaginary. Real countries are described only as having *loosely inspi
 |---|---|
 | `index.html` | The whole app: one self-contained file. No build step, no network requests, no web fonts. |
 | `spec.md` | Design specification. |
-| `tests/` | Unit and enumeration tests (Node's built-in `node:test`, no dependencies). |
+| `tests/` | Unit and enumeration tests (Node's built-in `node:test`, no dependencies). `tests/rehearsal-count.mjs` is an opt-in timing count that needs Playwright; it is not part of `node --test`. |
 | `REHEARSAL.md` | Per-screen timing estimate and the screens that run over their slot. |
 
 ## Running it
@@ -54,7 +54,7 @@ Every full vote follows the same steps:
 
 The opening and closing votes (the hook question and the re-vote) skip partner talk. Enter counts for them: they are compared at the end. Do not reveal an answer at the start.
 
-There are at most 8 votes. The clock in the corner turns brass at 25:00 and oxblood at 30:00. If time is short, skip partner talk on Acts II and III, or press **K** to skip an act: the Clerk of Parliament decides for the class. Skipping Act IV is not recommended. The Opening, Monday Morning and the Close cannot be skipped.
+There are at most 8 votes. The clock in the corner turns brass at 25:00 and oxblood at 30:00. If time is short, skip partner talk on Acts II and III, or press **K** to skip an act: the Clerk decides for the class. Skipping Act IV is not recommended. The Opening, Monday Morning and the Close cannot be skipped.
 
 ### Keyboard
 

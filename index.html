@@ -206,12 +206,13 @@ button { font: inherit; color: inherit; }
 .lawbook::before, .lawbook::after { content: ""; position: absolute; inset: 0; border: 1px solid var(--rule); }
 .lawbook::before { z-index: -2; transform: translate(7px, 7px); background: var(--paper-2); }
 .lawbook::after { z-index: -1; background: var(--paper-3); }
-.lawbook__head { margin-left: 5rem; border-bottom: 3px double var(--ink); padding-bottom: 0.2rem; }
+.lawbook__head { margin-left: 5.4rem; border-bottom: 3px double var(--ink); padding-bottom: 0.2rem; }
 .lawbook__head h2 { margin: 0; }
 .lawbook__list { list-style: none; margin: 0; padding: 0; }
-.prov { display: grid; grid-template-columns: 4.2rem minmax(0, 1fr); gap: 0 0.8rem; align-items: stretch; }
+.prov { display: grid; grid-template-columns: 4.6rem minmax(0, 1fr); gap: 0 0.8rem; align-items: stretch; }
 .prov > * { padding: 0.55rem 0; }
-.prov__gutter { display: flex; justify-content: center; align-items: flex-start; border-right: 3px double var(--rule); }
+.prov__gutter { display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 0.1rem; border-right: 3px double var(--rule); }
+.prov__author { font-size: 0.62rem; line-height: 1; font-variant: small-caps; letter-spacing: 0; font-weight: bold; color: var(--ink); white-space: nowrap; }
 .prov__body { display: flow-root; border-bottom: 1px solid var(--rule); }
 .prov__stamps { float: right; display: flex; flex-direction: column; align-items: flex-end; gap: 0.3rem; margin: 0 0 0.15rem 0.7rem; }
 .prov__num { font-weight: bold; margin-right: 0.3em; }
@@ -228,7 +229,7 @@ button { font: inherit; color: inherit; }
 .folder__name { font-style: italic; font-variant: normal; letter-spacing: 0; font-size: 1.2rem; }
 .folder__facts { margin: 0 0 0.6rem; }
 .folder__args { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: 0.4rem 1.2rem; margin: 0; }
-.folder__args dt { font-variant: small-caps; letter-spacing: 0.08em; color: var(--ink-2); }
+.folder__args dt { font-variant: small-caps; letter-spacing: 0.08em; color: var(--ink); }
 .folder__args dd { margin: 0; }
 .held { display: flex; gap: 0.6em; align-items: baseline; margin: 1rem 0 0; }
 .held__label { font-variant: small-caps; letter-spacing: 0.08em; font-weight: bold; }
@@ -261,6 +262,7 @@ button { font: inherit; color: inherit; }
 .game__main { flex: 1 1 auto; min-height: 0; display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr); gap: 1.4rem; align-items: start; }
 .game__main > .stage, .game__main > [data-region="book"] { max-height: 100%; min-height: 0; overflow: hidden auto; box-sizing: border-box; padding: 0.2rem 0.7rem 0.5rem 0; }
 /* The bottom padding takes the corners of rotated stamps, so they never cause a scrollbar on their own. */
+.game__main:focus { outline: none; }
 .game__main.has-book { grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr); }
 .game__main.has-book > [data-region="book"] { order: -1; }
 .kicker { display: block; font-variant: small-caps; letter-spacing: 0.08em; color: var(--ink-2); }
@@ -329,6 +331,7 @@ button { font: inherit; color: inherit; }
 .statute__title { display: block; font-variant: small-caps; letter-spacing: 0.08em; font-size: 1.15rem; font-weight: bold; border-bottom: 3px double var(--rule); padding-bottom: 0.2em; margin-bottom: 0.3em; }
 .statute__sec { display: block; margin: 0 0 0.35em; }
 .statute__means { display: block; margin-top: 0.4em; padding-top: 0.3em; border-top: 1px solid var(--rule); font-style: italic; }
+.card__means { display: block; margin-top: 0.1em; font-style: italic; }
 .statute__label { font-style: normal; font-variant: small-caps; letter-spacing: 0.08em; font-weight: bold; }
 .enact { text-align: center; padding: 0.4rem 0 0; }
 .enact .hemi { display: block; width: min(100%, 22rem); margin: 0 auto; }
@@ -342,14 +345,16 @@ button { font: inherit; color: inherit; }
 .prov--new > .prov__body { animation: prov-in 420ms ease-out both; }
 @keyframes prov-in { from { opacity: 0; transform: translateX(-1.6rem); } to { opacity: 1; transform: none; } }
 .lawbook--compact { padding-top: 0.6rem; padding-bottom: 0.7rem; }
-.lawbook--compact .lawbook__head { margin-left: 3.8rem; display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 1rem; }
+.lawbook--compact .lawbook__head { margin-left: 4.4rem; display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 1rem; }
 .lawbook--compact .lawbook__head h2 { font-size: 1.25rem; }
-.lawbook--compact .prov { grid-template-columns: 3rem minmax(0, 1fr); line-height: 1.25; }
+.lawbook--compact .prov { grid-template-columns: 3.6rem minmax(0, 1fr); line-height: 1.25; }
 .lawbook--compact .prov > * { padding: 0.25rem 0; }
-.lawbook--compact .seal { width: 40px; height: 40px; }
+.lawbook--compact .seal { width: 30px; height: 30px; }
 .lawbook--compact .prov__stamps { gap: 0.15rem; }
 .game__main.has-book.is-court { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
 .game__main.has-book.is-court.is-folder { grid-template-columns: minmax(0, 0.76fr) minmax(0, 1.24fr); }
+/* Case 2's cards are short, so the Law Book (whose words the case turns on) gets more of the width. */
+.game__main.has-book.is-court.is-folder.is-case2 { grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr); }
 
 /* ---- Clerk result card (reusable) ---- */
 .clerk { position: relative; border: 3px double var(--ink-2); background: var(--paper-3); padding: 1rem 1.3rem 1.2rem; }
@@ -390,7 +395,7 @@ mark.caught {
 .charter__summary { margin: 0; font-size: 1.15rem; }
 .charter--reveal { animation: charter-in 400ms ease-out 1100ms both; }
 @keyframes charter-in { from { opacity: 0; transform: translateY(0.8rem); } to { opacity: 1; transform: none; } }
-.card--locked { cursor: not-allowed; background: var(--paper-2); border: 2px dashed var(--ink-2); color: var(--ink-2); }
+.card--locked { cursor: not-allowed; background: var(--paper-2); border: 2px dashed var(--ink-2); color: var(--ink); }
 .card__lock { display: flex; gap: 0.5em; align-items: flex-start; margin-top: 0.35em; color: var(--ink); font-style: italic; }
 .padlock { width: 1.3em; height: 1.55em; flex: none; }
 /* Acts III and IV carry the most on one screen: tighter rhythm and card padding. */
@@ -454,6 +459,14 @@ mark.caught {
 .authors__item { display: inline-flex; align-items: center; gap: 0.4em; }
 .authors__n { font-size: 1.5rem; font-weight: bold; font-variant-numeric: tabular-nums; min-width: 1ch; }
 .authors__sep { color: var(--ink-2); }
+
+@media (max-height: 800px) {
+  .gz__name { font-size: 1.55rem; }
+  .gz__headline { font-size: 1.4rem; }
+  .gz__top { padding: 0.15rem 0; gap: 0.1rem; }
+  .gz__fold { margin-bottom: 0.25rem; }
+  .gz__note { margin-top: 0.25rem; padding-top: 0.15rem; }
+}
 
 /* ---- Same choices, three countries ---- */
 .countries { width: 100%; border-collapse: separate; border-spacing: 0; table-layout: fixed; margin-top: 0.5rem; line-height: 1.3; }
@@ -674,7 +687,7 @@ const CONTENT = {
         "Apps that break this rule are fined.",
         "The Minister will decide how apps check users' ages."
       ],
-      means: "Precise and fair to apps — but only covers apps that are mainly about posting."
+      means: "Precise — but only covers apps that are mainly about posting."
     },
     b_tough: {
       title: "The Tough Bill",
@@ -700,15 +713,16 @@ const CONTENT = {
   },
 
   // Spec §4.2. header, question, text and consequence are verbatim; regulation is the Law Book line.
+  // A list's consequence is shown in italics on its card; a check's is shown in Monday Morning.
   minister: {
     header: "Parliament has passed the Act. Now the Minister makes the detailed rules — and those rules are law too.",
     listQuestion: "Which apps go on the list?",
     checkQuestion: "How must apps check users' ages?"
   },
   lists: {
-    l_feeds: { text: "Photo and video feed apps", consequence: "Messaging apps and games not covered" },
-    l_wide: { text: "Feed apps, messaging apps and games", consequence: "Most apps covered" },
-    l_all: { text: "Every app where users share things — including homework apps", consequence: "Everything covered; overreach noted in Monday Morning" }
+    l_feeds: { text: "Photo and video feed apps", consequence: "Messaging apps and games are not covered." },
+    l_wide: { text: "Feed apps, messaging apps and games", consequence: "Most apps are covered." },
+    l_all: { text: "Every app where users share things — including homework apps", consequence: "Everything is covered, including homework apps." }
   },
   checks: {
     k_tick: { text: "Users tick a box saying they are 16 or over", consequence: "The law exists on paper. Any 12-year-old can tick a box." },
@@ -805,6 +819,11 @@ const CONTENT = {
         label: "Read the words",
         m_chat: "Its main purpose is now messaging. Not covered.",
         m_quest: "Its main purpose is now gaming. Not covered.",
+        // Under b_trust the words are the Minister's list (l_feeds), not "main purpose".
+        b_trust: {
+          m_chat: "It is now a messaging app, not a photo feed app. Not covered.",
+          m_quest: "It is now a game, not a photo feed app. Not covered."
+        },
         result: "LOOPHOLE stays open."
       },
       purposive: {
@@ -859,7 +878,7 @@ const CONTENT = {
     purposive: "{app} is covered by the Act, because its real purpose is the same"
   },
   split: "Decided {n} to {m}",
-  dissent: "In real courts, judges who disagree can publish a dissent.",
+  dissent: "In many real courts, judges who disagree can publish a dissent.",
 
   // Spec §7.1 and §7.3, verbatim.
   vote: {
@@ -880,7 +899,7 @@ const CONTENT = {
     button: "Skip act — the Clerk decides",
     confirm: "Skip Act {act}? The Clerk will choose for the class.",
     warnIV: "Not recommended — this act carries the main lesson.",
-    script: "We're short of time, so the Clerk of Parliament has decided this one. In real life, if you don't take part, someone else decides for you.",
+    script: "We're short of time, so the Clerk has decided this one. In Veritas, the Clerk stands in when time is short. In real life, if you don't take part, someone else decides for you.",
     decided: "Decided by the Clerk",
     reasons: {
       I: "Leaves a gap for Act III and produces the Kim rights case",
@@ -914,7 +933,7 @@ const CONTENT = {
     VOID: "COURT CANCELS PARLIAMENT'S LAW",
     INCOMPATIBLE: "JUDGES: LAW BREAKS RIGHTS — BUT IT STAYS",
     LOOPHOLE: "GLIMMER SLIPS THROUGH THE NET",
-    REINTERPRETED: "JUDGES REWRITE THE RULES",
+    REINTERPRETED: "JUDGES NARROW THE LAW",
     CAUGHT: "GLIMMER CAUGHT OUT",
     DEFAULT: "NEW ONLINE LAW STARTS TODAY"
   },
@@ -924,7 +943,7 @@ const CONTENT = {
     COMPLIED: "Glimmer followed the law and closed its under-16 accounts.",
     CAUGHT: "Glimmer's move was caught by the words of the law.",
     LOOPHOLE: "The gap is still open. Glimmer is not covered by the law.",
-    CLOSED_BY_COURT: "The court closed the gap. Glimmer is covered by the law and fined.",
+    CLOSED_BY_COURT: "The court read the law by its purpose. Glimmer is covered by the law and fined.",
     NO_RULE: "§1 is void, so there is no rule for Glimmer to break."
   },
   gazetteExtra: {
@@ -1003,9 +1022,9 @@ const CONTENT = {
   // forms: the words that count as a use of the term (matched whole-word, case-insensitively);
   // exact: match only the capitalised forms given, and not a numbered act ("Act III" is part of the session, not a law).
   glossary: [
-    { term: "Act", authored: true, forms: ["Act", "Acts"], exact: true, def: "A law passed by Parliament. A Bill becomes an Act once Parliament votes for it." },
+    { term: "Act", authored: true, forms: ["Act", "Acts"], exact: true, def: "A law passed by Parliament. In Veritas, a Bill becomes an Act once Parliament votes for it." },
     { term: "Bill", authored: true, forms: ["bill", "bills"], def: "A proposed law. Parliament debates it and votes on it. If it passes, it becomes an Act." },
-    { term: "Parliament", authored: true, forms: ["parliament"], def: "The people we elect to make laws. They debate Bills and vote on them." },
+    { term: "Parliament", authored: true, forms: ["parliament"], def: "In Veritas, the people we elect to make laws. They debate Bills and vote on them." },
     { term: "Government", authored: true, forms: ["government", "governments"], def: "The ministers who run the country and put laws into action." },
     { term: "Minister", authored: true, forms: ["minister", "ministers"], def: "A member of the government in charge of one area, such as digital affairs." },
     { term: "Regulation", authored: true, forms: ["regulation", "regulations"], def: "A detailed rule made by a minister, using a power an Act gives them. It is law too." },
@@ -1083,15 +1102,15 @@ const CONTENT = {
     setup: { authored: true, timing: "Before class",
       say: "Choose how the constitution is set. Sealed and random is the default. Add a class label if you want one. Then press Start.",
       q: "Should the constitution be sealed?", a: "Usually yes. A sealed draw means nobody, not even you, knows how much power the judges have until Act IV." },
-    title: { authored: true, timing: "0:20",
+    title: { authored: true, timing: "0:40",
       say: "Welcome to the Republic of Veritas. For thirty minutes, this class runs a country. Our question: who makes the law? And should you care?",
       q: "Is Veritas a real country?", a: "No. Veritas is imaginary. Real countries are more complicated." },
     hook: { authored: true, timing: "1:30",
       say: "Quick vote, no talking. In a country like ours, who makes the law? Cards up on three. I won't tell you the answer yet.",
       q: "What's the right answer?", a: "Hold that thought. We'll vote again at the end and see if anything changed." },
-    branches: { authored: true, timing: "1:10",
+    branches: { authored: true, timing: "0:50",
       say: "Veritas has three branches. Parliament passes Acts. The government puts laws into action. The courts decide what the law means. Today, you will be all three. And a business.",
-      q: "Is the government the same as Parliament?", a: "No. Parliament is everyone we elect. The government is the ministers who run the country." },
+      q: "Is the government the same as Parliament?", a: "No. Parliament debates and passes laws. The government is the ministers who run the country and put laws into action." },
     bills: { authored: true, timing: "5:00",
       say: "You are now Members of Parliament. Teenagers are sleeping less and feeling worse. Read the three Bills. Talk to a partner for a minute, then vote.",
       q: "Why does every Bill have the same §3?", a: "§3 hands the detail to the Minister. That power comes from the Act. You'll use it next." },
@@ -1103,7 +1122,7 @@ const CONTENT = {
       q: "Why didn't Parliament just decide this itself?", a: "Parliament chose to give that power to the Minister in §3. The Minister can only act within that power." },
     gap: { authored: true, timing: "4:00",
       say: "You are now Glimmer's board. You want to keep your users. Read Parliament's exact words. Is there a gap? Choose your move.",
-      q: "Isn't finding a loophole cheating?", a: "Using a gap in the words is not breaking the law. Whether it's fair is a different question. We'll come back to it.",
+      q: "Isn't finding a loophole cheating?", a: "If the words really leave a gap, using it is not breaking the law. But a court may decide the words cover you. Whether it's fair is a different question.",
       // After "Follow the law": the gap still existed (LM4), so the class looks for it.
       askComplied: "Was there a gap you could have used? Look at §1's exact words." },
     unseal: { authored: true, timing: "1:00",
@@ -1125,7 +1144,7 @@ const CONTENT = {
       qVoid: "So Glimmer gets away with it?", aVoid: "For now, yes. Without §1 there is no rule. Parliament could pass a new rule that respects rights." },
     clerk: { timing: "0:20",
       // Spec §7.5 script line, verbatim.
-      say: "We're short of time, so the Clerk of Parliament has decided this one. In real life, if you don't take part, someone else decides for you.",
+      say: "We're short of time, so the Clerk has decided this one. In Veritas, the Clerk stands in when time is short. In real life, if you don't take part, someone else decides for you.",
       authored: true, q: "Who is the Clerk?", a: "In Veritas, the Clerk decides for the class when time is short." },
     gazette: { authored: true, timing: "1:30",
       say: "It's Monday morning. You are now citizens. Here is the law as it stands. Count the seals: Parliament, the Minister and the Court all wrote some of it.",
@@ -1197,6 +1216,8 @@ const CONTENT = {
     hintHook: "Enter the counts. Do not reveal an answer yet. Then press →.",
     hintVote: "Enter the counts, or click the winning card. Then press →.",
     hintTie: "Click one of the tied cards.",
+    // A click on a card the entered counts do not let win.
+    hintCounted: "The counts say {letters} won. To choose another card, change the counts.",
     tied: "Tied",
     // §7.3 prompt when the facilitator clicked a winner without entering counts.
     voiceNoCounts: "Hear from someone who voted for a different card."
@@ -1213,6 +1234,8 @@ const CONTENT = {
     ribbonLabel: "Procedure",
     clockLabel: "Elapsed session time",
     sealOf: "Seal:",
+    // The author's name under each Law Book seal, so authorship never rests on the seal's colour.
+    author: { PARL: "Parliament", MIN: "Minister", COURT: "Court", CLERK: "Clerk", GLIMMER: "Glimmer" },
     glossaryTitle: "Glossary",
     glossaryClose: "Close (Esc)",
     tallyLabel: "Vote tally",
@@ -1861,6 +1884,7 @@ const DESIGN = (function () {
       '<span class="statute__means"><span class="statute__label">' + esc(CONTENT.bills.meansLabel) + ":</span> " + esc(b.means) + "</span></span>";
   }
 
+
   // Parliament's hemicycle. filled: seats fill left to right (staggered), as the Bill passes.
   function hemicycle(filled) {
     var cx = 150, cy = 150, tiers = [58, 76, 94, 112, 130], seats = [], i, j;
@@ -1932,7 +1956,7 @@ const DESIGN = (function () {
       (title ? '<p class="lawbook__title">' + esc(title) + "</p>" : "") + "</header>" +
       '<ol class="lawbook__list">' + provisions.map(function (p, i) {
         return '<li class="prov' + (p.struck ? " prov--struck" : "") + (p.land ? " prov--new" : "") + (p.brief ? " prov--brief" : "") + '">' +
-          '<div class="prov__gutter">' + seal(p.author, 52) + "</div>" +
+          '<div class="prov__gutter">' + seal(p.author, 40) + '<span class="prov__author" aria-hidden="true" data-nolink>' + esc(CONTENT.ui.author[p.author]) + "</span></div>" +
           '<div class="prov__body">' +
           ((p.stamps || []).length ? '<span class="prov__stamps">' + p.stamps.map(function (k) {
             return stamp(k, { salt: "lb" + i, scale: scale, land: p.land, even: true });
@@ -2103,18 +2127,22 @@ const DESIGN = (function () {
   function linkTerms(html, seen) {
     seen = seen || {};
     var pats = termPatterns(), parts = html.split(/(<[^>]*>)/), out = "", svg = 0, hold = 0, ctl = 0;
+    // An element marked data-nolink (e.g. the Gazette headline) is left unlinked, with everything inside it.
+    var off = null, offDepth = 0;
     for (var i = 0; i < parts.length; i++) {
       var part = parts[i];
       if (i % 2) {
         var m = /^<(\/?)([a-zA-Z][a-zA-Z0-9]*)/.exec(part);
         if (m) {
           var name = m[2].toLowerCase(), d = m[1] ? -1 : 1;
+          if (off === name) { offDepth += d; if (!offDepth) off = null; }
+          else if (!off && d > 0 && /\sdata-nolink[\s=>]/.test(part)) { off = name; offDepth = 1; }
           if (name === "svg") svg += d;
           else if (name === "button" || name === "a") ctl += d;
           else if (name === "pre" || name === "script" || name === "style" || name === "textarea") hold += d;
         }
         out += part;
-      } else out += svg > 0 || hold > 0 || !part ? part : linkText(part, pats, seen, ctl > 0);
+      } else out += svg > 0 || hold > 0 || off || !part ? part : linkText(part, pats, seen, ctl > 0);
     }
     return out;
   }
@@ -2549,11 +2577,25 @@ const MACHINE = (function () {
     return others[0];
   }
 
+  // Case 2 option text: "Read the words" quotes the words of the Bill in force (spec §4.4).
+  function case2Text(s, value) {
+    var o = CONTENT.case2.options[value];
+    return (o[s.bill] || o)[s.move];
+  }
+
+  // A click on an unlocked card that the entered counts do not let win: the letters that do win; otherwise null.
+  function countedWinners(s, value) {
+    if (!isVote(s.screen) || s.tie) return null;
+    var opt = options(s).filter(function (o) { return o.value === value; })[0], st = standings(s);
+    if (!opt || opt.locked || !st.total || st.winners.indexOf(opt.letter) !== -1) return null;
+    return st.winners;
+  }
+
   return {
     LETTERS: LETTERS, ACT_OF: ACT_OF, VOTE_KEY: VOTE_KEY,
     initial: initial, step: step, reduce: reduce, options: options, decision: decision, counts: counts,
     standings: standings, nextScreen: nextScreen, isVote: isVote, hasTally: hasTally, classVotes: classVotes, minority: minority,
-    discussionChoices: discussionChoices, splitLine: splitLine
+    discussionChoices: discussionChoices, splitLine: splitLine, case2Text: case2Text, countedWinners: countedWinners
   };
 })();
 /* MACHINE:END */
@@ -2630,7 +2672,8 @@ const KEYS = (function () {
     if (key === "g" || key === "G") return { type: "glossary-toggle" };
     if (key === "d" || key === "D") return { type: "theme-toggle" };
     if (key === "f" || key === "F") return { type: "fullscreen" };
-    if (ctx.gallery || ctx.view) return null;
+    // While the glossary drawer is open, game keys do nothing; Escape or G closes it.
+    if (ctx.gallery || ctx.view || ctx.glossary) return null;
     if (key === "s" || key === "S") return { type: "script-toggle" };
     if (ctx.screen === "setup") return null;
     if (key === "ArrowRight" || key === " ") return { type: "next" };
@@ -2672,7 +2715,7 @@ const KEYS = (function () {
   var state = {
     screen: isGallery ? "gallery" : "game",
     history: [],
-    ui: { glossary: false, term: null, theme: null, confirm: null, script: false, view: null },
+    ui: { glossary: false, term: null, theme: null, confirm: null, script: false, view: null, counted: null },
     game: MACHINE.initial({ seed: urlSeed }),
     saved: isGallery ? null : persist.load(),
     gallery: isGallery ? { stage: 0, selected: "C", tally: { A: 3, B: 5, C: 14, D: 2 }, envOpen: false, landN: 0 } : null
@@ -2707,8 +2750,13 @@ const KEYS = (function () {
     if (!g) {
       var game = MACHINE.step(s.game, a);
       if (a.type === "start" && game !== s.game) startedAt = Date.now();
+      // A click the counts do not allow is ignored by the game; the footer says which card the counts chose.
+      if (a.type === "select" && game === s.game) {
+        var won = MACHINE.countedWinners(s.game, a.value);
+        if (won) return assign(s, { ui: assign(ui, { counted: won.join(", ") }) });
+      }
       var fresh = a.type === "start" || a.type === "restart";
-      return game === s.game && !ui.confirm ? s : assign(s, { game: game, saved: fresh ? null : s.saved, ui: assign(ui, { confirm: null, copy: null }) });
+      return game === s.game && !ui.confirm ? s : assign(s, { game: game, saved: fresh ? null : s.saved, ui: assign(ui, { confirm: null, copy: null, counted: null }) });
     }
     switch (a.type) {
       case "g-stage": return assign(s, { gallery: assign(g, { stage: clamp(g.stage + a.delta, 0, 4) }) });
@@ -2799,11 +2847,15 @@ const KEYS = (function () {
     if (open === was) return;
     el.classList.toggle("is-open", open);
     if (open) {
-      glossaryReturn = document.activeElement;
+      var from = document.activeElement;
+      glossaryReturn = from && from !== document.body ? from.getAttribute("data-focus") || from : null;
       el.querySelector("#glossary-title").focus();
-    } else if (glossaryReturn && glossaryReturn.focus) {
-      glossaryReturn.focus();
+    } else {
+      // Back to the control that opened the drawer (found again by data-focus if it was re-rendered), else the stage.
+      var back = typeof glossaryReturn === "string" ? document.querySelector('[data-focus="' + glossaryReturn + '"]') : glossaryReturn;
+      if (!back || !document.contains(back) || el.contains(back)) back = document.querySelector("main");
       glossaryReturn = null;
+      if (back) back.focus();
     }
   }
 
@@ -2859,7 +2911,7 @@ const KEYS = (function () {
       case "check": return C.checks[value].text;
       case "gap": return C.moves[value].text;
       case "case1": return C.rulings[value].label + " — " + C.rulings[value].gloss;
-      case "case2": return C.case2.options[value].label + ": " + C.case2.options[value][g.move];
+      case "case2": return C.case2.options[value].label + ": " + MACHINE.case2Text(g, value);
     }
     return value;
   }
@@ -2965,7 +3017,9 @@ const KEYS = (function () {
         locked: o.locked, lockText: o.lockReason,
         static: sc === "hook" || sc === "revote"
       };
-      if (sc === "bills") c.html = D.statute(CONTENT.bills[o.value]); else c.text = optionText(g, sc, o.value);
+      if (sc === "bills") c.html = D.statute(CONTENT.bills[o.value]);
+      else if (sc === "list") c.html = D.esc(CONTENT.lists[o.value].text) + '<span class="card__means">' + D.esc(CONTENT.lists[o.value].consequence) + "</span>";
+      else c.text = optionText(g, sc, o.value);
       return D.optionCard(c);
     }).join("") + "</div>";
   }
@@ -3103,7 +3157,7 @@ const KEYS = (function () {
     return '<article class="gz" aria-label="' + esc(C.gazette.masthead) + '">' +
       '<header class="gz__mast"><span class="gz__date">' + esc(C.acts.monday) + '</span><h1 class="gz__name">' + esc(C.gazette.masthead) +
       '</h1><span class="gz__date gz__date--r">' + esc(C.title) + "</span></header>" +
-      '<div class="gz__top"><h2 class="gz__headline">' + esc(C.headlines[MODEL.headline(g)]) + "</h2>" + D.authorshipRow(counts, 34) + "</div>" +
+      '<div class="gz__top"><h2 class="gz__headline" data-nolink>' + esc(C.headlines[MODEL.headline(g)]) + "</h2>" + D.authorshipRow(counts, 34) + "</div>" +
       '<figure class="gz__plate">' + D.parliamentBuilding() + "</figure>" +
       '<div class="gz__fold" aria-hidden="true"></div>' +
       lawBookView(g, [], true) +
@@ -3181,6 +3235,7 @@ const KEYS = (function () {
     if (sc === "revote") return CONTENT.closeExtra.hintRevote;
     if (sc === "discussion") return g.discussion == null ? fill(CONTENT.closeExtra.hintDiscussion, { n: MACHINE.discussionChoices(g).length }) : CONTENT.closeExtra.hintDiscussionPicked;
     if (sc === "unseal" && g.sealed && !g.opened) return CONTENT.actExtra.hintUnseal;
+    if (state.ui.counted && MACHINE.isVote(sc)) return fill(N.hintCounted, { letters: state.ui.counted });
     if (MACHINE.isVote(sc) && !MACHINE.decision(g)) return g.tie ? N.hintTie : N.hintVote;
     return "";
   }
@@ -3219,7 +3274,7 @@ const KEYS = (function () {
       app.__game = true;
       app.className = "is-game";
       app.innerHTML = '<div class="game"><header class="chrome" data-region="chrome"></header>' +
-        '<main class="game__main" data-region="main"><section class="stage" data-region="stage"></section><aside data-region="book"></aside></main>' +
+        '<main class="game__main" data-region="main" tabindex="-1"><section class="stage" data-region="stage"></section><aside data-region="book"></aside></main>' +
         '<div data-region="script"></div><footer class="foot" data-region="foot"></footer></div>';
     }
     function region(k) { return app.querySelector('[data-region="' + k + '"]'); }
@@ -3247,6 +3302,7 @@ const KEYS = (function () {
     main.classList.toggle("has-book", showBook);
     main.classList.toggle("is-court", showBook && isCourt(g));
     main.classList.toggle("is-folder", g.screen === "case1" || g.screen === "case2");
+    main.classList.toggle("is-case2", g.screen === "case2");
     book.hidden = !showBook;
     // Glossary links: the first use of each term on the screen, reading the Law Book (left) and then the stage.
     // Setup is for the facilitator, so it carries none.
@@ -3262,7 +3318,7 @@ const KEYS = (function () {
     }
     var stage = region("stage");
     D.idScope("s");
-    stage.classList.toggle("stage--dense", place === "gap" || isCourt(g));
+    stage.classList.toggle("stage--dense", place === "gap" || place === "list" || isCourt(g));
     patch(stage, linked(stageHtml(g)));
     var script = region("script");
     script.hidden = !state.ui.script;
@@ -3470,6 +3526,13 @@ const KEYS = (function () {
     if (action.type === "theme-toggle") action.effective = effectiveTheme();
     dispatch(action);
   });
+
+  // Save the clock as the page is hidden or closed, so Resume restores the time spent on the last screen too.
+  function saveClock() {
+    if (!state.gallery && state.game.screen !== "setup") persist.save(state.game, elapsed());
+  }
+  window.addEventListener("pagehide", saveClock);
+  document.addEventListener("visibilitychange", function () { if (document.visibilityState === "hidden") saveClock(); });
 
   render();
   window.setInterval(tickClocks, 1000);
