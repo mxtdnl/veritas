@@ -272,3 +272,60 @@ test("Phase 4 authored CONTENT groups are flagged; caught words are exact substr
     for (const w of Object.values(CONTENT.caught[l])) assert.ok(CONTENT.regulations.list[l].includes(w), `${l}: ${w}`);
   }
 });
+
+// ---- Phase 5: Monday Morning and Close ----
+const visibleText = (html) => html.replace(/<svg[\s\S]*?<\/svg>/g, " ").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+
+test("Gazette engraving: line-engraved SVG with hatch patterns, no gradients or shadows", () => {
+  const svg = DESIGN.parliamentBuilding();
+  assert.match(svg, /^<svg[^>]*class="engraving"/);
+  assert.ok(svg.includes('role="img"') && svg.includes(`aria-label="${CONTENT.seals.PARL}"`));
+  assert.ok(svg.includes("<pattern"));
+  for (const banned of ["Gradient", "feDropShadow", "box-shadow"]) assert.ok(!svg.includes(banned), banned);
+});
+
+test("authorship line: a row of the three authors' seals carrying the spec sentence and the counts", () => {
+  const html = DESIGN.authorshipRow({ PARL: 2, MIN: 1, COURT: 3 });
+  const seals = [...html.matchAll(/class="seal seal--(\w+)"/g)].map((m) => m[1]);
+  assert.deepEqual(seals, ["PARL", "MIN", "COURT"]);
+  const sentence = CONTENT.gazette.authorship.replace("{a}", 2).replace("{b}", 1).replace("{c}", 3).replace(/\.$/, "");
+  assert.equal(visibleText(html), sentence);
+});
+
+test("three-countries table: the live column is boxed in every row and marked ✱ once, in its header", () => {
+  const cols = [{ label: "A", live: false }, { label: "B", live: true }, { label: "C", live: false }];
+  const rows = [{ label: "r1", cells: ["a1", "b1", "c1"] }, { label: "r2", cells: ["a2", "b2", "c2"] }];
+  const html = DESIGN.countriesTable(cols, rows);
+  assert.equal((html.match(/class="is-live"/g) || []).length, 1 + rows.length);
+  assert.equal((html.match(/✱/g) || []).length, 1);
+  assert.match(html, /<th scope="col" class="is-live"><span class="countries__star">✱<\/span>B<\/th>/);
+  assert.match(html, /<td class="is-live">b2<\/td>/);
+  assert.ok(!/<td class="is-live">(a|c)\d/.test(html));
+});
+
+test("re-vote comparison: opening counts as read-only counters, closing counts as tally controls", () => {
+  const opts = CONTENT.hook.options;
+  const html = DESIGN.tallyCompare(opts, { A: 4, B: 0, C: 7, D: 1 }, { A: 1, C: 12 }, "tally", { before: "Before", after: "After" });
+  assert.deepEqual([...html.matchAll(/class="counter"[^>]*>(\d+)</g)].map((m) => m[1]), ["4", "0", "7", "1"]);
+  assert.deepEqual([...html.matchAll(/data-tally="(\w)"/g)].map((m) => m[1]), ["A", "B", "C", "D"]);
+  assert.match(html, /value="12" data-tally="C"/);
+  assert.match(html, /value="0" data-tally="B"/);
+  assert.equal((html.match(/data-action="tally"/g) || []).length, 8);
+  for (const o of opts) assert.ok(html.includes(o.text), o.text);
+  // No opening tally yet (null): every counter shows 0.
+  assert.deepEqual([...DESIGN.tallyCompare(opts, null, {}, "tally", { before: "B", after: "A" }).matchAll(/class="counter"[^>]*>(\d+)</g)].map((m) => m[1]), ["0", "0", "0", "0"]);
+});
+
+test("Law Book: stampScale overrides the compact stamp size (the Gazette's smaller stamps)", () => {
+  const p = [{ author: "PARL", num: "§1", text: "t", stamps: ["ENACTED"] }];
+  const h = (html) => Number(html.match(/height:([\d.]+)em/)[1]);
+  assert.ok(h(DESIGN.lawBook(p, null, { compact: true, stampScale: 0.44 })) < h(DESIGN.lawBook(p, null, { compact: true })));
+});
+
+test("Phase 5 authored CONTENT groups are flagged; the spec's close copy is verbatim", () => {
+  for (const k of ["gazetteExtra", "countriesExtra", "closeExtra", "glimmerStatus"]) assert.equal(CONTENT[k].authored, true, k);
+  assert.equal(CONTENT.close.discussion.length, 3);
+  assert.equal(CONTENT.close.revote, CONTENT.hook.question);
+  assert.equal(CONTENT.disclaimer, "Veritas is imaginary. Real countries are more complicated.");
+  assert.ok(CONTENT.countriesExtra.liveKey.startsWith("✱"));
+});

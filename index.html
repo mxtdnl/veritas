@@ -406,6 +406,73 @@ mark.caught {
 .clerk__note { display: block; font-size: 0.85em; font-variant: small-caps; letter-spacing: 0.08em; color: var(--ink-2); }
 .clerk__list dd .stamp { margin: 0.3rem 0 0 0.4rem; }
 
+/* ---- Monday Morning: the Veritas Gazette (broadsheet: main column + side column) ---- */
+.gz { display: grid; grid-template-columns: minmax(0, 1fr) 12rem; gap: 0 1.2rem; background: var(--paper-3); border: 1px solid var(--rule); padding: 0.2rem 1rem 0.3rem; }
+.gz__mast {
+  grid-column: 1 / -1; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 1rem;
+  border-top: 3px double var(--ink); border-bottom: 3px double var(--ink); padding: 0.1rem 0;
+}
+.gz__name { margin: 0; font-size: 1.9rem; line-height: 1.1; letter-spacing: 0.14em; font-weight: bold; text-align: center; }
+.gz__date { font-variant: small-caps; letter-spacing: 0.08em; color: var(--ink-2); }
+.gz__date--r { text-align: right; }
+.gz__top { display: flex; flex-direction: column; justify-content: center; gap: 0.25rem; padding: 0.35rem 0 0.3rem; min-width: 0; }
+.gz__headline { margin: 0; font-size: 1.65rem; line-height: 1.1; font-weight: bold; font-variant: normal; letter-spacing: 0.02em; }
+/* The engraving takes the height of the headline block beside it, so it never pushes the Law Book down. */
+.gz__plate { position: relative; margin: 0 0 0 -1.2rem; border-left: 1px solid var(--rule); }
+.gz__plate svg { position: absolute; inset: 0.3rem 0 0.3rem 1.2rem; width: calc(100% - 1.2rem); height: calc(100% - 0.6rem); }
+.gz__fold { grid-column: 1 / -1; border-top: 1px dashed var(--rule); margin: 0 0 0.45rem; }
+.gz .lawbook { margin-bottom: 0; padding-top: 0.2rem; padding-bottom: 0.35rem; }
+.gz .lawbook--compact .lawbook__head { display: flex; align-items: baseline; gap: 1rem; }
+.gz .lawbook--compact .lawbook__head h2 { line-height: 1.15; }
+.gz .lawbook--compact .prov { line-height: 1.22; }
+.gz .lawbook--compact .prov > * { padding: 0.14rem 0; }
+.gz .prov__stamps { gap: 0.15rem; }
+.gz .prov__note { margin-top: 0.05rem; }
+/* Glimmer: a marginal note beside the Law Book, not a line in it (a business is not a law-maker). */
+.gz__note { border-left: 1px solid var(--rule); padding-left: 1.2rem; margin-left: -1.2rem; align-self: start; }
+.gz__note-head { display: flex; align-items: center; gap: 0.5rem; margin: 0 0 0.3rem; }
+.gz__note h3 { margin: 0; font-size: 1rem; line-height: 1.2; color: var(--biz); font-variant: normal; letter-spacing: 0; font-weight: bold; }
+.gz__note p { margin: 0.4rem 0 0; font-style: italic; }
+/* Authorship line, as a row of seals. */
+.authors { display: flex; flex-wrap: wrap; align-items: center; gap: 0.3rem 0.9rem; margin: 0; }
+.authors__lead { font-style: italic; }
+.authors__item { display: inline-flex; align-items: center; gap: 0.4em; }
+.authors__n { font-size: 1.5rem; font-weight: bold; font-variant-numeric: tabular-nums; min-width: 1ch; }
+.authors__sep { color: var(--ink-2); }
+
+/* ---- Same choices, three countries ---- */
+.countries { width: 100%; border-collapse: separate; border-spacing: 0; table-layout: fixed; margin-top: 1.3rem; }
+.countries th, .countries td { text-align: left; vertical-align: top; padding: 0.45rem 0.8rem; border-bottom: 1px solid var(--rule); }
+.countries thead th { font-variant: small-caps; letter-spacing: 0.06em; border-bottom: 3px double var(--ink); position: relative; }
+.countries tbody th { font-weight: normal; font-style: italic; color: var(--ink-2); width: 24%; }
+.countries .is-live { border-left: 3px solid var(--ink); border-right: 3px solid var(--ink); background: var(--paper-3); }
+.countries thead .is-live { border-top: 3px solid var(--ink); }
+.countries tbody tr:last-child .is-live { border-bottom: 3px solid var(--ink); }
+.countries__star { position: absolute; left: -0.95em; top: 0.15em; font-size: 1.4em; line-height: 1; font-variant: normal; }
+.countries__key, .disclaimer { margin: 0.6rem 0 0; }
+.disclaimer { font-style: italic; border-top: 3px double var(--rule); padding-top: 0.5rem; }
+
+/* ---- Close: re-vote (before and after), discussion, end ---- */
+.compare { border-collapse: separate; border-spacing: 0; margin-top: 0.8rem; width: 100%; table-layout: fixed; }
+.compare th, .compare td { padding: 0.4rem 0.6rem; text-align: center; vertical-align: middle; border-bottom: 1px solid var(--rule); }
+.compare thead th { font-weight: normal; vertical-align: top; border-bottom: 3px double var(--ink); }
+.compare thead th > span { display: block; margin-top: 0.2rem; }
+.compare tbody th { text-align: left; font-variant: small-caps; letter-spacing: 0.08em; width: 10%; }
+.compare__cell { display: inline-flex; align-items: center; gap: 0.3em; }
+.counter {
+  display: inline-block; width: 2.6em; box-sizing: border-box; text-align: center; font-variant-numeric: tabular-nums;
+  border: 1px solid var(--ink-2); background: var(--paper-2); padding: 0.1em;
+}
+.discussion { min-height: 62vh; display: flex; align-items: center; }
+.discussion__q { margin: 0; font-size: 2.5rem; line-height: 1.25; max-width: 58rem; }
+.endpage { max-width: 60rem; margin: 4vh auto 0; }
+.endpage h1 { margin: 0; font-size: 2.8rem; }
+.data { margin-top: 1.4rem; border-top: 3px double var(--rule); padding-top: 0.6rem; }
+.data__label { font-size: 1rem; margin: 0 0 0.3rem; color: var(--ink-2); }
+.data__line { margin: 0; font-size: 0.75rem; line-height: 1.5; white-space: pre-wrap; word-break: break-all; border: 1px solid var(--rule); background: var(--paper-3); padding: 0.5rem 0.7rem; user-select: all; }
+.data__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.8rem; margin-top: 0.7rem; }
+.data__note { margin: 0; color: var(--ink-2); font-style: italic; }
+
 /* ---- Script panel (S) ---- */
 /* An overlay above the footer, so opening it never moves the screen's content. */
 [data-region="script"] { display: contents; }
@@ -418,7 +485,8 @@ mark.caught {
 .script dd { margin: 0; }
 
 @media (max-width: 900px) {
-  .game__main.has-book, .cards--bills, .branches { grid-template-columns: minmax(0, 1fr); }
+  .game__main.has-book, .cards--bills, .branches, .gz { grid-template-columns: minmax(0, 1fr); }
+  .gz__plate, .gz__note { border-left: 0; padding-left: 0; margin-left: 0; }
 }
 @media (prefers-reduced-motion: reduce) {
   .hemi--fill .hemi__seat { animation: none; fill: currentColor; }
@@ -773,6 +841,11 @@ const CONTENT = {
     LOOPHOLE: "The gap is still open. Glimmer is not covered by the law.",
     CLOSED_BY_COURT: "The court closed the gap. Glimmer is covered by the law and fined."
   },
+  gazetteExtra: {
+    authored: true,
+    // Monday Morning note on the l_all list line (spec §4.2: "overreach noted in Monday Morning").
+    overreach: "Overreach: under-16s cannot have accounts on homework apps either."
+  },
 
   // Spec §4.5 table, verbatim.
   countries: {
@@ -800,7 +873,8 @@ const CONTENT = {
   },
   countriesExtra: {
     authored: true,
-    case2Row: "What the class's Case 2 choice becomes"
+    case2Row: "What the class's Case 2 choice becomes",
+    liveKey: "✱ The constitution Veritas has today."
   },
   disclaimer: "Veritas is imaginary. Real countries are more complicated.",
 
@@ -820,7 +894,14 @@ const CONTENT = {
     after: "After",
     restartConfirm: "Restart the session? This clears every vote.",
     restartYes: "Yes, restart",
-    dataLabel: "DATA line"
+    dataLabel: "DATA line",
+    copy: "Copy",
+    copied: "Copied.",
+    selected: "Selected. Press Ctrl+C (or ⌘C) to copy.",
+    hintRevote: "Enter the counts. Compare the two rows. Then press →.",
+    discussionHeading: "One question to discuss",
+    hintDiscussion: "Click a question, or press 1–3.",
+    hintDiscussionPicked: "Press ← to choose another question."
   },
 
   // Spec §8 glossary terms; definitions are authored (each ≤ 20 words).
@@ -1653,9 +1734,9 @@ const DESIGN = (function () {
   // provisions: [{ author, num, text, stamps: [key], struck, land, mark, note }]; title: optional subheading (the Act's title).
   // land: the provision has just entered the Law Book (or changed); it slides in and its stamps land.
   // mark: exact words in text to highlight; note: a line beneath the text.
-  // opts: { compact } — tighter rows, for Act IV, when the Law Book is at its longest.
+  // opts: { compact, stampScale } — tighter rows (and smaller stamps), for when the Law Book is at its longest.
   function lawBook(provisions, title, opts) {
-    var compact = opts && opts.compact;
+    var compact = opts && opts.compact, scale = (opts && opts.stampScale) || (compact ? 0.52 : 0.62);
     return '<article class="lawbook' + (compact ? " lawbook--compact" : "") + '" aria-label="' + esc(CONTENT.chrome.lawBook) + '">' +
       '<header class="lawbook__head"><h2>' + esc(CONTENT.chrome.lawBook) + "</h2>" +
       (title ? '<p class="lawbook__title">' + esc(title) + "</p>" : "") + "</header>" +
@@ -1666,7 +1747,7 @@ const DESIGN = (function () {
           '<span class="prov__text">' + marked(p.text, p.mark) + "</span>" +
           (p.note ? '<span class="prov__note">' + esc(p.note) + "</span>" : "") + "</div>" +
           '<div class="prov__stamps">' + (p.stamps || []).map(function (k) {
-            return stamp(k, { salt: "lb" + i, scale: compact ? 0.52 : 0.62, land: p.land });
+            return stamp(k, { salt: "lb" + i, scale: scale, land: p.land });
           }).join("") + "</div></li>";
       }).join("") + "</ol></article>";
   }
@@ -1781,7 +1862,102 @@ const DESIGN = (function () {
       '<dl class="glossary"></dl>';
   }
 
+  // The Gazette's engraved Parliament building (spec §9.3 item 7): portico, dome, wings, steps.
+  // Line engraving with hatched shading only; currentColor is the ink.
+  function parliamentBuilding() {
+    var id = uid("pb"), H = id + "h", X = id + "x", s = "", i, x;
+    s += "<defs>" +
+      '<pattern id="' + H + '" width="3" height="3" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">' +
+      '<path d="M0 0V3" stroke="currentColor" stroke-width="0.6"/></pattern>' +
+      '<pattern id="' + X + '" width="3" height="3" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">' +
+      '<path d="M0 0V3M0 0H3" stroke="currentColor" stroke-width="0.55"/></pattern></defs>';
+    s += '<g fill="none" stroke="currentColor" stroke-width="1" stroke-linejoin="miter">';
+    // Dome: lantern, half-ellipse shell (shaded on the right), ribs, drum with pilasters.
+    s += '<rect x="176" y="6" width="8" height="9" fill="var(--paper-3)"/><path d="M180 1V6M173 6H187"/>';
+    s += '<path d="M146 38A34 23 0 0 1 214 38Z" fill="var(--paper-3)"/><path d="M180 38V15A34 23 0 0 1 214 38Z" fill="url(#' + H + ')"/>';
+    [-0.62, -0.28, 0.28, 0.62].forEach(function (k) { s += '<path stroke-width="0.6" d="M180 15Q' + n1(180 + 40 * k) + " 18 " + n1(180 + 34 * k) + ' 38"/>'; });
+    s += '<rect x="150" y="38" width="60" height="18" fill="var(--paper-3)"/><path d="M146 38H214"/>';
+    for (x = 156; x <= 204; x += 8) s += '<path stroke-width="0.7" d="M' + x + " 40V56" + '"/>';
+    s += '<rect x="196" y="40" width="14" height="16" fill="url(#' + H + ')" stroke="none"/>';
+    // Wings: cornice, balustrade, two rows of glazed openings (cross-hatched), rusticated base.
+    [[18, 124], [236, 342]].forEach(function (w) {
+      s += '<rect x="' + w[0] + '" y="74" width="' + (w[1] - w[0]) + '" height="76" fill="var(--paper-3)"/>';
+      s += '<path stroke-width="1.6" d="M' + (w[0] - 3) + " 74H" + (w[1] + 3) + '"/><path d="M' + w[0] + " 68H" + w[1] + '"/>';
+      for (x = w[0] + 3; x < w[1]; x += 5) s += '<path stroke-width="0.5" d="M' + x + " 68V74" + '"/>';
+      for (i = 0; i < 5; i++) {
+        x = w[0] + 9 + i * 20;
+        s += '<rect x="' + x + '" y="84" width="9" height="16" fill="url(#' + X + ')"/><path stroke-width="0.7" d="M' + (x - 2) + " 82H" + (x + 11) + '"/>';
+        s += '<rect x="' + x + '" y="112" width="9" height="20" fill="url(#' + X + ')"/>';
+      }
+      for (var y = 138; y < 150; y += 4) s += '<path stroke-width="0.5" d="M' + w[0] + " " + y + "H" + w[1] + '"/>';
+    });
+    // Central block: shadowed back wall behind the portico, six columns, entablature, pediment.
+    s += '<rect x="124" y="64" width="112" height="86" fill="var(--paper-3)"/>';
+    s += '<rect x="128" y="86" width="104" height="58" fill="url(#' + H + ')" stroke="none"/>';
+    for (i = 0; i < 6; i++) {
+      x = 131 + i * 19;
+      s += '<rect x="' + x + '" y="88" width="9" height="56" fill="var(--paper-3)"/><path stroke-width="0.6" d="M' + (x + 3) + " 89V143M" + (x + 6) + ' 89V143"/>';
+      s += '<rect x="' + (x - 1.5) + '" y="86" width="12" height="3" fill="var(--paper-3)"/><rect x="' + (x - 1.5) + '" y="143" width="12" height="3" fill="var(--paper-3)"/>';
+    }
+    s += '<rect x="122" y="76" width="116" height="10" fill="var(--paper-3)"/><path stroke-width="0.6" d="M122 80H238"/>';
+    s += '<path d="M118 76L180 50L242 76Z" fill="var(--paper-3)" stroke-width="1.6"/><path d="M130 72L180 55.5L230 72Z" fill="url(#' + H + ')"/>';
+    s += '<circle cx="180" cy="66" r="4" fill="var(--paper-3)"/>';
+    // Steps and ground.
+    s += '<path d="M118 150H242V154H112V150M112 154H248V158H106V154M106 158H254V162H100Z" fill="var(--paper-3)"/>';
+    s += '<path stroke-width="1.6" d="M4 162H356"/><path stroke-width="0.6" d="M14 166H346M40 169H320"/>';
+    s += "</g>";
+    return '<svg class="engraving" viewBox="0 0 360 172" role="img" aria-label="' + esc(CONTENT.seals.PARL) + '" style="color:var(--ink)">' + s + "</svg>";
+  }
+
+  // The authorship line (spec §4.5) as a row of seals. Copy comes from CONTENT.gazette.authorship;
+  // counts: { PARL, MIN, COURT } from MODEL.authorship.
+  function authorshipRow(counts, size) {
+    var tpl = CONTENT.gazette.authorship, at = tpl.indexOf(": ");
+    var parts = tpl.slice(at + 2).replace(/\.$/, "").split(" · ");
+    var keys = { a: "PARL", b: "MIN", c: "COURT" };
+    return '<p class="authors"><span class="authors__lead">' + esc(tpl.slice(0, at + 1)) + "</span>" + parts.map(function (part, i) {
+      var m = part.match(/^(.*)\{(\w)\}$/), author = keys[m[2]];
+      return (i ? '<span class="authors__sep" aria-hidden="true">·</span>' : "") +
+        '<span class="authors__item">' + seal(author, size || 56) + "<span>" + esc(m[1].trim()) + "</span>" +
+        '<span class="authors__n">' + counts[author] + "</span></span>";
+    }).join("") + "</p>";
+  }
+
+  // "Same choices, three countries" (spec §4.5). cols: [{ label, live }]; rows: [{ label, cells: [text] }].
+  // The live column is boxed by a heavy rule and marked ✱ in the margin, so it never depends on colour.
+  function countriesTable(cols, rows) {
+    function cls(c) { return c.live ? ' class="is-live"' : ""; }
+    return '<table class="countries"><thead><tr><td></td>' + cols.map(function (c) {
+      return '<th scope="col"' + cls(c) + ">" + (c.live ? '<span class="countries__star">✱</span>' : "") + esc(c.label) + "</th>";
+    }).join("") + "</tr></thead><tbody>" + rows.map(function (r) {
+      return '<tr><th scope="row">' + esc(r.label) + "</th>" + r.cells.map(function (t, i) {
+        return "<td" + cls(cols[i]) + ">" + esc(t) + "</td>";
+      }).join("") + "</tr>";
+    }).join("") + "</tbody></table>";
+  }
+
+  // Opening and closing tallies side by side, as two rows of counters (spec §4.6).
+  // options: [{ letter, text }]; the closing row is editable with the same controls as tallyStrip.
+  function tallyCompare(options, before, after, action, labels) {
+    var ui = CONTENT.ui;
+    return '<table class="compare"><thead><tr><td></td>' + options.map(function (o) {
+      return '<th scope="col">' + shape(o.letter) + "<span>" + esc(o.text) + "</span></th>";
+    }).join("") + '</tr></thead><tbody><tr><th scope="row">' + esc(labels.before) + "</th>" + options.map(function (o) {
+      return '<td><span class="counter" aria-label="' + esc(labels.before + " " + o.letter) + '">' + ((before || {})[o.letter] || 0) + "</span></td>";
+    }).join("") + '</tr><tr><th scope="row">' + esc(labels.after) + "</th>" + options.map(function (o) {
+      var L = esc(o.letter);
+      return '<td><span class="compare__cell">' +
+        '<button type="button" class="tally__btn" data-action="' + action + '" data-option="' + L + '" data-delta="-1" data-focus="tally-' + L +
+        '-dec" aria-label="' + esc(ui.tallyFewer + " " + o.letter) + '">−</button>' +
+        '<input class="tally__box" type="number" min="0" inputmode="numeric" value="' + (after[o.letter] || 0) + '" data-tally="' + L +
+        '" data-focus="tally-' + L + '" aria-label="' + esc(ui.tallyBox + " " + o.letter) + '">' +
+        '<button type="button" class="tally__btn" data-action="' + action + '" data-option="' + L + '" data-delta="1" data-focus="tally-' + L +
+        '-inc" aria-label="' + esc(ui.tallyMore + " " + o.letter) + '">+</button></span></td>';
+    }).join("") + "</tr></tbody></table>";
+  }
+
   return {
+    parliamentBuilding: parliamentBuilding, authorshipRow: authorshipRow, countriesTable: countriesTable, tallyCompare: tallyCompare,
     SEALS: SEALS, esc: esc, idScope: idScope, hypotrochoid: hypotrochoid, seal: seal, stamp: stamp, stampAngle: stampAngle, tick: tick,
     shape: shape, optionCard: optionCard, statute: statute, hemicycle: hemicycle, clerkCard: clerkCard, padlock: padlock, charter: charter,
     tallyStrip: tallyStrip, lawBook: lawBook, caseFolder: caseFolder,
@@ -2050,7 +2226,7 @@ const MACHINE = (function () {
 
   var STAGE_ROLES = [["PARL", "PARL"], ["MIN", "MIN"], ["GLIMMER", "GLIMMER"], ["COURT", "COURT"], ["CITIZENS", null]];
   // UI-only actions do not enter the Back history.
-  var UI_ACTIONS = { "glossary-toggle": 1, "glossary-close": 1, "theme-toggle": 1, "confirm-ask": 1, "confirm-no": 1, stub: 1, "script-toggle": 1 };
+  var UI_ACTIONS = { "glossary-toggle": 1, "glossary-close": 1, "theme-toggle": 1, "confirm-ask": 1, "confirm-no": 1, stub: 1, "script-toggle": 1, "copy-note": 1 };
   var startedAt = Date.now();
   var urlSeed = null;
   try {
@@ -2080,11 +2256,13 @@ const MACHINE = (function () {
       case "confirm-no": return ui.confirm ? assign(s, { ui: assign(ui, { confirm: null }) }) : s;
       // Setup stubs for Print voting cards and Teacher notes (built in a later phase).
       case "stub": return assign(s, { ui: assign(ui, { note: a.value }) });
+      // End screen: how the DATA line was copied ("copied" to the clipboard, or "selected" for Ctrl+C).
+      case "copy-note": return assign(s, { ui: assign(ui, { copy: a.value }) });
     }
     if (!g) {
       var game = MACHINE.step(s.game, a);
       if (a.type === "start" && game !== s.game) startedAt = Date.now();
-      return game === s.game && !ui.confirm ? s : assign(s, { game: game, ui: assign(ui, { confirm: null }) });
+      return game === s.game && !ui.confirm ? s : assign(s, { game: game, ui: assign(ui, { confirm: null, copy: null }) });
     }
     switch (a.type) {
       case "g-stage": return assign(s, { gallery: assign(g, { stage: clamp(g.stage + a.delta, 0, 4) }) });
@@ -2188,6 +2366,7 @@ const MACHINE = (function () {
     return [];
   }
 
+  var CLOSE_SCREENS = { gazette: 1, countries: 1, revote: 1, discussion: 1, end: 1 };
   function placeOf(g) { return g.screen === "clerk" ? ACT_SCREEN[g.clerkCard.act] : g.screen; }
 
   function p(text, cls) { return "<p" + (cls ? ' class="' + cls + '"' : "") + ">" + D.esc(text) + "</p>"; }
@@ -2254,7 +2433,16 @@ const MACHINE = (function () {
     return MACHINE.decision(g) ? [MACHINE.VOTE_KEY[g.screen]] : [];
   }
 
-  function lawBookView(g, keys) {
+  // Spec §4.2: the age-check consequence, and the l_all overreach, are shown in Monday Morning.
+  function mondayNote(g, id) {
+    var C = CONTENT;
+    if (id === "reg-check") return C.checks[g.check].consequence + (C.checks[g.check].note ? " " + C.checks[g.check].note : "");
+    if (id === "reg-list" && g.list === "l_all") return C.gazetteExtra.overreach;
+    return null;
+  }
+
+  // gazette: the Law Book as it stands on Monday Morning (compact, with the consequence notes).
+  function lawBookView(g, keys, gazette) {
     var land = {};
     (keys || []).forEach(function (k) { decisionLines(g, k).forEach(function (id) { land[id] = true; }); });
     // Act III: for a CAUGHT move, mark the exact words that caught Glimmer.
@@ -2265,9 +2453,9 @@ const MACHINE = (function () {
       return {
         author: pr.author, num: pr.num, text: pr.text, stamps: st, struck: pr.status === "VOID", land: !!land[pr.id],
         mark: caught && caught.id === pr.id ? caught.words : null,
-        note: pr.status === "INCOMPATIBLE_IN_FORCE" ? CONTENT.rulings.declare.result : null
+        note: pr.status === "INCOMPATIBLE_IN_FORCE" ? CONTENT.rulings.declare.result : gazette ? mondayNote(g, pr.id) : null
       };
-    }), CONTENT.bills[g.bill].title, { compact: isCourt(g) });
+    }), CONTENT.bills[g.bill].title, { compact: gazette || isCourt(g), stampScale: gazette ? 0.44 : null });
   }
 
   function isCourt(g) { return STAGE_OF[placeOf(g)] === 3; }
@@ -2414,40 +2602,66 @@ const MACHINE = (function () {
         });
       }
     }
-    return debugBody(g);
+    return closeHtml(g);
   }
 
-  // Screens built in later phases: a plain working view so the whole session stays runnable.
-  function debugBody(g) {
-    var C = CONTENT, h = "", sc = g.screen;
-    switch (sc) {
-      case "gazette": {
-        var a = MODEL.authorship(MODEL.lawBook(g)), gs = MODEL.glimmerStatus(g);
-        h += "<h1>" + D.esc(C.gazette.masthead) + "</h1><h2>" + D.esc(C.headlines[MODEL.headline(g)]) + "</h2>" +
-          p(fill(C.gazette.authorship, { a: a.PARL, b: a.MIN, c: a.COURT })) +
-          p(C.glimmerStatus.heading + ": " + C.glimmerStatus[gs]);
-        break;
-      }
-      case "countries": {
-        var cols = MODEL.threeCountries(g), CO = C.countries;
-        h += "<h2>" + D.esc(CO.title) + '</h2><table><tr><th></th>' + cols.map(function (c) {
-          return "<th>" + (c.live ? "✱ " : "") + D.esc(CO.columns[c.id]) + "</th>";
-        }).join("") + "</tr>" +
-          "<tr><th>" + D.esc(CO.rows.options) + "</th>" + cols.map(function (c) { return "<td>" + D.esc(CO.options[c.id]) + "</td>"; }).join("") + "</tr>" +
-          "<tr><th>" + D.esc(CO.rows.case1) + "</th>" + cols.map(function (c) { return "<td>" + D.esc(C.rulings[c.case1].label) + "</td>"; }).join("") + "</tr>" +
-          (g.case2 ? "<tr><th>" + D.esc(C.countriesExtra.case2Row) + "</th>" + cols.map(function (c) { return "<td>" + D.esc(C.case2.options[c.case2].label) + "</td>"; }).join("") + "</tr>" : "") +
-          "<tr><th>" + D.esc(CO.rows.ageCheck) + "</th>" + cols.map(function (c) { return "<td>" + D.esc(CO.ageCheck[c.id]) + "</td>"; }).join("") + "</tr></table>" +
-          p(C.disclaimer);
-        break;
-      }
-      case "revote": h += "<h2>" + D.esc(C.hook.question) + "</h2>"; break;
+  // Monday Morning: the Veritas Gazette front page (spec §4.5, §9.3 item 7).
+  function gazetteHtml(g) {
+    var C = CONTENT, esc = D.esc, gs = MODEL.glimmerStatus(g);
+    var counts = MODEL.authorship(MODEL.lawBook(g));
+    return '<article class="gz" aria-label="' + esc(C.gazette.masthead) + '">' +
+      '<header class="gz__mast"><span class="gz__date">' + esc(C.acts.monday) + '</span><h1 class="gz__name">' + esc(C.gazette.masthead) +
+      '</h1><span class="gz__date gz__date--r">' + esc(C.title) + "</span></header>" +
+      '<div class="gz__top"><h2 class="gz__headline">' + esc(C.headlines[MODEL.headline(g)]) + "</h2>" + D.authorshipRow(counts, 42) + "</div>" +
+      '<figure class="gz__plate">' + D.parliamentBuilding() + "</figure>" +
+      '<div class="gz__fold" aria-hidden="true"></div>' +
+      lawBookView(g, [], true) +
+      '<aside class="gz__note"><div class="gz__note-head">' + D.seal("GLIMMER", 48) + "<h3>" + esc(C.glimmerStatus.heading) + "</h3></div>" +
+      D.stamp(gs === "CLOSED_BY_COURT" ? "CAUGHT" : gs, { salt: "gz", scale: 0.9 }) + p(C.glimmerStatus[gs]) + "</aside></article>";
+  }
+
+  // Same choices, three countries (spec §4.5): rows from MODEL.threeCountries.
+  function countriesHtml(g) {
+    var C = CONTENT, CO = C.countries, cols = MODEL.threeCountries(g);
+    function row(label, f) { return { label: label, cells: cols.map(f) }; }
+    var rows = [
+      row(CO.rows.options, function (c) { return CO.options[c.id]; }),
+      row(CO.rows.case1, function (c) { return C.rulings[c.case1].label; })
+    ];
+    if (g.case2 && g.case2.ruling) rows.push(row(C.countriesExtra.case2Row, function (c) { return C.case2.options[c.case2].label; }));
+    rows.push(row(CO.rows.ageCheck, function (c) { return CO.ageCheck[c.id]; }));
+    return kicker(C.acts.monday) + "<h2>" + D.esc(CO.title) + "</h2>" +
+      D.countriesTable(cols.map(function (c) { return { label: CO.columns[c.id], live: c.live }; }), rows) +
+      p(C.countriesExtra.liveKey, "countries__key") + p(C.disclaimer, "disclaimer");
+  }
+
+  // The Close: re-vote, discussion question, End (spec §4.6).
+  var endElapsed = null;
+  function closeHtml(g) {
+    var C = CONTENT, X = C.closeExtra, esc = D.esc;
+    switch (g.screen) {
+      case "gazette": return gazetteHtml(g);
+      case "countries": return countriesHtml(g);
+      case "revote":
+        return kicker(C.acts.close) + '<h2 class="question">' + esc(C.close.revote) + "</h2>" +
+          D.tallyCompare(C.hook.options, g.hook, MACHINE.counts(g), "tally", { before: X.before, after: X.after });
       case "discussion":
-        h += C.close.discussion.map(function (q, i) { return D.optionCard({ letter: MACHINE.LETTERS[i], text: q, value: String(i), action: "select", selected: g.discussion === i }); }).join("");
-        break;
-      case "end": h += '<pre class="tw">' + D.esc(MODEL.toData(g, elapsed())) + "</pre>"; break;
+        if (g.discussion == null) {
+          return kicker(C.acts.close) + "<h2>" + esc(X.discussionHeading) + '</h2><div class="cards cards--stack">' +
+            C.close.discussion.map(function (q, i) {
+              return D.optionCard({ letter: MACHINE.LETTERS[i], text: q, value: String(i), action: "select" });
+            }).join("") + "</div>";
+        }
+        return kicker(C.acts.close) + '<div class="discussion"><p class="discussion__q">' + esc(C.close.discussion[g.discussion]) + "</p></div>";
+      case "end":
+        return '<div class="endpage"><h1>' + esc(C.title) + '</h1><p class="titlepage__sub">' + esc(C.subtitle) + "</p>" +
+          '<section class="data"><h2 class="data__label">' + esc(X.dataLabel) + "</h2>" +
+          '<pre class="data__line tw" data-data-line>' + esc(MODEL.toData(g, endElapsed)) + "</pre>" +
+          '<div class="data__actions">' + btn(X.copy, "copy-data") + btn(C.close.restart, "confirm-ask", "restart") +
+          (state.ui.copy ? '<p class="data__note" role="status">' + esc(state.ui.copy === "copied" ? X.copied : X.selected) + "</p>" : "") +
+          "</div></section></div>";
     }
-    if (MACHINE.hasTally(sc)) h += voteCards(g) + voteAfter(g);
-    return h;
+    return "";
   }
 
   // Facilitator script panel (spec §7.4): what to say, timing, one likely question. Under A, Case 1 adds the lock question.
@@ -2467,6 +2681,8 @@ const MACHINE = (function () {
   function hint(g) {
     var N = CONTENT.nav, sc = g.screen;
     if (sc === "hook") return N.hintHook;
+    if (sc === "revote") return CONTENT.closeExtra.hintRevote;
+    if (sc === "discussion") return g.discussion == null ? CONTENT.closeExtra.hintDiscussion : CONTENT.closeExtra.hintDiscussionPicked;
     if (sc === "unseal" && g.sealed && !g.opened) return CONTENT.actExtra.hintUnseal;
     if (MACHINE.isVote(sc) && !MACHINE.decision(g)) return g.tie ? N.hintTie : N.hintVote;
     return "";
@@ -2515,7 +2731,10 @@ const MACHINE = (function () {
     }
 
     // Stage and Law Book are patched separately, so a tally change does not re-land the Law Book's stamps.
-    var showBook = !!g.bill;
+    // From Monday Morning on, the Law Book lives on the Gazette's front page instead.
+    var showBook = !!g.bill && !CLOSE_SCREENS[g.screen];
+    // The DATA line's elapsed time is fixed when the End screen is reached.
+    if (g.screen !== "end") endElapsed = null; else if (endElapsed == null) endElapsed = elapsed();
     main.classList.toggle("has-book", showBook);
     main.classList.toggle("is-court", showBook && isCourt(g));
     main.classList.toggle("is-folder", g.screen === "case1" || g.screen === "case2");
@@ -2638,8 +2857,27 @@ const MACHINE = (function () {
     if (el.hasAttribute("data-option")) action.option = el.getAttribute("data-option");
     if (type === "theme-toggle") action.effective = effectiveTheme();
     if (type === "start") action.date = new Date().toISOString().slice(0, 10);
+    if (type === "copy-data") { copyData(); return; }
     dispatch(action);
   });
+
+  // Select the DATA line so the facilitator can press Ctrl+C. The note renders first, so the selection survives it.
+  function selectData() {
+    dispatch({ type: "copy-note", value: "selected" });
+    try {
+      var el = document.querySelector("[data-data-line]"), range = document.createRange(), sel = window.getSelection();
+      range.selectNodeContents(el);
+      sel.removeAllRanges();
+      sel.addRange(range);
+    } catch (e) { /* nothing more to try */ }
+  }
+  function copyData() {
+    var el = document.querySelector("[data-data-line]");
+    if (!el) return;
+    try {
+      navigator.clipboard.writeText(el.textContent).then(function () { dispatch({ type: "copy-note", value: "copied" }); }, selectData);
+    } catch (e) { selectData(); }
+  }
 
   document.addEventListener("change", function (e) {
     var field = e.target.closest("[data-field]");
