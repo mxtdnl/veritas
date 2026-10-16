@@ -316,10 +316,24 @@ test("re-vote comparison: opening counts as read-only counters, closing counts a
   assert.deepEqual([...DESIGN.tallyCompare(opts, null, {}, "tally", { before: "B", after: "A" }).matchAll(/class="counter"[^>]*>(\d+)</g)].map((m) => m[1]), ["0", "0", "0", "0"]);
 });
 
-test("Law Book: stampScale overrides the compact stamp size (the Gazette's smaller stamps)", () => {
-  const p = [{ author: "PARL", num: "§1", text: "t", stamps: ["ENACTED"] }];
-  const h = (html) => Number(html.match(/height:([\d.]+)em/)[1]);
-  assert.ok(h(DESIGN.lawBook(p, null, { compact: true, stampScale: 0.44 })) < h(DESIGN.lawBook(p, null, { compact: true })));
+test("Law Book stamps: every word at the same, legible size (REVIEW M1)", () => {
+  // Spec §9.3 stamps: in the Law Book each line of a stamp is set at LAW_STAMP_EM of the text size, including
+  // the second line of two-line stamps (STILL IN FORCE, IN FORCE), which used to be about 0.3em.
+  const p = [{ author: "PARL", num: "§1", text: "t", stamps: ["INCOMPATIBLE_IN_FORCE", "CLERK"] }];
+  const html = DESIGN.lawBook(p, null, { compact: true });
+  for (const svg of html.match(/<svg class="stamp[^]*?<\/svg>/g)) {
+    const vb = Number(svg.match(/viewBox="0 0 [\d.]+ ([\d.]+)"/)[1]);
+    const em = Number(svg.match(/height:([\d.]+)em/)[1]);
+    const sizes = [...svg.matchAll(/font-size="([\d.]+)"/g)].map((m) => Number(m[1]) * em / vb);
+    assert.ok(sizes.length >= 2, "two-line stamp");
+    for (const sz of sizes) assert.ok(Math.abs(sz - DESIGN.LAW_STAMP_EM) < 0.01, `text ${sz.toFixed(3)}em`);
+  }
+  assert.ok(DESIGN.LAW_STAMP_EM >= 0.85, "≈ 18 px at 1280×720 (root 20.7 px)");
+  assert.ok(html.includes(">STILL IN FORCE</text>") && html.includes(">DECIDED BY</text>") && html.includes(">THE CLERK</text>"));
+  assert.deepEqual([...DESIGN.wrapLine("DECIDED BY THE CLERK")], ["DECIDED BY", "THE CLERK"]);
+  assert.deepEqual([...DESIGN.wrapLine("STILL IN FORCE")], ["STILL IN FORCE"]);
+  // Elsewhere (e.g. the result stamps) the large two-size stamp is unchanged.
+  assert.ok(!DESIGN.stamp("ENACTED").includes("stamp--even"));
 });
 
 test("Phase 5 authored CONTENT groups are flagged; the spec's close copy is verbatim", () => {

@@ -101,7 +101,7 @@ button { font: inherit; color: inherit; }
 /* ---- Chrome: procedure ribbon with red tape ---- */
 .chrome {
   display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
-  gap: 0.6rem 1.2rem; padding: 0.5rem 0 0.7rem; border-bottom: 3px double var(--rule);
+  gap: 0.6rem 1.2rem; padding: 0.2rem 0 0.4rem; border-bottom: 3px double var(--rule);
 }
 .ribbon ol { list-style: none; display: flex; flex-wrap: wrap; align-items: center; gap: 0.35rem; margin: 0; padding: 0; }
 .ribbon__arrow { color: var(--ink-2); }
@@ -129,8 +129,9 @@ button { font: inherit; color: inherit; }
   display: flex; align-items: center; gap: 0.5em;
   border: 3px double var(--rule); background: var(--paper-3); padding: 0.15em 0.8em 0.15em 0.3em;
 }
-.plate__kicker { display: block; font-size: 0.8em; color: var(--ink-2); font-variant: small-caps; letter-spacing: 0.08em; }
-.plate__role { display: block; font-size: 1.05em; line-height: 1.2; }
+.plate__kicker { display: block; font-size: 0.8em; color: var(--ink-2); font-variant: small-caps; letter-spacing: 0.08em; line-height: 1.15; }
+.plate__role { display: block; font-size: 1.05em; line-height: 1.15; }
+.plate .seal { width: 40px; height: 40px; }
 
 /* ---- Chrome: clock (brass at 25:00, oxblood at 30:00; rule weight also changes) ---- */
 .clock {
@@ -206,12 +207,14 @@ button { font: inherit; color: inherit; }
 .lawbook__head { margin-left: 5rem; border-bottom: 3px double var(--ink); padding-bottom: 0.2rem; }
 .lawbook__head h2 { margin: 0; }
 .lawbook__list { list-style: none; margin: 0; padding: 0; }
-.prov { display: grid; grid-template-columns: 4.2rem 1fr auto; gap: 0 0.8rem; align-items: stretch; }
+.prov { display: grid; grid-template-columns: 4.2rem minmax(0, 1fr); gap: 0 0.8rem; align-items: stretch; }
 .prov > * { padding: 0.55rem 0; }
 .prov__gutter { display: flex; justify-content: center; align-items: flex-start; border-right: 3px double var(--rule); }
-.prov__body { border-bottom: 1px solid var(--rule); }
-.prov__stamps { display: flex; flex-direction: column; align-items: flex-end; gap: 0.3rem; border-bottom: 1px solid var(--rule); min-width: 1px; }
+.prov__body { display: flow-root; border-bottom: 1px solid var(--rule); }
+.prov__stamps { float: right; display: flex; flex-direction: column; align-items: flex-end; gap: 0.3rem; margin: 0 0 0.15rem 0.7rem; }
 .prov__num { font-weight: bold; margin-right: 0.3em; }
+.prov--brief .prov__line { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.prov--brief .prov__note { display: none; }
 .prov--struck .prov__text { text-decoration: line-through; text-decoration-thickness: 0.12em; text-decoration-color: var(--stamp); color: var(--ink-2); }
 
 /* ---- Case folder ---- */
@@ -250,9 +253,12 @@ button { font: inherit; color: inherit; }
 
 /* ---- Game layout: chrome, main (Law Book + stage), footer ---- */
 [hidden] { display: none !important; }
-#app.is-game { padding: 0.7rem 1.4rem 0.8rem; }
-.game { display: flex; flex-direction: column; gap: 0.8rem; min-height: calc(100vh - 1.5rem); }
-.game__main { flex: 1; display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.4rem; align-items: start; }
+/* The game fits the viewport (spec §9.4): chrome and footer always show. A column scrolls on its own only as a last resort. */
+#app.is-game { padding: 0.7rem 1.4rem 0.8rem; height: 100vh; overflow: hidden; }
+.game { display: flex; flex-direction: column; gap: 0.6rem; height: 100%; }
+.game__main { flex: 1 1 auto; min-height: 0; display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr); gap: 1.4rem; align-items: start; }
+.game__main > .stage, .game__main > [data-region="book"] { max-height: 100%; min-height: 0; overflow: hidden auto; box-sizing: border-box; padding: 0.2rem 0.7rem 0.5rem 0; }
+/* The bottom padding takes the corners of rotated stamps, so they never cause a scrollbar on their own. */
 .game__main.has-book { grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr); }
 .game__main.has-book > [data-region="book"] { order: -1; }
 .kicker { display: block; font-variant: small-caps; letter-spacing: 0.08em; color: var(--ink-2); }
@@ -314,14 +320,16 @@ button { font: inherit; color: inherit; }
 
 /* ---- Act I: Bills set as statutes; the hemicycle on enactment ---- */
 .cards--bills { grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: stretch; }
-.cards--bills .card { flex-direction: column; gap: 0.3em; }
+.cards--bills .card { flex-direction: column; gap: 0.3em; padding-top: 0.7em; padding-bottom: 0.7em; }
+.cards--bills .card__mark { position: absolute; top: 0.55em; right: 0.7em; }
+.cards--bills .statute__title { padding-right: 1.9em; }
 .statute { display: block; }
 .statute__title { display: block; font-variant: small-caps; letter-spacing: 0.08em; font-size: 1.15rem; font-weight: bold; border-bottom: 3px double var(--rule); padding-bottom: 0.2em; margin-bottom: 0.3em; }
 .statute__sec { display: block; margin: 0 0 0.35em; }
-.statute__means { display: block; margin-top: 0.5em; padding-top: 0.4em; border-top: 1px solid var(--rule); font-style: italic; }
+.statute__means { display: block; margin-top: 0.4em; padding-top: 0.3em; border-top: 1px solid var(--rule); font-style: italic; }
 .statute__label { font-style: normal; font-variant: small-caps; letter-spacing: 0.08em; font-weight: bold; }
 .enact { text-align: center; padding: 0.4rem 0 0; }
-.enact .hemi { display: block; width: min(100%, 26rem); margin: 0 auto; }
+.enact .hemi { display: block; width: min(100%, 22rem); margin: 0 auto; }
 .enact__row { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 0.4rem 1.4rem; margin-top: 0.4rem; }
 .enact__title { font-variant: small-caps; letter-spacing: 0.08em; font-size: 1.3rem; margin: 0; }
 .enact__row .stamp--land { animation-delay: 950ms; }
@@ -332,13 +340,14 @@ button { font: inherit; color: inherit; }
 .prov--new > .prov__body { animation: prov-in 420ms ease-out both; }
 @keyframes prov-in { from { opacity: 0; transform: translateX(-1.6rem); } to { opacity: 1; transform: none; } }
 .lawbook--compact { padding-top: 0.6rem; padding-bottom: 0.7rem; }
-.lawbook--compact .lawbook__head { margin-left: 4rem; }
+.lawbook--compact .lawbook__head { margin-left: 3.8rem; display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 1rem; }
 .lawbook--compact .lawbook__head h2 { font-size: 1.25rem; }
-.lawbook--compact .prov { grid-template-columns: 3.4rem 1fr auto; line-height: 1.28; }
-.lawbook--compact .prov > * { padding: 0.3rem 0; }
-.lawbook--compact .seal { width: 44px; height: 44px; }
+.lawbook--compact .prov { grid-template-columns: 3rem minmax(0, 1fr); line-height: 1.25; }
+.lawbook--compact .prov > * { padding: 0.25rem 0; }
+.lawbook--compact .seal { width: 40px; height: 40px; }
+.lawbook--compact .prov__stamps { gap: 0.15rem; }
 .game__main.has-book.is-court { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
-.game__main.has-book.is-court.is-folder { grid-template-columns: minmax(0, 0.86fr) minmax(0, 1.14fr); }
+.game__main.has-book.is-court.is-folder { grid-template-columns: minmax(0, 0.76fr) minmax(0, 1.24fr); }
 
 /* ---- Clerk result card (reusable) ---- */
 .clerk { position: relative; border: 3px double var(--ink-2); background: var(--paper-3); padding: 1rem 1.3rem 1.2rem; }
@@ -369,8 +378,10 @@ mark.caught {
 
 /* ---- Act IV: constitution card, locked ruling, typed Held line ---- */
 /* The opened flap rises above the envelope, so the envelope column keeps headroom for it. */
-.unseal { display: flex; flex-direction: column; gap: 0.6rem; }
-.unseal .env { width: min(100%, 10rem); margin-top: 3.5rem; }
+.unseal { display: flex; align-items: flex-start; gap: 1.2rem; }
+.unseal .env { flex: none; width: min(100%, 10rem); margin-top: 3.5rem; }
+.unseal .charter { flex: 1; min-width: 0; }
+.unseal .charter h2 { font-size: 1.3rem; }
 .charter { border: 3px double var(--court); background: var(--paper-3); padding: 0.8rem 1.2rem 1rem; }
 .charter h2 { margin: 0.1rem 0 0; }
 .charter__inspired { margin: 0 0 0.5rem; font-style: italic; color: var(--ink-2); }
@@ -388,11 +399,11 @@ mark.caught {
 .stage--dense .card__mark .shape { width: 1.5em; height: 1.5em; }
 .stage--dense .tally { padding: 0.3rem 0; }
 /* On case screens the act kicker shares the row of the folder's tab. */
-.stage--dense > .kicker--tabrow { text-align: right; height: 0; }
+.stage > .kicker--tabrow { text-align: right; height: 0; }
 .stage .folder__args dt, .stage .folder__args dd { display: inline; }
 .stage .folder__args dt { margin-right: 0.4em; }
 .stage .folder { margin-top: 1.85rem; padding: 0.55rem 1.2rem 0.65rem; }
-.stage .folder .held { margin-top: 0.5rem; }
+.stage .folder .held { margin-top: 0.3rem; }
 .stage .folder__facts { margin-bottom: 0.4rem; }
 .held { align-items: first baseline; }
 .held__text { display: block; }
@@ -407,7 +418,7 @@ mark.caught {
 .clerk__list dd .stamp { margin: 0.3rem 0 0 0.4rem; }
 
 /* ---- Monday Morning: the Veritas Gazette (broadsheet: main column + side column) ---- */
-.gz { display: grid; grid-template-columns: minmax(0, 1fr) 12rem; gap: 0 1.2rem; background: var(--paper-3); border: 1px solid var(--rule); padding: 0.2rem 1rem 0.3rem; }
+.gz { display: grid; grid-template-columns: minmax(0, 1fr) 10rem; gap: 0 1.2rem; background: var(--paper-3); border: 1px solid var(--rule); padding: 0.2rem 1rem 0.3rem; }
 .gz__mast {
   grid-column: 1 / -1; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 1rem;
   border-top: 3px double var(--ink); border-bottom: 3px double var(--ink); padding: 0.1rem 0;
@@ -421,36 +432,39 @@ mark.caught {
 .gz__plate { position: relative; margin: 0 0 0 -1.2rem; border-left: 1px solid var(--rule); }
 .gz__plate svg { position: absolute; inset: 0.3rem 0 0.3rem 1.2rem; width: calc(100% - 1.2rem); height: calc(100% - 0.6rem); }
 .gz__fold { grid-column: 1 / -1; border-top: 1px dashed var(--rule); margin: 0 0 0.45rem; }
-.gz .lawbook { margin-bottom: 0; padding-top: 0.2rem; padding-bottom: 0.35rem; }
-.gz .lawbook--compact .lawbook__head { display: flex; align-items: baseline; gap: 1rem; }
+.gz .lawbook { grid-column: 1 / -1; margin-bottom: 0; padding-top: 0.2rem; padding-bottom: 0.35rem; }
+.gz .lawbook__list { columns: 2; column-gap: 1.4rem; }
+.gz .prov { break-inside: avoid; }
+.gz .lawbook--compact .lawbook__head { gap: 1rem; }
 .gz .lawbook--compact .lawbook__head h2 { line-height: 1.15; }
 .gz .lawbook--compact .prov { line-height: 1.22; }
 .gz .lawbook--compact .prov > * { padding: 0.14rem 0; }
-.gz .prov__stamps { gap: 0.15rem; }
+.gz .prov__stamps { gap: 0.1rem; }
 .gz .prov__note { margin-top: 0.05rem; }
 /* Glimmer: a marginal note beside the Law Book, not a line in it (a business is not a law-maker). */
-.gz__note { border-left: 1px solid var(--rule); padding-left: 1.2rem; margin-left: -1.2rem; align-self: start; }
-.gz__note-head { display: flex; align-items: center; gap: 0.5rem; margin: 0 0 0.3rem; }
+.gz__note { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: center; gap: 0.3rem 1rem; border-top: 1px solid var(--rule); margin-top: 0.5rem; padding-top: 0.3rem; }
+.gz__note-head { display: flex; align-items: center; gap: 0.5rem; margin: 0; }
 .gz__note h3 { margin: 0; font-size: 1rem; line-height: 1.2; color: var(--biz); font-variant: normal; letter-spacing: 0; font-weight: bold; }
-.gz__note p { margin: 0.4rem 0 0; font-style: italic; }
+.gz__note p { margin: 0; font-style: italic; flex: 1; min-width: 14rem; }
 /* Authorship line, as a row of seals. */
-.authors { display: flex; flex-wrap: wrap; align-items: center; gap: 0.3rem 0.9rem; margin: 0; }
+.authors { display: flex; flex-wrap: wrap; align-items: center; gap: 0.3rem 0.6rem; margin: 0; }
 .authors__lead { font-style: italic; }
 .authors__item { display: inline-flex; align-items: center; gap: 0.4em; }
 .authors__n { font-size: 1.5rem; font-weight: bold; font-variant-numeric: tabular-nums; min-width: 1ch; }
 .authors__sep { color: var(--ink-2); }
 
 /* ---- Same choices, three countries ---- */
-.countries { width: 100%; border-collapse: separate; border-spacing: 0; table-layout: fixed; margin-top: 1.3rem; }
-.countries th, .countries td { text-align: left; vertical-align: top; padding: 0.45rem 0.8rem; border-bottom: 1px solid var(--rule); }
+.countries { width: 100%; border-collapse: separate; border-spacing: 0; table-layout: fixed; margin-top: 0.5rem; line-height: 1.3; }
+.countries th, .countries td { text-align: left; vertical-align: top; padding: 0.3rem 0.8rem; border-bottom: 1px solid var(--rule); }
 .countries thead th { font-variant: small-caps; letter-spacing: 0.06em; border-bottom: 3px double var(--ink); position: relative; }
 .countries tbody th { font-weight: normal; font-style: italic; color: var(--ink-2); width: 24%; }
 .countries .is-live { border-left: 3px solid var(--ink); border-right: 3px solid var(--ink); background: var(--paper-3); }
 .countries thead .is-live { border-top: 3px solid var(--ink); }
 .countries tbody tr:last-child .is-live { border-bottom: 3px solid var(--ink); }
 .countries__star { position: absolute; left: -0.95em; top: 0.15em; font-size: 1.4em; line-height: 1; font-variant: normal; }
-.countries__key, .disclaimer { margin: 0.6rem 0 0; }
-.disclaimer { font-style: italic; border-top: 3px double var(--rule); padding-top: 0.5rem; }
+.countries__foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0 1.5rem; border-top: 3px double var(--rule); margin-top: 0.4rem; padding-top: 0.3rem; }
+.countries__key, .disclaimer { margin: 0; }
+.disclaimer { font-style: italic; }
 
 /* ---- Close: re-vote (before and after), discussion, end ---- */
 .compare { border-collapse: separate; border-spacing: 0; margin-top: 0.8rem; width: 100%; table-layout: fixed; }
@@ -467,6 +481,7 @@ mark.caught {
 .discussion__q { margin: 0; font-size: 2.5rem; line-height: 1.25; max-width: 58rem; }
 .endpage { max-width: 60rem; margin: 4vh auto 0; }
 .endpage h1 { margin: 0; font-size: 2.8rem; }
+.outcome { margin: 1rem 0 0; font-size: 1.35rem; border-left: 3px double var(--ink); padding: 0.2rem 0 0.2rem 0.9rem; max-width: 50rem; }
 .data { margin-top: 1.4rem; border-top: 3px double var(--rule); padding-top: 0.6rem; }
 .data__label { font-size: 1rem; margin: 0 0 0.3rem; color: var(--ink-2); }
 .data__line { margin: 0; font-size: 0.75rem; line-height: 1.5; white-space: pre-wrap; word-break: break-all; border: 1px solid var(--rule); background: var(--paper-3); padding: 0.5rem 0.7rem; user-select: all; }
@@ -474,10 +489,10 @@ mark.caught {
 .data__note { margin: 0; color: var(--ink-2); font-style: italic; }
 
 /* ---- Script panel (S) ---- */
-/* An overlay above the footer, so opening it never moves the screen's content. */
-[data-region="script"] { display: contents; }
+/* In the flow above the footer, so it never covers the option cards: the screen above gives up the room instead. */
+[data-region="script"] { flex: none; }
 .script {
-  position: fixed; left: 1.4rem; right: 1.4rem; bottom: 4rem; z-index: 10;
+  max-height: 34vh; overflow: hidden auto; box-sizing: border-box;
   border: 3px double var(--rule); background: var(--paper-3); padding: 0.5rem 1rem; font-size: 0.9rem;
 }
 .script dl { margin: 0; display: grid; grid-template-columns: max-content 1fr; gap: 0.2rem 1rem; }
@@ -502,13 +517,21 @@ mark.caught {
 .notes__bar { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-bottom: 1rem; }
 .notes h2 { margin-top: 1.5rem; border-bottom: 3px double var(--ink); }
 .notes li { margin-bottom: 0.6rem; }
+.notes__screen h3 { margin: 1rem 0 0.2rem; }
+.notes__script { margin: 0; display: grid; grid-template-columns: 15rem 1fr; gap: 0.15rem 1rem; }
+.notes__script dt { font-variant: small-caps; letter-spacing: 0.08em; color: var(--ink); }
+.notes__script dd { margin: 0; }
 
 /* ---- Voting cards: on screen only the print sheet is hidden ---- */
 .printsheet { display: none; }
 
 @media (max-width: 900px) {
   .game__main.has-book, .cards--bills, .branches, .gz { grid-template-columns: minmax(0, 1fr); }
-  .gz__plate, .gz__note { border-left: 0; padding-left: 0; margin-left: 0; }
+  #app.is-game { height: auto; overflow: visible; }
+  .game__main { grid-template-rows: none; }
+  .game__main > .stage, .game__main > [data-region="book"] { max-height: none; overflow: visible; }
+  .gz__plate { border-left: 0; padding-left: 0; margin-left: 0; }
+  .gz .lawbook__list { columns: 1; }
 }
 @media (prefers-reduced-motion: reduce) {
   .hemi--fill .hemi__seat { animation: none; fill: currentColor; }
@@ -526,7 +549,8 @@ mark.caught {
   .notes { max-width: none; font-size: 11pt; line-height: 1.35; }
   .notes h1 { font-size: 20pt; }
   .notes h2 { font-size: 14pt; break-after: avoid; border-bottom-color: #000; }
-  .notes li, .notes p { break-inside: avoid; }
+  .notes li, .notes p, .notes__screen { break-inside: avoid; }
+  .notes__screen h3 { font-size: 12pt; break-after: avoid; }
   body[data-print="cards"] #app { display: none !important; }
   body[data-print="cards"] .printsheet { display: block; font-family: var(--serif); color: #000; background: #fff; }
   /* One A4 sheet: four cards in a 2 × 2 grid; the dashed lines are shared cut lines. */
@@ -813,6 +837,14 @@ const CONTENT = {
     ask: "Ask"
   },
   noCase: "No case. The words are clear: Glimmer Lite has no accounts. Judges apply the words — only Parliament can close this gap.",
+  // When Case 1 struck down §1, Case 2 has no rule to read; this card takes its place. Law Book notes for that path,
+  // and for a reinterpreted section (Parliament's words stay; the court's reading sits beneath them).
+  noRule: {
+    authored: true,
+    card: "No case. §1 is void, so there is no rule for Glimmer to break.",
+    noEffect: "No effect while §1 is void.",
+    reading: "Read by the Court: {text}"
+  },
   precedent: "{case} — Held: {held}. Future courts in Veritas must follow this.",
   // The {held} wording for each ruling.
   held: {
@@ -835,7 +867,10 @@ const CONTENT = {
   },
   voteExtra: {
     authored: true,
-    tie: "It's a tie. The facilitator chooses one of the tied cards."
+    tie: "It's a tie. The facilitator chooses one of the tied cards.",
+    // A court vote split across more than two cards, and a tie decided by the Speaker's casting vote.
+    splitOf: "Decided by {n} of {total} judges",
+    splitTie: "on the Speaker's casting vote"
   },
 
   // Spec §7.5, verbatim. reasons are the "Reason it is chosen" column.
@@ -887,7 +922,8 @@ const CONTENT = {
     COMPLIED: "Glimmer followed the law and closed its under-16 accounts.",
     CAUGHT: "Glimmer's move was caught by the words of the law.",
     LOOPHOLE: "The gap is still open. Glimmer is not covered by the law.",
-    CLOSED_BY_COURT: "The court closed the gap. Glimmer is covered by the law and fined."
+    CLOSED_BY_COURT: "The court closed the gap. Glimmer is covered by the law and fined.",
+    NO_RULE: "§1 is void, so there is no rule for Glimmer to break."
   },
   gazetteExtra: {
     authored: true,
@@ -922,6 +958,13 @@ const CONTENT = {
   countriesExtra: {
     authored: true,
     case2Row: "What the class's Case 2 choice becomes",
+    // One consequence per constitution, whatever the class chose, so the A/B contrast never rests on option lists alone.
+    rightsRow: "If the judges think Case 1's law breaks rights",
+    rights: {
+      A: "They can say so publicly, but the law stays in force",
+      B: "They can cancel that part of the law",
+      C: "The Constitutional Council can cancel that part of the law"
+    },
     liveKey: "✱ The constitution Veritas has today."
   },
   disclaimer: "Veritas is imaginary. Real countries are more complicated.",
@@ -936,6 +979,8 @@ const CONTENT = {
     ],
     restart: "Restart"
   },
+  // Spec §1.1, verbatim: shown on the End screen, so every class leaves with the outcome stated.
+  outcome: "Law is made by more than one branch of government — Parliament, the government and the courts — and a country's constitution decides who has the last word.",
   closeExtra: {
     authored: true,
     before: "Before",
@@ -948,7 +993,7 @@ const CONTENT = {
     selected: "Selected. Press Ctrl+C (or ⌘C) to copy.",
     hintRevote: "Enter the counts. Compare the two rows. Then press →.",
     discussionHeading: "One question to discuss",
-    hintDiscussion: "Click a question, or press 1–3.",
+    hintDiscussion: "Click a question, or press 1–{n}.",
     hintDiscussionPicked: "Press ← to choose another question."
   },
 
@@ -1015,7 +1060,13 @@ const CONTENT = {
   teacherExtra: {
     authored: true,
     back: "← Back to setup",
-    print: "Print teacher notes"
+    print: "Print teacher notes",
+    // The per-screen script, printed, so the facilitator can work from paper rather than the projected panel.
+    scriptHeading: "Facilitator script, screen by screen",
+    underA: "Under Constitution A",
+    underB: "Under Constitution B",
+    afterComply: "If Glimmer followed the law",
+    ifVoid: "If §1 was struck down"
   },
   // Print sheet for the voting cards (spec §7.2): one A4 sheet, four cards.
   printCards: {
@@ -1037,34 +1088,39 @@ const CONTENT = {
       say: "Quick vote, no talking. In a country like ours, who makes the law? Cards up on three. I won't tell you the answer yet.",
       q: "What's the right answer?", a: "Hold that thought. We'll vote again at the end and see if anything changed." },
     branches: { authored: true, timing: "1:10",
-      say: "Every country has three branches. Parliament passes Acts. The government puts laws into action. The courts decide what the law means. Today, you will be all three. And a business.",
+      say: "Veritas has three branches. Parliament passes Acts. The government puts laws into action. The courts decide what the law means. Today, you will be all three. And a business.",
       q: "Is the government the same as Parliament?", a: "No. Parliament is everyone we elect. The government is the ministers who run the country." },
     bills: { authored: true, timing: "5:00",
       say: "You are now Members of Parliament. Teenagers are sleeping less and feeling worse. Read the three Bills. Talk to a partner for a minute, then vote.",
       q: "Why does every Bill have the same §3?", a: "§3 hands the detail to the Minister. That power comes from the Act. You'll use it next." },
-    list: { authored: true, timing: "2:00",
+    list: { authored: true, timing: "2:00 — skip partner talk if behind",
       say: "You are now the Minister. Parliament said: under-16s can't have accounts on apps on your list. So you decide which apps go on it.",
       q: "Can a minister really make law?", a: "Yes, when an Act gives them the power. Here, Parliament's Act lets the Minister write the list." },
-    check: { authored: true, timing: "2:00 (4:00 without the list vote)",
+    check: { authored: true, timing: "2:00 (4:00 without the list vote) — skip partner talk if behind",
       say: "Still the Minister. §3 says you decide how apps check ages. Your rule goes into the Law Book. It is law too, even though Parliament never voted on it.",
       q: "Why didn't Parliament just decide this itself?", a: "Parliament chose to give that power to the Minister in §3. The Minister can only act within that power." },
     gap: { authored: true, timing: "4:00",
       say: "You are now Glimmer's board. You want to keep your users. Read Parliament's exact words. Is there a gap? Choose your move.",
-      q: "Isn't finding a loophole cheating?", a: "Using a gap in the words is not breaking the law. Whether it's fair is a different question. We'll come back to it." },
+      q: "Isn't finding a loophole cheating?", a: "Using a gap in the words is not breaking the law. Whether it's fair is a different question. We'll come back to it.",
+      // After "Follow the law": the gap still existed (LM4), so the class looks for it.
+      askComplied: "Was there a gap you could have used? Look at §1's exact words." },
     unseal: { authored: true, timing: "1:00",
       say: "You are now Supreme Court judges. Open the envelope and read the constitution aloud. Then: \"Parliament, you passed your Act. Now we find out how much power the judges have over it.\"",
       q: "Why is it sealed?", a: "So nobody knew, when they wrote the Act, how much power the judges would have." },
     case1: { authored: true, timing: "4:00",
       say: "Someone says the Act breaks their rights. Read both sides. Talk to a partner. As judges, choose your ruling. Whatever you decide becomes precedent.",
-      // Spec §7.4 example (verbatim) for constitution A.
-      q: "Why can't the judges just cancel it?", a: "In this country, Parliament is the highest law-maker. In the UK, judges can't cancel an Act — they can only say it breaks rights.",
+      // Spec §7.4 example for constitution A; the answer is corrected to include reading compatibly (spec §1.3 item 1).
+      q: "Why can't the judges just cancel it?", a: "In this constitution, Parliament is the highest law-maker. In the UK, judges can't cancel an Act. They can read it in a way that respects rights, or say publicly that it breaks them.",
       qB: "Can judges really cancel a law Parliament voted for?", aB: "Under this constitution, yes, if it breaks the written Constitution. Not every country lets judges do this." },
     case2: { authored: true, timing: "3:00",
       say: "The Minister has taken Glimmer to court. Same photo feed, new label. Do you read the exact words, or what Parliament was trying to do?",
       q: "Which way is right?", a: "Judges disagree about this. Reading the words respects what Parliament wrote. Reading the purpose respects what it meant." },
     nocase: { authored: true, timing: "0:30",
       say: "Read the card aloud. The words are clear, so the judges cannot help. Only Parliament can close this gap, by changing the Act.",
-      q: "Why can't the judges just stop Glimmer?", a: "Judges cannot rewrite clear words. Closing a gap the words plainly leave is Parliament's job." },
+      q: "Why can't the judges just stop Glimmer?", a: "Judges cannot rewrite clear words. Closing a gap the words plainly leave is Parliament's job.",
+      // When Case 1 struck down §1 (Constitution B).
+      sayVoid: "Read the card aloud. The court cancelled §1, so there is no rule left for Glimmer to break. Parliament could pass a new one.",
+      qVoid: "So Glimmer gets away with it?", aVoid: "For now, yes. Without §1 there is no rule. Parliament could pass a new rule that respects rights." },
     clerk: { timing: "0:20",
       // Spec §7.5 script line, verbatim.
       say: "We're short of time, so the Clerk of Parliament has decided this one. In real life, if you don't take part, someone else decides for you.",
@@ -1337,23 +1393,32 @@ const MODEL = (function () {
     return { id: "reg-list", words: CONTENT.caught[list][move] };
   }
 
+  // True when Case 1 has struck down §1, the rule itself (Kim under B): §2, the Minister's list and Case 2 have no rule to work on.
+  function ruleVoid(s) {
+    return !!(s.case1 && s.case1.ruling === "strike" && CASE_SECTION[s.case1.id] === 1);
+  }
+
   // Ordered provisions: the Act's three sections, the Minister's regulations, then precedents.
+  // A reinterpreted section keeps Parliament's words; the court's reading is carried beside them (reading),
+  // so the change shows as a narrowing, not a new rule. noEffect: the line depends on a void §1.
   function lawBook(s) {
     var out = [], clerk = s.byClerk || {};
     if (!s.bill) return out;
     var bill = CONTENT.bills[s.bill];
     var c1 = s.case1 && s.case1.ruling ? s.case1 : null;
     var challenged = c1 ? CASE_SECTION[c1.id] : 0;
+    var noRule = ruleVoid(s);
     for (var n = 1; n <= 3; n++) {
       var p = { id: "act-" + n, author: "PARL", num: "§" + n, text: bill.sections[n - 1], status: "ENACTED", byClerk: !!clerk.bill };
       if (n === challenged) {
         p.status = RULING_STATUS[c1.ruling];
-        if (c1.ruling === "reinterpret") { p.original = p.text; p.text = CONTENT.cases[c1.id].reinterpret; }
+        if (c1.ruling === "reinterpret") p.reading = CONTENT.cases[c1.id].reinterpret;
         p.byClerk = p.byClerk || !!clerk.case1;
       }
+      if (n === 2 && noRule) p.noEffect = true;
       out.push(p);
     }
-    if (s.list) out.push({ id: "reg-list", author: "MIN", num: "", text: CONTENT.regulations.list[s.list], status: "REGULATION_IN_FORCE", byClerk: !!clerk.list });
+    if (s.list) out.push({ id: "reg-list", author: "MIN", num: "", text: CONTENT.regulations.list[s.list], status: "REGULATION_IN_FORCE", byClerk: !!clerk.list, noEffect: noRule });
     if (s.check) out.push({ id: "reg-check", author: "MIN", num: "", text: CONTENT.regulations.check[s.check], status: "REGULATION_IN_FORCE", byClerk: !!clerk.check });
     if (c1) {
       out.push({
@@ -1377,10 +1442,11 @@ const MODEL = (function () {
     return c;
   }
 
-  // Final status: COMPLIED, CAUGHT, LOOPHOLE (open) or CLOSED_BY_COURT; null before Act III.
+  // Final status: COMPLIED, CAUGHT, LOOPHOLE (open), CLOSED_BY_COURT, or NO_RULE (§1 is void); null before Act III.
   function glimmerStatus(s) {
     if (!s.move) return null;
     var r = s.moveResult || moveResult(s.bill, s.list, s.move);
+    if (r !== "COMPLIED" && ruleVoid(s)) return "NO_RULE";
     if (r !== "ARGUABLE") return r;
     if (!s.case2 || !s.case2.ruling) return null;
     return s.case2.ruling === "purposive" ? "CLOSED_BY_COURT" : "LOOPHOLE";
@@ -1433,7 +1499,9 @@ const MODEL = (function () {
       if (!s.move) d.move = moveResult(s.bill, s.list, "m_lite") === "LOOPHOLE" ? "m_lite" : "m_chat";
     } else {
       if (!s.case1 || !s.case1.ruling) d.case1 = { id: case1For(s.bill), ruling: s.constitution === "A" ? "declare" : "strike" };
-      if (moveResult(s.bill, s.list, s.move) === "ARGUABLE" && !(s.case2 && s.case2.ruling)) d.case2 = { ruling: "purposive" };
+      // No Case 2 once §1 is struck down: there is no rule left to read (by words or by purpose).
+      var c1 = d.case1 || s.case1;
+      if (moveResult(s.bill, s.list, s.move) === "ARGUABLE" && !(s.case2 && s.case2.ruling) && !ruleVoid({ case1: c1 })) d.case2 = { ruling: "purposive" };
     }
     return d;
   }
@@ -1518,7 +1586,7 @@ const MODEL = (function () {
     BILLS: BILLS, LISTS: LISTS, CHECKS: CHECKS, MOVES: MOVES, CASE2_RULINGS: CASE2_RULINGS, ACTS: ACTS,
     constitutionDraw: constitutionDraw, seedFrom: seedFrom,
     moveResult: moveResult, case1For: case1For, caseSection: caseSection, rulingOptions: rulingOptions,
-    heldClause: heldClause, caughtBy: caughtBy,
+    heldClause: heldClause, caughtBy: caughtBy, ruleVoid: ruleVoid,
     lawBook: lawBook, authorship: authorship, glimmerStatus: glimmerStatus, headline: headline,
     mapRuling: mapRuling, threeCountries: threeCountries, autoDecide: autoDecide,
     toData: toData, parseData: parseData
@@ -1696,30 +1764,42 @@ const DESIGN = (function () {
     return -4 - 5 * rand();
   }
 
-  // opts: { salt, land, scale }
+  // A line over 14 letters is broken at the space nearest its middle ("DECIDED BY / THE CLERK").
+  function wrapLine(l) {
+    if (l.length <= 14 || l.indexOf(" ") === -1) return [l];
+    var best = -1;
+    for (var i = 0; i < l.length; i++) if (l[i] === " " && (best === -1 || Math.abs(i - l.length / 2) < Math.abs(best - l.length / 2))) best = i;
+    return [l.slice(0, best), l.slice(best + 1)];
+  }
+
+  // opts: { salt, land, scale, even }
+  // even: every line at full size, tight padding and long lines wrapped, so a small stamp (the Law Book's) still reads
+  // from a seat. Then scale is the text size in em: scale 0.88 sets every word at 0.88em.
   function stamp(key, opts) {
     opts = opts || {};
     var word = CONTENT.stamps[key];
     if (!word) throw new Error("Unknown stamp: " + key);
-    var lines = word.split(" — ");
-    var big = lines[0].length > 14 ? 26 : 32, small = 19, pad = 20;
+    var even = !!opts.even, lines = word.split(" — ");
+    if (even) lines = [].concat.apply([], lines.map(wrapLine));
+    var big = !even && lines[0].length > 14 ? 26 : 32, small = even ? 32 : 19, pad = even ? 12 : 20, gap = even ? 6 : 8;
     var widths = lines.map(function (l, i) { return l.length * (i ? small : big) * 0.68; });
     var tw = Math.max.apply(null, widths), w = tw + pad * 2;
-    var h = pad * 2 + big + (lines.length - 1) * (small + 8);
+    var h = pad * 2 + big + (lines.length - 1) * (small + gap);
     var text = "", y = pad + big * 0.84;
     lines.forEach(function (l, i) {
-      if (i) y += small + 8;
+      if (i) y += small + gap;
       text += '<text x="' + n1(w / 2) + '" y="' + n1(y) + '" text-anchor="middle" font-size="' + (i ? small : big) +
         '" textLength="' + n1(widths[i]) + '" lengthAdjust="spacingAndGlyphs">' + esc(l) + "</text>";
     });
     var tone = STAMP_TONE[key] || "stamp";
     var em = (h / 32) * (opts.scale || 1);
-    return '<svg class="stamp stamp--' + tone + (opts.land ? " stamp--land" : "") + '" viewBox="0 0 ' + n1(w) + " " + n1(h) +
+    var o = even ? [2, 3.5, 6.5, 1] : [3, 4.5, 10, 1.5];
+    return '<svg class="stamp stamp--' + tone + (even ? " stamp--even" : "") + (opts.land ? " stamp--land" : "") + '" viewBox="0 0 ' + n1(w) + " " + n1(h) +
       '" role="img" aria-label="' + esc(word) + '" style="--rot:' + stampAngle(key, opts.salt).toFixed(2) + "deg;color:var(--" + tone +
       ");height:" + em.toFixed(3) + 'em">' +
       '<g filter="url(#stamp-ink)">' +
-      '<rect x="3" y="3" width="' + n1(w - 6) + '" height="' + n1(h - 6) + '" fill="none" stroke="currentColor" stroke-width="4.5"/>' +
-      '<rect x="10" y="10" width="' + n1(w - 20) + '" height="' + n1(h - 20) + '" fill="none" stroke="currentColor" stroke-width="1.5"/>' +
+      '<rect x="' + o[0] + '" y="' + o[0] + '" width="' + n1(w - 2 * o[0]) + '" height="' + n1(h - 2 * o[0]) + '" fill="none" stroke="currentColor" stroke-width="' + o[1] + '"/>' +
+      '<rect x="' + o[2] + '" y="' + o[2] + '" width="' + n1(w - 2 * o[2]) + '" height="' + n1(h - 2 * o[2]) + '" fill="none" stroke="currentColor" stroke-width="' + o[3] + '"/>' +
       '<g fill="currentColor" style="font-family:var(--serif);font-weight:bold;letter-spacing:0.06em">' + text + "</g>" +
       "</g></svg>";
   }
@@ -1835,24 +1915,29 @@ const DESIGN = (function () {
     return esc(text.slice(0, i)) + '<mark class="caught">' + esc(words) + "</mark>" + esc(text.slice(i + words.length));
   }
 
-  // provisions: [{ author, num, text, stamps: [key], struck, land, mark, note }]; title: optional subheading (the Act's title).
+  // provisions: [{ author, num, text, stamps: [key], struck, land, mark, note, brief }]; title: optional subheading (the Act's title).
+  // brief: a line not in play on this screen, its text shown on one line, so the lines that matter fit.
   // land: the provision has just entered the Law Book (or changed); it slides in and its stamps land.
   // mark: exact words in text to highlight; note: a line beneath the text.
-  // opts: { compact, stampScale } — tighter rows (and smaller stamps), for when the Law Book is at its longest.
+  // opts: { compact } — tighter rows, for when the Law Book is at its longest.
+  // Stamps are "even": every word at LAW_STAMP_EM of the Law Book's text size, so the status reads from a seat.
+  // They sit at the right of the line's text, which wraps beside and then below them.
+  var LAW_STAMP_EM = 0.88;
   function lawBook(provisions, title, opts) {
-    var compact = opts && opts.compact, scale = (opts && opts.stampScale) || (compact ? 0.52 : 0.62);
+    var compact = opts && opts.compact, scale = LAW_STAMP_EM;
     return '<article class="lawbook' + (compact ? " lawbook--compact" : "") + '" aria-label="' + esc(CONTENT.chrome.lawBook) + '">' +
       '<header class="lawbook__head"><h2>' + esc(CONTENT.chrome.lawBook) + "</h2>" +
       (title ? '<p class="lawbook__title">' + esc(title) + "</p>" : "") + "</header>" +
       '<ol class="lawbook__list">' + provisions.map(function (p, i) {
-        return '<li class="prov' + (p.struck ? " prov--struck" : "") + (p.land ? " prov--new" : "") + '">' +
+        return '<li class="prov' + (p.struck ? " prov--struck" : "") + (p.land ? " prov--new" : "") + (p.brief ? " prov--brief" : "") + '">' +
           '<div class="prov__gutter">' + seal(p.author, 52) + "</div>" +
-          '<div class="prov__body">' + (p.num ? '<span class="prov__num">' + esc(p.num) + "</span>" : "") +
-          '<span class="prov__text">' + marked(p.text, p.mark) + "</span>" +
-          (p.note ? '<span class="prov__note">' + esc(p.note) + "</span>" : "") + "</div>" +
-          '<div class="prov__stamps">' + (p.stamps || []).map(function (k) {
-            return stamp(k, { salt: "lb" + i, scale: scale, land: p.land });
-          }).join("") + "</div></li>";
+          '<div class="prov__body">' +
+          ((p.stamps || []).length ? '<span class="prov__stamps">' + p.stamps.map(function (k) {
+            return stamp(k, { salt: "lb" + i, scale: scale, land: p.land, even: true });
+          }).join("") + "</span>" : "") +
+          '<span class="prov__line">' + (p.num ? '<span class="prov__num">' + esc(p.num) + "</span>" : "") +
+          '<span class="prov__text">' + marked(p.text, p.mark) + "</span></span>" +
+          (p.note ? '<span class="prov__note">' + esc(p.note) + "</span>" : "") + "</div></li>";
       }).join("") + "</ol></article>";
   }
 
@@ -2037,7 +2122,22 @@ const DESIGN = (function () {
     return esc(s).replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>").replace(/\*(.+?)\*/g, "<em>$1</em>");
   }
 
-  // Teacher notes (spec §12 verbatim, then §1.3). The same markup is read on screen and printed.
+  // The facilitator script for every screen (spec §7.4), with its variants, for the printed notes.
+  function scriptNotes() {
+    var S = CONTENT.script, A = CONTENT.actExtra, X = CONTENT.teacherExtra;
+    function row(label, text) { return "<dt>" + esc(label) + "</dt><dd>" + esc(text) + "</dd>"; }
+    return Object.keys(CONTENT.screens).filter(function (k) { return k !== "authored" && S[k]; }).map(function (k) {
+      var e = S[k], h = row(A.timing, e.timing) + row(A.say, e.say);
+      if (k === "case1") h += row(X.underA + " — " + A.ask, CONTENT.lockQuestion);
+      if (k === "gap") h += row(X.afterComply + " — " + A.ask, e.askComplied);
+      h += row(A.likely, e.q) + row(A.answer, e.a);
+      if (k === "case1") h += row(X.underB + " — " + A.likely, e.qB) + row(X.underB + " — " + A.answer, e.aB);
+      if (k === "nocase") h += row(X.ifVoid + " — " + A.say, e.sayVoid) + row(X.ifVoid + " — " + A.likely, e.qVoid) + row(X.ifVoid + " — " + A.answer, e.aVoid);
+      return '<section class="notes__screen"><h3>' + esc(CONTENT.screens[k]) + '</h3><dl class="notes__script">' + h + "</dl></section>";
+    }).join("");
+  }
+
+  // Teacher notes (spec §12 verbatim, then §1.3, then the per-screen script). The same markup is read on screen and printed.
   function teacherNotes() {
     var T = CONTENT.teacher, X = CONTENT.teacherExtra;
     function li(t) { return "<li>" + inlineMd(t) + "</li>"; }
@@ -2047,7 +2147,8 @@ const DESIGN = (function () {
       "<h1>" + esc(CONTENT.setup.teacherNotes) + "</h1>" +
       "<section><h2>" + esc(T.anchorsHeading) + "</h2><ul>" + T.anchors.map(li).join("") + "</ul></section>" +
       "<section><h2>" + esc(T.simplificationsHeading) + "</h2><p>" + inlineMd(T.simplifications) + "</p></section>" +
-      "<section><h2>" + esc(T.qualificationsHeading) + "</h2><ol>" + T.qualifications.map(li).join("") + "</ol></section></article>";
+      "<section><h2>" + esc(T.qualificationsHeading) + "</h2><ol>" + T.qualifications.map(li).join("") + "</ol></section>" +
+      "<section><h2>" + esc(X.scriptHeading) + "</h2>" + scriptNotes() + "</section></article>";
   }
 
   // One voting card for the print sheet (spec §7.2): a solid black shape with the letter reversed out, so it
@@ -2166,7 +2267,7 @@ const DESIGN = (function () {
     parliamentBuilding: parliamentBuilding, authorshipRow: authorshipRow, countriesTable: countriesTable, tallyCompare: tallyCompare,
     SEALS: SEALS, esc: esc, idScope: idScope, hypotrochoid: hypotrochoid, seal: seal, stamp: stamp, stampAngle: stampAngle, tick: tick,
     shape: shape, optionCard: optionCard, statute: statute, hemicycle: hemicycle, clerkCard: clerkCard, padlock: padlock, charter: charter,
-    tallyStrip: tallyStrip, lawBook: lawBook, caseFolder: caseFolder,
+    tallyStrip: tallyStrip, lawBook: lawBook, caseFolder: caseFolder, LAW_STAMP_EM: LAW_STAMP_EM, wrapLine: wrapLine,
     envelope: envelope, ribbon: ribbon, rolePlate: rolePlate, formatClock: formatClock, clockLevel: clockLevel,
     clock: clock, glossaryDrawer: glossaryDrawer, slug: slug, linkTerms: linkTerms, inlineMd: inlineMd,
     teacherNotes: teacherNotes, printCard: printCard, printSheet: printSheet
@@ -2285,7 +2386,10 @@ const MACHINE = (function () {
       case "check": return "gap";
       case "gap": return "unseal";
       case "unseal": return "case1";
-      case "case1": return s.moveResult === "ARGUABLE" ? "case2" : s.moveResult === "LOOPHOLE" ? "nocase" : "gazette";
+      // Case 2 only while §1 stands; with §1 void, the no-case card says there is no rule to break.
+      case "case1":
+        if (s.moveResult === "ARGUABLE" && !M.ruleVoid(s)) return "case2";
+        return s.moveResult === "LOOPHOLE" || s.moveResult === "ARGUABLE" ? "nocase" : "gazette";
       case "case2": case "nocase": return "gazette";
       case "gazette": return "countries";
       case "countries": return "revote";
@@ -2295,17 +2399,26 @@ const MACHINE = (function () {
     return null;
   }
 
-  // First screen after an act.
+  // First screen after an act. After the Clerk's Act IV card, the no-case card (not a vote) is still shown.
   function afterAct(s, act) {
-    return { I: nextScreen(s, "bills"), II: "gap", III: "unseal", IV: "gazette" }[act];
+    if (act === "IV") return s.case2 && s.case2.ruling ? "gazette" : nextScreen(s, "case1");
+    return { I: nextScreen(s, "bills"), II: "gap", III: "unseal" }[act];
   }
 
   function go(s, screen) { return screen ? assign(s, { screen: screen, tie: null, clerkCard: null }) : s; }
 
+  // Discussion questions on offer (indexes into CONTENT.close.discussion). "Glimmer found a gap" is false
+  // when Glimmer followed the law, so that question is not offered then. It is the last, so keys 1–2 still match.
+  function discussionChoices(s) {
+    return CONTENT.close.discussion.map(function (q, i) { return i; }).filter(function (i) {
+      return !(i === 2 && s.moveResult === "COMPLIED");
+    });
+  }
+
   function select(s, value) {
     if (s.screen === "discussion") {
       var i = Number(value);
-      return i >= 0 && i < CONTENT.close.discussion.length ? assign(s, { discussion: i }) : s;
+      return discussionChoices(s).indexOf(i) !== -1 ? assign(s, { discussion: i }) : s;
     }
     if (!isVote(s.screen)) return s;
     var opt = options(s).filter(function (o) { return o.value === value; })[0];
@@ -2408,7 +2521,23 @@ const MACHINE = (function () {
     return n;
   }
 
-  // §7.3: the option with the fewest (non-zero) votes after the winner; null if unanimous or no counts.
+  // "Decided n to m" for a court vote (spec §4.4), or "" when unanimous or decided without a split.
+  // With votes on more than two cards, "9 to 14" would read as a defeat, so it says "Decided by 9 of 23 judges".
+  // A tie adds that the Speaker's casting vote decided it.
+  function splitLine(s, screen) {
+    screen = screen || s.screen;
+    var key = VOTE_KEY[screen], sp = s[key] && s[key].ruling && s[key].split;
+    if (!sp || !sp[1]) return "";
+    var c = counts(s, screen), opts = options(s, screen).filter(function (o) { return !o.locked; });
+    var voted = opts.filter(function (o) { return c[o.letter] > 0; });
+    var top = voted.filter(function (o) { return c[o.letter] === sp[0]; });
+    var X = CONTENT.voteExtra;
+    var text = voted.length > 2 ? fillIn(X.splitOf, { n: sp[0], total: sp[0] + sp[1] }) : fillIn(CONTENT.split, { n: sp[0], m: sp[1] });
+    return top.length > 1 ? text + " — " + X.splitTie : text;
+  }
+  function fillIn(t, v) { return t.replace(/\{(\w+)\}/g, function (m, k) { return v[k] != null ? v[k] : m; }); }
+
+  // §7.3: the losing option with the most votes (the runner-up); null if unanimous or no counts.
   function minority(s, screen) {
     screen = screen || s.screen;
     var c = counts(s, screen), won = decision(s, screen);
@@ -2421,7 +2550,8 @@ const MACHINE = (function () {
   return {
     LETTERS: LETTERS, ACT_OF: ACT_OF, VOTE_KEY: VOTE_KEY,
     initial: initial, step: step, reduce: reduce, options: options, decision: decision, counts: counts,
-    standings: standings, nextScreen: nextScreen, isVote: isVote, hasTally: hasTally, classVotes: classVotes, minority: minority
+    standings: standings, nextScreen: nextScreen, isVote: isVote, hasTally: hasTally, classVotes: classVotes, minority: minority,
+    discussionChoices: discussionChoices, splitLine: splitLine
   };
 })();
 /* MACHINE:END */
@@ -2474,8 +2604,9 @@ const PERSIST = (function () {
 /* KEYS:START */
 // Keyboard map (spec §8): → / Space next · ← back · 1–4 select card · K skip act (confirm) · S script panel ·
 // G glossary · D light/dark · F fullscreen · R restart (confirm). Pure: a key and the screen's context give an action
-// (or null). The one action that is not state, { type: "fullscreen" }, is carried out by the caller.
-// ctx: { typing, gallery, screen (game screen), confirm ('skip'|'restart'|null), glossary, view, canSkip, values (card values) }
+// (or null). The actions that are not state, { type: "fullscreen" } and { type: "tally-commit" }, are carried out by the caller.
+// ctx: { typing, tallyBox (typing in a tally box), onButton (focus is on a button), gallery, screen (game screen),
+//        confirm ('skip'|'restart'|null), glossary, view, canSkip, values (card values) }
 const KEYS = (function () {
   function resolve(key, ctx) {
     if (key === "Escape") {
@@ -2484,9 +2615,12 @@ const KEYS = (function () {
       if (ctx.view) return { type: "view-close" };
       return null;
     }
-    if (ctx.typing) return null;
-    // One-step confirmation: Enter or Y confirms, N cancels; other keys wait.
+    // Enter in a tally box commits the count and leaves the box, so → and the digit keys work again.
+    if (ctx.typing) return key === "Enter" && ctx.tallyBox ? { type: "tally-commit" } : null;
+    // One-step confirmation: Enter or Y confirms, N cancels; other keys wait. A focused button keeps Enter for itself,
+    // so Enter on "No, go back" goes back.
     if (ctx.confirm && !ctx.gallery) {
+      if (key === "Enter" && ctx.onButton) return null;
       if (key === "Enter" || key === "y" || key === "Y") return { type: ctx.confirm === "skip" ? "skipAct" : "restart" };
       if (key === "n" || key === "N") return { type: "confirm-no" };
       return null;
@@ -2767,21 +2901,40 @@ const KEYS = (function () {
     return null;
   }
 
+  // Acts III and IV: lines not in play there are shown on one line, so the words Glimmer and the judges work on fit
+  // beside the case. Never in play: the Act's §3 and the age-check rule. In court, Kim is about §1, so §2 is not in play;
+  // once Case 2 is on, nor is the first precedent.
+  function briefLine(g, id) {
+    var place = placeOf(g);
+    if (place !== "gap" && !isCourt(g)) return false;
+    if (id === "act-3" || id === "reg-check") return true;
+    var later = place === "case2" || place === "nocase";
+    if (id === "act-2") return isCourt(g) && (later || MODEL.case1For(g.bill) === "kim");
+    return id === "prec-1" && later;
+  }
+
   // gazette: the Law Book as it stands on Monday Morning (compact, with the consequence notes).
   function lawBookView(g, keys, gazette) {
     var land = {};
     (keys || []).forEach(function (k) { decisionLines(g, k).forEach(function (id) { land[id] = true; }); });
     // Act III: for a CAUGHT move, mark the exact words that caught Glimmer.
     var caught = placeOf(g) === "gap" && g.move ? MODEL.caughtBy(g.bill, g.list, g.move) : null;
-    return D.lawBook(MODEL.lawBook(g).map(function (pr) {
+    var book = MODEL.lawBook(g);
+    return D.lawBook(book.map(function (pr) {
       var st = pr.status === "PRECEDENT" ? [] : [pr.status];
       if (pr.byClerk) st.push("CLERK");
+      var notes = [];
+      if (pr.reading) notes.push(fill(CONTENT.noRule.reading, { text: pr.reading }));
+      if (pr.status === "INCOMPATIBLE_IN_FORCE") notes.push(CONTENT.rulings.declare.result);
+      if (pr.noEffect) notes.push(CONTENT.noRule.noEffect);
+      if (gazette && mondayNote(g, pr.id)) notes.push(mondayNote(g, pr.id));
       return {
         author: pr.author, num: pr.num, text: pr.text, stamps: st, struck: pr.status === "VOID", land: !!land[pr.id],
         mark: caught && caught.id === pr.id ? caught.words : null,
-        note: pr.status === "INCOMPATIBLE_IN_FORCE" ? CONTENT.rulings.declare.result : gazette ? mondayNote(g, pr.id) : null
+        note: notes.length ? notes.join(" ") : null,
+        brief: !gazette && !land[pr.id] && !notes.length && briefLine(g, pr.id)
       };
-    }), CONTENT.bills[g.bill].title, { compact: gazette || isCourt(g), stampScale: gazette ? 0.44 : null });
+    }), CONTENT.bills[g.bill].title, { compact: gazette || isCourt(g) || placeOf(g) === "gap" || book.length > 4 });
   }
 
   function isCourt(g) { return STAGE_OF[placeOf(g)] === 3; }
@@ -2793,11 +2946,11 @@ const KEYS = (function () {
     return at === -1 ? full : full.slice(at + CONTENT.chrome.held.length).trim();
   }
 
-  // "Decided n to m" and the dissent prompt, for a split court vote.
-  function splitLine(g, key) {
-    var sp = g[key] && g[key].ruling && g[key].split;
-    if (!sp || !sp[1]) return "";
-    return '<p class="split">' + D.esc(fill(CONTENT.split, { n: sp[0], m: sp[1] })) + '. <span class="split__dissent">' + D.esc(CONTENT.dissent) + "</span></p>";
+  // The split (MACHINE.splitLine) and the dissent prompt, for a split court vote.
+  function splitLine(g) {
+    var text = MACHINE.splitLine(g);
+    if (!text) return "";
+    return '<p class="split">' + D.esc(text) + '. <span class="split__dissent">' + D.esc(CONTENT.dissent) + "</span></p>";
   }
 
   // Option cards for the current vote. The hook and re-vote cards are display-only: no answer is chosen.
@@ -2886,7 +3039,7 @@ const KEYS = (function () {
           return '<div class="branch">' + D.seal(b.author, 170) + "<p><strong>" + esc(b.name) + "</strong> — " + esc(b.line) + "</p></div>";
         }).join("") + '</div><p class="closing">' + esc(C.branches.closing) + "</p>";
       case "bills":
-        if (!g.bill) return kicker(actKicker("I")) + "<h2>" + esc(C.bills.question) + "</h2>" + voteCards(g, "cards--bills") + voteAfter(g);
+        if (!g.bill) return tabKicker(actKicker("I")) + "<h2>" + esc(C.bills.question) + "</h2>" + voteCards(g, "cards--bills") + voteAfter(g);
         // The result: the Bill has moved into the Law Book; the chamber fills and ENACTED lands.
         return kicker(actKicker("I")) + '<div class="enact">' + D.hemicycle(true) + '<div class="enact__row"><p class="enact__title">' +
           esc(C.bills[g.bill].title) + "</p>" + D.stamp("ENACTED", { land: true, scale: 1.8, salt: "enact" }) + "</div></div>" + voteAfter(g);
@@ -2895,10 +3048,10 @@ const KEYS = (function () {
           "<h2>" + esc(sc === "list" ? C.minister.listQuestion : C.minister.checkQuestion) + "</h2>" + voteCards(g, "cards--stack") + voteAfter(g);
       case "gap": {
         var X = C.actExtra;
-        var h = kicker(actKicker("III")) + '<header class="boardroom__head">' + D.seal("GLIMMER", 64) + "<h2>" + esc(X.boardroom) + "</h2></header>" +
+        var h = tabKicker(actKicker("III")) + '<header class="boardroom__head">' + D.seal("GLIMMER", 48) + "<h2>" + esc(X.boardroom) + "</h2></header>" +
           p(C.gap.prompt, "boardroom__prompt") + voteCards(g, "cards--stack");
         if (!g.move) return h + voteAfter(g);
-        return h + '<div class="result">' + D.stamp(g.moveResult, { land: true, scale: 1.5, salt: "gap" }) + '<div class="result__text">' +
+        return h + '<div class="result">' + D.stamp(g.moveResult, { land: true, scale: 1.1, salt: "gap" }) + '<div class="result__text">' +
           (g.moveResult === "CAUGHT" ? p(C.caught.note) : "") + voteAfter(g) + "</div></div>";
       }
       case "unseal": {
@@ -2914,7 +3067,7 @@ const KEYS = (function () {
         return tabKicker(actKicker("IV")) + D.caseFolder({
           ref: cs.ref, name: cs.name, facts: cs.facts, held: heldLine(cs.name, held1), type: true,
           args: held1 ? [] : [{ who: C.cases.claimantSays, text: cs.claimant }, { who: C.cases.governmentSays, text: cs.government }]
-        }) + voteCards(g, "cards--stack") + splitLine(g, "case1") + voteAfter(g);
+        }) + voteCards(g, "cards--stack") + splitLine(g) + voteAfter(g);
       }
       case "case2": {
         var c2 = C.case2, h2 = tabKicker(actKicker("IV")) + D.caseFolder({
@@ -2922,10 +3075,10 @@ const KEYS = (function () {
         }) + voteCards(g, "cards--stack");
         if (!(g.case2 && g.case2.ruling)) return h2 + voteAfter(g);
         return h2 + '<div class="result">' + D.stamp(g.case2.ruling === "purposive" ? "CAUGHT" : "LOOPHOLE", { land: true, scale: 1.3, salt: "case2" }) +
-          '<div class="result__text">' + p(c2.options[g.case2.ruling].result) + splitLine(g, "case2") + voteAfter(g) + "</div></div>";
+          '<div class="result__text">' + p(c2.options[g.case2.ruling].result) + splitLine(g) + voteAfter(g) + "</div></div>";
       }
       case "nocase":
-        return kicker(actKicker("IV")) + '<div class="nocase">' + D.seal("COURT", 96) + p(C.noCase) + "</div>";
+        return kicker(actKicker("IV")) + '<div class="nocase">' + D.seal("COURT", 96) + p(MODEL.ruleVoid(g) ? C.noRule.card : C.noCase) + "</div>";
       case "clerk": {
         var d = g.clerkCard.decisions;
         return D.clerkCard({
@@ -2948,12 +3101,12 @@ const KEYS = (function () {
     return '<article class="gz" aria-label="' + esc(C.gazette.masthead) + '">' +
       '<header class="gz__mast"><span class="gz__date">' + esc(C.acts.monday) + '</span><h1 class="gz__name">' + esc(C.gazette.masthead) +
       '</h1><span class="gz__date gz__date--r">' + esc(C.title) + "</span></header>" +
-      '<div class="gz__top"><h2 class="gz__headline">' + esc(C.headlines[MODEL.headline(g)]) + "</h2>" + D.authorshipRow(counts, 42) + "</div>" +
+      '<div class="gz__top"><h2 class="gz__headline">' + esc(C.headlines[MODEL.headline(g)]) + "</h2>" + D.authorshipRow(counts, 34) + "</div>" +
       '<figure class="gz__plate">' + D.parliamentBuilding() + "</figure>" +
       '<div class="gz__fold" aria-hidden="true"></div>' +
       lawBookView(g, [], true) +
-      '<aside class="gz__note"><div class="gz__note-head">' + D.seal("GLIMMER", 48) + "<h3>" + esc(C.glimmerStatus.heading) + "</h3></div>" +
-      D.stamp(gs === "CLOSED_BY_COURT" ? "CAUGHT" : gs, { salt: "gz", scale: 0.9 }) + p(C.glimmerStatus[gs]) + "</aside></article>";
+      '<aside class="gz__note"><div class="gz__note-head">' + D.seal("GLIMMER", 40) + "<h3>" + esc(C.glimmerStatus.heading) + "</h3></div>" +
+      (gs === "NO_RULE" ? "" : D.stamp(gs === "CLOSED_BY_COURT" ? "CAUGHT" : gs, { salt: "gz", scale: 0.9 })) + p(C.glimmerStatus[gs]) + "</aside></article>";
   }
 
   // Same choices, three countries (spec §4.5): rows from MODEL.threeCountries.
@@ -2964,11 +3117,12 @@ const KEYS = (function () {
       row(CO.rows.options, function (c) { return CO.options[c.id]; }),
       row(CO.rows.case1, function (c) { return C.rulings[c.case1].label; })
     ];
+    rows.push(row(C.countriesExtra.rightsRow, function (c) { return C.countriesExtra.rights[c.id]; }));
     if (g.case2 && g.case2.ruling) rows.push(row(C.countriesExtra.case2Row, function (c) { return C.case2.options[c.case2].label; }));
     rows.push(row(CO.rows.ageCheck, function (c) { return CO.ageCheck[c.id]; }));
-    return kicker(C.acts.monday) + "<h2>" + D.esc(CO.title) + "</h2>" +
+    return tabKicker(C.acts.monday) + "<h2>" + D.esc(CO.title) + "</h2>" +
       D.countriesTable(cols.map(function (c) { return { label: CO.columns[c.id], live: c.live }; }), rows) +
-      p(C.countriesExtra.liveKey, "countries__key") + p(C.disclaimer, "disclaimer");
+      '<div class="countries__foot">' + p(C.countriesExtra.liveKey, "countries__key") + p(C.disclaimer, "disclaimer") + "</div>";
   }
 
   // The Close: re-vote, discussion question, End (spec §4.6).
@@ -2984,13 +3138,14 @@ const KEYS = (function () {
       case "discussion":
         if (g.discussion == null) {
           return kicker(C.acts.close) + "<h2>" + esc(X.discussionHeading) + '</h2><div class="cards cards--stack">' +
-            C.close.discussion.map(function (q, i) {
-              return D.optionCard({ letter: MACHINE.LETTERS[i], text: q, value: String(i), action: "select" });
+            MACHINE.discussionChoices(g).map(function (i) {
+              return D.optionCard({ letter: MACHINE.LETTERS[i], text: C.close.discussion[i], value: String(i), action: "select" });
             }).join("") + "</div>";
         }
         return kicker(C.acts.close) + '<div class="discussion"><p class="discussion__q">' + esc(C.close.discussion[g.discussion]) + "</p></div>";
       case "end":
         return '<div class="endpage"><h1>' + esc(C.title) + '</h1><p class="titlepage__sub">' + esc(C.subtitle) + "</p>" +
+          p(C.outcome, "outcome") +
           '<section class="data"><h2 class="data__label">' + esc(X.dataLabel) + "</h2>" +
           '<pre class="data__line tw" data-data-line>' + esc(MODEL.toData(g, endElapsed)) + "</pre>" +
           '<div class="data__actions">' + btn(X.copy, "copy-data") + btn(C.close.restart, "confirm-ask", "restart") +
@@ -3001,14 +3156,18 @@ const KEYS = (function () {
   }
 
   // Facilitator script panel (spec §7.4): what to say, timing, one likely question. Under A, Case 1 adds the lock question.
+  // On the hook and the re-vote the class is voting, so the projected panel leaves out the answer (it is in the printed notes).
   function scriptHtml(g) {
     var C = CONTENT, X = C.actExtra, e = C.script[g.screen];
     if (!e) return "";
     var q = e.q, a = e.a, say = e.say;
     if (g.screen === "case1" && g.constitution === "B" && e.qB) { q = e.qB; a = e.aB; }
+    if (g.screen === "nocase" && MODEL.ruleVoid(g)) { say = e.sayVoid; q = e.qVoid; a = e.aVoid; }
     var rows = [[X.timing, e.timing], [X.say, say]];
     if (g.screen === "case1" && g.constitution === "A") rows.push([X.ask, C.lockQuestion]);
-    rows.push([X.likely, q], [X.answer, a]);
+    if (g.screen === "gap" && g.moveResult === "COMPLIED") rows.push([X.ask, e.askComplied]);
+    rows.push([X.likely, q]);
+    if (g.screen !== "hook" && g.screen !== "revote") rows.push([X.answer, a]);
     return '<section class="script" aria-label="' + D.esc(X.script) + '"><dl>' + rows.map(function (r) {
       return "<dt>" + D.esc(r[0]) + "</dt><dd>" + D.esc(r[1]) + "</dd>";
     }).join("") + "</dl></section>";
@@ -3018,7 +3177,7 @@ const KEYS = (function () {
     var N = CONTENT.nav, sc = g.screen;
     if (sc === "hook") return N.hintHook;
     if (sc === "revote") return CONTENT.closeExtra.hintRevote;
-    if (sc === "discussion") return g.discussion == null ? CONTENT.closeExtra.hintDiscussion : CONTENT.closeExtra.hintDiscussionPicked;
+    if (sc === "discussion") return g.discussion == null ? fill(CONTENT.closeExtra.hintDiscussion, { n: MACHINE.discussionChoices(g).length }) : CONTENT.closeExtra.hintDiscussionPicked;
     if (sc === "unseal" && g.sealed && !g.opened) return CONTENT.actExtra.hintUnseal;
     if (MACHINE.isVote(sc) && !MACHINE.decision(g)) return g.tie ? N.hintTie : N.hintVote;
     return "";
@@ -3092,7 +3251,13 @@ const KEYS = (function () {
     var seen = {};
     function linked(html) { return setup ? html : D.linkTerms(html, seen); }
     D.idScope("b");
+    var bookBefore = book.__html;
     patch(book, showBook ? linked(lawBookView(g, freshKeys(g))) : "");
+    // If the Law Book is too long for its column, bring the line that has just landed into view.
+    if (book.__html !== bookBefore) {
+      var landed = book.querySelectorAll(".prov--new");
+      try { if (landed.length) landed[landed.length - 1].scrollIntoView({ block: "nearest" }); } catch (e) { /* a nicety */ }
+    }
     var stage = region("stage");
     D.idScope("s");
     stage.classList.toggle("stage--dense", place === "gap" || isCourt(g));
@@ -3202,7 +3367,17 @@ const KEYS = (function () {
     }
   }
 
+  // A typed count waiting to be committed (see the change listener); any click or key commits it first.
+  var pendingTally = null;
+  function flushTally() {
+    if (!pendingTally) return;
+    var a = pendingTally;
+    pendingTally = null;
+    dispatch(a);
+  }
+
   document.addEventListener("click", function (e) {
+    flushTally();
     var el = e.target.closest("[data-action]");
     if (!el) return;
     var type = el.getAttribute("data-action");
@@ -3269,14 +3444,18 @@ const KEYS = (function () {
     var el = e.target.closest("[data-tally]");
     if (!el) return;
     var v = parseInt(el.value, 10);
-    dispatch({ type: state.gallery ? "g-tally" : "tally", option: el.getAttribute("data-tally"), value: isNaN(v) ? 0 : v });
+    // Tab fires change before focus moves on. Re-rendering after the move keeps focus on the control Tab reached.
+    pendingTally = { type: state.gallery ? "g-tally" : "tally", option: el.getAttribute("data-tally"), value: isNaN(v) ? 0 : v };
+    window.setTimeout(flushTally, 0);
   });
 
   document.addEventListener("keydown", function (e) {
+    flushTally();
     if (e.ctrlKey || e.metaKey || e.altKey) return;
     var tag = e.target && e.target.tagName, ui = state.ui, g = state.game, play = !state.gallery;
     var action = KEYS.resolve(e.key, {
       typing: tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT",
+      tallyBox: !!(e.target && e.target.hasAttribute && e.target.hasAttribute("data-tally")), onButton: tag === "BUTTON",
       gallery: !!state.gallery, screen: play ? g.screen : null,
       confirm: ui.confirm, glossary: ui.glossary, view: ui.view,
       canSkip: play && canSkip(g),
@@ -3285,6 +3464,7 @@ const KEYS = (function () {
     if (!action) return;
     e.preventDefault();
     if (action.type === "fullscreen") { toggleFullscreen(); return; }
+    if (action.type === "tally-commit") { e.target.blur(); return; }
     if (action.type === "theme-toggle") action.effective = effectiveTheme();
     dispatch(action);
   });
