@@ -248,6 +248,112 @@ button { font: inherit; color: inherit; }
   .drawer, .drawer.is-open, .env__crack, .env__waxA, .env__waxB, .env__flap { transition: none; }
 }
 
+/* ---- Game layout: chrome, main (Law Book + stage), footer ---- */
+[hidden] { display: none !important; }
+#app.is-game { padding: 0.7rem 1.4rem 0.8rem; }
+.game { display: flex; flex-direction: column; gap: 0.8rem; min-height: calc(100vh - 1.5rem); }
+.game__main { flex: 1; display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.4rem; align-items: start; }
+.game__main.has-book { grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr); }
+.game__main.has-book > [data-region="book"] { order: -1; }
+.kicker { display: block; font-variant: small-caps; letter-spacing: 0.08em; color: var(--ink-2); }
+.lead { font-size: 1.05rem; max-width: 46rem; margin: 0.2rem 0 0.6rem; }
+.stage > * + * { margin-top: 0.8rem; }
+.stage h2 { margin: 0; }
+.stage .cards--stack { grid-template-columns: minmax(0, 1fr); gap: 0.7rem; }
+.cards--stack .card { padding: 0.6em 1.6em 0.6em 1.1em; }
+.cards--stack .card.is-selected { padding: calc(0.6em - 3px) calc(1.6em - 3px) calc(0.6em - 3px) calc(1.1em - 3px); }
+.card--static { cursor: default; }
+.card__note { display: inline-block; margin-left: 0.6em; font-variant: small-caps; letter-spacing: 0.08em; font-weight: bold; }
+.card.is-noted { border-style: dashed; border-width: 3px; }
+.voice { border-left: 3px double var(--ink); padding: 0.2rem 0 0.2rem 0.8rem; font-style: italic; font-size: 1.05rem; }
+.casting { border: 3px double var(--stamp); padding: 0.3rem 0.8rem; }
+.casting strong { font-variant: small-caps; letter-spacing: 0.08em; }
+.foot {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 0.8rem;
+  border-top: 3px double var(--rule); padding-top: 0.55rem; font-size: 0.85rem;
+}
+.foot__hint { flex: 1; color: var(--ink-2); min-width: 12rem; }
+.btn--skip { border-color: var(--rule); color: var(--ink-2); }
+.confirm { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 0.8rem; border: 3px double var(--stamp); padding: 0.3rem 0.8rem; flex: 1; }
+.confirm__msg { flex: 1; min-width: 14rem; }
+.btn--primary { border-width: 3px; border-style: double; font-weight: bold; }
+
+/* ---- Setup ---- */
+.setup { max-width: 52rem; margin: 1rem auto; }
+.setup h1 { margin-bottom: 0; }
+.setup__sub { font-style: italic; margin: 0 0 1.2rem; }
+.setup fieldset { border: 1px solid var(--rule); margin: 0 0 1rem; padding: 0.6rem 1rem 0.8rem; }
+.setup legend { font-variant: small-caps; letter-spacing: 0.08em; padding: 0 0.4em; }
+.setup__choices { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+.choice { border: 1px solid var(--ink-2); border-radius: 0; background: var(--paper-3); padding: 0.35em 0.9em; cursor: pointer; text-align: left; }
+.choice[aria-pressed="true"] { border: 3px solid var(--ink); padding: calc(0.35em - 2px) calc(0.9em - 2px); font-weight: bold; }
+.choice__box { display: inline-block; width: 0.7em; height: 0.7em; border: 2px solid currentColor; margin-right: 0.45em; vertical-align: 0; }
+.choice[aria-pressed="true"] .choice__box { background: currentColor; }
+.setup__label { display: block; margin: 0 0 1.2rem; }
+.setup__label input { display: block; margin-top: 0.3rem; font: inherit; width: min(100%, 24rem); border: 2px solid var(--ink); border-radius: 0; background: var(--paper-3); color: var(--ink); padding: 0.2em 0.4em; }
+.setup__actions { display: flex; flex-wrap: wrap; gap: 0.8rem; }
+.setup__note { color: var(--ink-2); }
+
+/* ---- Title ---- */
+.titlepage { max-width: 50rem; margin: 6vh auto 0; text-align: center; }
+.titlepage h1 { font-size: 3.2rem; margin: 0.3rem 0 0; }
+.titlepage__sub { font-size: 1.6rem; font-style: italic; margin: 0.2rem 0 1rem; }
+.titlepage__seals { display: flex; justify-content: center; gap: 1.2rem; margin-bottom: 0.4rem; }
+.titlepage__rule { border-top: 3px double var(--rule); margin: 0 auto 1rem; width: 60%; }
+.titlepage p.scen { text-align: left; margin: 0 0 0.7rem; }
+
+/* ---- Hook ---- */
+.question { font-size: 1.8rem; }
+
+/* ---- Three branches ---- */
+.branches { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.6rem; margin-top: 1.2rem; }
+.branch { text-align: center; }
+.branch p { margin: 0.6rem 0 0; font-size: 1.1rem; }
+.branch strong { font-variant: small-caps; letter-spacing: 0.08em; }
+.closing { margin-top: 1.6rem; padding-top: 0.8rem; border-top: 3px double var(--rule); text-align: center; font-size: 1.6rem; font-style: italic; }
+
+/* ---- Act I: Bills set as statutes; the hemicycle on enactment ---- */
+.cards--bills { grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: stretch; }
+.cards--bills .card { flex-direction: column; gap: 0.3em; }
+.statute { display: block; }
+.statute__title { display: block; font-variant: small-caps; letter-spacing: 0.08em; font-size: 1.15rem; font-weight: bold; border-bottom: 3px double var(--rule); padding-bottom: 0.2em; margin-bottom: 0.3em; }
+.statute__sec { display: block; margin: 0 0 0.35em; }
+.statute__means { display: block; margin-top: 0.5em; padding-top: 0.4em; border-top: 1px solid var(--rule); font-style: italic; }
+.statute__label { font-style: normal; font-variant: small-caps; letter-spacing: 0.08em; font-weight: bold; }
+.enact { text-align: center; padding: 0.4rem 0 0; }
+.enact .hemi { display: block; width: min(100%, 26rem); margin: 0 auto; }
+.enact__row { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 0.4rem 1.4rem; margin-top: 0.4rem; }
+.enact__title { font-variant: small-caps; letter-spacing: 0.08em; font-size: 1.3rem; margin: 0; }
+.enact__row .stamp--land { animation-delay: 950ms; }
+.hemi__seat { fill: transparent; }
+.hemi--fill .hemi__seat { animation: seat-fill 140ms ease-out var(--d) both; }
+@keyframes seat-fill { from { fill: transparent; } to { fill: currentColor; } }
+.lawbook__title { margin: 0; font-variant: small-caps; letter-spacing: 0.08em; color: var(--ink-2); }
+.prov--new > .prov__body { animation: prov-in 420ms ease-out both; }
+@keyframes prov-in { from { opacity: 0; transform: translateX(-1.6rem); } to { opacity: 1; transform: none; } }
+.lawbook--compact .prov > * { padding: 0.35rem 0; }
+
+/* ---- Clerk result card (reusable) ---- */
+.clerk { position: relative; border: 3px double var(--ink-2); background: var(--paper-3); padding: 1rem 1.3rem 1.2rem; }
+.clerk__head { display: flex; align-items: center; gap: 1rem; border-bottom: 1px solid var(--rule); padding-bottom: 0.6rem; }
+.clerk__head h2 { margin: 0; }
+.clerk__list { margin: 0.8rem 0 0; }
+.clerk__list > div { margin-bottom: 0.5rem; }
+.clerk__list dt { font-variant: small-caps; letter-spacing: 0.08em; color: var(--ink-2); }
+.clerk__list dd { margin: 0; font-size: 1.1rem; }
+.clerk__reason { margin: 0.6rem 0 0; }
+.clerk__label { font-variant: small-caps; letter-spacing: 0.08em; font-weight: bold; }
+.clerk__stamp { text-align: right; margin-top: 0.4rem; }
+
+@media (max-width: 900px) {
+  .game__main.has-book, .cards--bills, .branches { grid-template-columns: minmax(0, 1fr); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hemi--fill .hemi__seat { animation: none; fill: currentColor; }
+  .prov--new > .prov__body { animation: none; }
+  .enact__row .stamp--land { animation-delay: 0s; }
+}
+
 /* ---- Review gallery (?gallery=1) ---- */
 .gallery section { margin: 2.2rem 0; }
 .gallery__bar { display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: center; margin: 0.6rem 0; }
@@ -339,7 +445,9 @@ const CONTENT = {
       { author: "MIN", name: "The government", line: "ministers who run the country and put laws into action." },
       { author: "COURT", name: "The courts", line: "judges who decide what the law means when people disagree." }
     ],
-    closing: "Today, you will be all three. And a business."
+    closing: "Today, you will be all three. And a business.",
+    // Spec §4.0 screen name.
+    title: "The three branches"
   },
 
   // Spec §4.1, verbatim. sections[2] is the §3 every Bill shares.
@@ -371,7 +479,9 @@ const CONTENT = {
       ],
       means: "Parliament hands the Minister the power to decide which apps count."
     },
-    meansLabel: "What this means"
+    meansLabel: "What this means",
+    // Spec §2 "Votes" column for Act I.
+    question: "Choose a Bill"
   },
 
   // Spec §4.2. header, question, text and consequence are verbatim; regulation is the Law Book line.
@@ -533,7 +643,17 @@ const CONTENT = {
   clerkExtra: {
     authored: true,
     yes: "Yes, skip",
-    no: "No, go back"
+    no: "No, go back",
+    reason: "Reason",
+    // Labels for each decision on the Clerk's result card.
+    labels: {
+      bill: "The Bill",
+      list: "The Minister's list",
+      check: "The age check",
+      move: "Glimmer's move",
+      case1: "Case 1 ruling",
+      case2: "Case 2 ruling"
+    }
   },
 
   // Spec §4.5 and §4.5.1, verbatim.
@@ -603,6 +723,7 @@ const CONTENT = {
     before: "Before",
     after: "After",
     restartConfirm: "Restart the session? This clears every vote.",
+    restartYes: "Yes, restart",
     dataLabel: "DATA line"
   },
 
@@ -724,6 +845,27 @@ const CONTENT = {
     COURT: "The Supreme Court of Veritas",
     GLIMMER: "Veritas Ventures Ltd · Glimmer",
     CLERK: "The Clerk of Parliament"
+  },
+
+  // Footer controls and facilitator hints on the game screens.
+  nav: {
+    authored: true,
+    back: "← Back",
+    next: "Next →",
+    skipKey: "(K)",
+    actLabel: "Act {act}",
+    hintHook: "Enter the counts. Do not reveal an answer yet. Then press →.",
+    hintVote: "Enter the counts, or click the winning card. Then press →.",
+    hintTie: "Click one of the tied cards.",
+    tied: "Tied",
+    // §7.3 prompt when the facilitator clicked a winner without entering counts.
+    voiceNoCounts: "Hear from someone who voted for a different card."
+  },
+  setupExtra: {
+    authored: true,
+    heading: "Setup",
+    choose: "Live constitution:",
+    stub: "Not available in this build yet."
   },
 
   // Control labels and screen-reader text.
@@ -1304,13 +1446,58 @@ const DESIGN = (function () {
       '" font-weight="bold" fill="currentColor" style="font-family:var(--serif)">' + letter + "</text></svg>";
   }
 
-  // opts: { letter, text, selected, action, value, land }
+  // opts: { letter, text | html (pre-escaped body), selected, action, value, land, note, static }
+  // static: a display-only card (no button), e.g. the hook vote, where no answer is chosen.
   function optionCard(o) {
-    return '<button type="button" class="card' + (o.selected ? " is-selected" : "") + '" data-action="' + esc(o.action) +
+    var body = '<span class="card__mark">' + shape(o.letter) + "</span>" +
+      '<span class="card__text">' + (o.html != null ? o.html : esc(o.text)) +
+      (o.note ? '<span class="card__note">' + esc(o.note) + "</span>" : "") + "</span>";
+    if (o.static) return '<div class="card card--static">' + body + "</div>";
+    return '<button type="button" class="card' + (o.selected ? " is-selected" : "") + (o.note ? " is-noted" : "") + '" data-action="' + esc(o.action) +
       '" data-value="' + esc(o.value) + '" data-focus="card-' + esc(o.value) + '" aria-pressed="' + (o.selected ? "true" : "false") + '">' +
-      '<span class="card__mark">' + shape(o.letter) + "</span>" +
-      '<span class="card__text">' + esc(o.text) + "</span>" +
-      (o.selected ? tick(o.value, o.land) : "") + "</button>";
+      body + (o.selected ? tick(o.value, o.land) : "") + "</button>";
+  }
+
+  // A Bill set as a short statute (spec §4.1): title, §1–§3 and the "What this means" line.
+  function statute(b) {
+    return '<span class="statute"><span class="statute__title">' + esc(b.title) + "</span>" +
+      b.sections.map(function (t, i) {
+        return '<span class="statute__sec"><span class="prov__num">§' + (i + 1) + "</span>" + esc(t) + "</span>";
+      }).join("") +
+      '<span class="statute__means"><span class="statute__label">' + esc(CONTENT.bills.meansLabel) + ":</span> " + esc(b.means) + "</span></span>";
+  }
+
+  // Parliament's hemicycle. filled: seats fill left to right (staggered), as the Bill passes.
+  function hemicycle(filled) {
+    var cx = 150, cy = 150, tiers = [58, 76, 94, 112, 130], seats = [], i, j;
+    for (i = 0; i < tiers.length; i++) {
+      var n = Math.round(tiers[i] / 7.2);
+      for (j = 0; j < n; j++) {
+        var a = Math.PI - Math.PI * (j + 0.5) / n;
+        seats.push({ x: cx + tiers[i] * Math.cos(a), y: cy - tiers[i] * Math.sin(a), a: a });
+      }
+    }
+    seats.sort(function (p, q) { return q.a - p.a; });
+    var total = 900;
+    return '<svg class="hemi' + (filled ? " hemi--fill" : "") + '" viewBox="0 0 300 165" aria-hidden="true" style="color:var(--parl)">' +
+      '<g stroke="currentColor" stroke-width="1.3">' + seats.map(function (p, k) {
+        return '<circle class="hemi__seat" cx="' + n1(p.x) + '" cy="' + n1(p.y) + '" r="5" style="--d:' + Math.round(total * k / seats.length) + 'ms"/>';
+      }).join("") + "</g>" +
+      '<g fill="none" stroke="currentColor"><rect x="138" y="132" width="24" height="12" stroke-width="1.2"/>' +
+      '<path stroke-width="2" d="M12 150H288"/><path stroke-width="0.8" d="M20 155H280M30 160H270"/></g></svg>';
+  }
+
+  // Reusable Clerk result card (spec §7.5): seal, the decisions taken, a one-line reason, the stamp.
+  // c: { kicker, decisions: [{ label, text }], reason }
+  function clerkCard(c) {
+    return '<article class="clerk">' +
+      '<header class="clerk__head">' + seal("CLERK", 112) + '<div><span class="kicker">' + esc(c.kicker) + "</span>" +
+      "<h2>" + esc(CONTENT.seals.CLERK) + "</h2></div></header>" +
+      '<dl class="clerk__list">' + c.decisions.map(function (d) {
+        return "<div><dt>" + esc(d.label) + "</dt><dd>" + esc(d.text) + "</dd></div>";
+      }).join("") + "</dl>" +
+      '<p class="clerk__reason"><span class="clerk__label">' + esc(CONTENT.clerkExtra.reason) + ":</span> " + esc(c.reason) + "</p>" +
+      '<div class="clerk__stamp">' + stamp("CLERK", { land: true, scale: 1.5, salt: "card" }) + "</div></article>";
   }
 
   // options: [{ letter }]; counts: { A: n, ... }
@@ -1328,17 +1515,19 @@ const DESIGN = (function () {
     }).join("") + "</div>";
   }
 
-  // provisions: [{ author, num, text, stamps: [key], struck }]
-  function lawBook(provisions) {
+  // provisions: [{ author, num, text, stamps: [key], struck, land }]; title: optional subheading (the Act's title).
+  // land: the provision has just entered the Law Book; it slides in and its stamps land.
+  function lawBook(provisions, title) {
     return '<article class="lawbook" aria-label="' + esc(CONTENT.chrome.lawBook) + '">' +
-      '<header class="lawbook__head"><h2>' + esc(CONTENT.chrome.lawBook) + "</h2></header>" +
+      '<header class="lawbook__head"><h2>' + esc(CONTENT.chrome.lawBook) + "</h2>" +
+      (title ? '<p class="lawbook__title">' + esc(title) + "</p>" : "") + "</header>" +
       '<ol class="lawbook__list">' + provisions.map(function (p, i) {
-        return '<li class="prov' + (p.struck ? " prov--struck" : "") + '">' +
+        return '<li class="prov' + (p.struck ? " prov--struck" : "") + (p.land ? " prov--new" : "") + '">' +
           '<div class="prov__gutter">' + seal(p.author, 52) + "</div>" +
           '<div class="prov__body">' + (p.num ? '<span class="prov__num">' + esc(p.num) + "</span>" : "") +
           '<span class="prov__text">' + esc(p.text) + "</span></div>" +
           '<div class="prov__stamps">' + (p.stamps || []).map(function (k) {
-            return stamp(k, { salt: "lb" + i, scale: 0.62 });
+            return stamp(k, { salt: "lb" + i, scale: 0.62, land: p.land });
           }).join("") + "</div></li>";
       }).join("") + "</ol></article>";
   }
@@ -1443,7 +1632,8 @@ const DESIGN = (function () {
 
   return {
     SEALS: SEALS, esc: esc, hypotrochoid: hypotrochoid, seal: seal, stamp: stamp, stampAngle: stampAngle, tick: tick,
-    shape: shape, optionCard: optionCard, tallyStrip: tallyStrip, lawBook: lawBook, caseFolder: caseFolder,
+    shape: shape, optionCard: optionCard, statute: statute, hemicycle: hemicycle, clerkCard: clerkCard,
+    tallyStrip: tallyStrip, lawBook: lawBook, caseFolder: caseFolder,
     envelope: envelope, ribbon: ribbon, rolePlate: rolePlate, formatClock: formatClock, clockLevel: clockLevel,
     clock: clock, glossaryDrawer: glossaryDrawer
   };
@@ -1709,7 +1899,7 @@ const MACHINE = (function () {
 
   var STAGE_ROLES = [["PARL", "PARL"], ["MIN", "MIN"], ["GLIMMER", "GLIMMER"], ["COURT", "COURT"], ["CITIZENS", null]];
   // UI-only actions do not enter the Back history.
-  var UI_ACTIONS = { "glossary-toggle": 1, "glossary-close": 1, "theme-toggle": 1, "confirm-ask": 1, "confirm-no": 1 };
+  var UI_ACTIONS = { "glossary-toggle": 1, "glossary-close": 1, "theme-toggle": 1, "confirm-ask": 1, "confirm-no": 1, stub: 1 };
   var startedAt = Date.now();
   var urlSeed = null;
   try {
@@ -1720,7 +1910,7 @@ const MACHINE = (function () {
   var state = {
     screen: isGallery ? "gallery" : "game",
     history: [],
-    ui: { glossary: false, theme: null, confirm: null },
+    ui: { glossary: false, theme: null, confirm: null, note: null },
     game: MACHINE.initial({ seed: urlSeed }),
     gallery: isGallery ? { stage: 0, selected: "C", tally: { A: 3, B: 5, C: 14, D: 2 }, envOpen: false, landN: 0 } : null
   };
@@ -1736,6 +1926,8 @@ const MACHINE = (function () {
       case "theme-toggle": return assign(s, { ui: assign(ui, { theme: a.effective === "dark" ? "light" : "dark" }) });
       case "confirm-ask": return assign(s, { ui: assign(ui, { confirm: a.value }) });
       case "confirm-no": return ui.confirm ? assign(s, { ui: assign(ui, { confirm: null }) }) : s;
+      // Setup stubs for Print voting cards and Teacher notes (built in a later phase).
+      case "stub": return assign(s, { ui: assign(ui, { note: a.value }) });
     }
     if (!g) {
       var game = MACHINE.step(s.game, a);
@@ -1823,20 +2015,43 @@ const MACHINE = (function () {
     }
   }
 
-  // Phase 2 debug view: the state machine, unstyled beyond the Phase 1 components.
-  var SCREEN_NAMES = {
-    setup: "Setup", title: "Title", hook: "Hook vote", branches: "Three branches", bills: "Act I Bills",
-    list: "Act II List", check: "Act II Age check", gap: "Act III Gap", unseal: "Act IV Unseal", case1: "Case 1",
-    case2: "Case 2", nocase: "No-case card", clerk: "Clerk result", gazette: "Gazette", countries: "Three countries",
-    revote: "Re-vote", discussion: "Discussion", end: "End"
+  // Ribbon stage and role plate per screen (spec §2, §8). The Opening and the Close carry no stage or role.
+  var STAGE_OF = { bills: 0, list: 1, check: 1, gap: 2, unseal: 3, case1: 3, case2: 3, nocase: 3, gazette: 4, countries: 4 };
+  var ROLE_OF = {
+    bills: ["PARL", "PARL"], list: ["MIN", "MIN"], check: ["MIN", "MIN"], gap: ["GLIMMER", "GLIMMER"],
+    unseal: ["COURT", "COURT"], case1: ["COURT", "COURT"], case2: ["COURT", "COURT"], nocase: ["COURT", "COURT"],
+    gazette: ["CITIZENS", null], countries: ["CITIZENS", null]
   };
+  // The Clerk's card sits in the act it decided.
+  var ACT_SCREEN = { I: "bills", II: "check", III: "gap", IV: "case1" };
+  // Law Book lines added by each decision (ids from MODEL.lawBook).
+  var DECISION_LINES = { bill: ["act-1", "act-2", "act-3"], list: ["reg-list"], check: ["reg-check"], case1: ["prec-1"], case2: ["prec-2"] };
 
+  function placeOf(g) { return g.screen === "clerk" ? ACT_SCREEN[g.clerkCard.act] : g.screen; }
+
+  function p(text, cls) { return "<p" + (cls ? ' class="' + cls + '"' : "") + ">" + D.esc(text) + "</p>"; }
+  function btn(label, action, value, cls, attrs) {
+    return '<button type="button" class="btn' + (cls ? " " + cls : "") + '" data-action="' + action + '"' +
+      (value != null ? ' data-value="' + D.esc(value) + '"' : "") + ' data-focus="' + action + (value != null ? "-" + D.esc(value) : "") + '"' +
+      (attrs ? " " + attrs : "") + ">" + D.esc(label) + "</button>";
+  }
+  function fill(t, v) { return t.replace(/\{(\w+)\}/g, function (m, k) { return v[k] != null ? v[k] : m; }); }
+  function kicker(text) { return '<span class="kicker">' + D.esc(text) + "</span>"; }
+  function actKicker(act) { return fill(CONTENT.nav.actLabel, { act: act }) + " · " + CONTENT.acts[act]; }
+
+  // Skip Act is offered only while the act still has a vote to decide (and, in Act IV, once unsealed).
+  function canSkip(g) {
+    var act = MACHINE.ACT_OF[g.screen];
+    if (!act || (act === "IV" && g.sealed && !g.opened)) return false;
+    return Object.keys(MODEL.autoDecide(act, g)).length > 0;
+  }
+
+  // Short label for one option on a vote screen.
   function optionText(g, screen, value) {
     var C = CONTENT;
     switch (screen) {
       case "hook": case "revote": return C.hook.options[MACHINE.LETTERS.indexOf(value)].text;
-      case "bills": return C.bills[value].title + " — §1 " + C.bills[value].sections[0] + " §2 " + C.bills[value].sections[1] +
-        " §3 " + C.bills[value].sections[2] + " " + C.bills.meansLabel + ": " + C.bills[value].means;
+      case "bills": return C.bills[value].title;
       case "list": return C.lists[value].text;
       case "check": return C.checks[value].text;
       case "gap": return C.moves[value].text;
@@ -1846,39 +2061,129 @@ const MACHINE = (function () {
     return value;
   }
 
-  function p(text) { return "<p>" + D.esc(text) + "</p>"; }
-  function btn(label, action, value) {
-    return '<button type="button" class="btn" data-action="' + action + '"' + (value != null ? ' data-value="' + D.esc(value) + '"' : "") + ">" + D.esc(label) + "</button>";
+  // One decision, as the Clerk's card names it.
+  function decisionText(g, key, v) {
+    var C = CONTENT;
+    switch (key) {
+      case "bill": return C.bills[v].title;
+      case "list": return C.lists[v].text;
+      case "check": return C.checks[v].text;
+      case "move": return C.moves[v].text;
+      case "case1": return C.rulings[v.ruling].label;
+      case "case2": return C.case2.options[v.ruling].label;
+    }
+    return String(v);
   }
-  function fill(t, v) { return t.replace(/\{(\w+)\}/g, function (m, k) { return v[k] != null ? v[k] : m; }); }
 
-  function lawBookView(g) {
+  // Decisions whose Law Book lines have just arrived on this screen.
+  function freshKeys(g) {
+    if (g.screen === "clerk") return Object.keys(g.clerkCard.decisions);
+    return MACHINE.decision(g) ? [MACHINE.VOTE_KEY[g.screen]] : [];
+  }
+
+  function lawBookView(g, keys) {
+    var land = {};
+    (keys || []).forEach(function (k) { (DECISION_LINES[k] || []).forEach(function (id) { land[id] = true; }); });
     return D.lawBook(MODEL.lawBook(g).map(function (pr) {
       var st = pr.status === "PRECEDENT" ? [] : [pr.status];
       if (pr.byClerk) st.push("CLERK");
-      return { author: pr.author, num: pr.num, text: pr.text, stamps: st, struck: pr.status === "VOID" };
-    }));
+      return { author: pr.author, num: pr.num, text: pr.text, stamps: st, struck: pr.status === "VOID", land: !!land[pr.id] };
+    }), CONTENT.bills[g.bill].title);
   }
 
-  function screenBody(g) {
+  // Option cards for the current vote. The hook and re-vote cards are display-only: no answer is chosen.
+  function voteCards(g, cls) {
+    var sc = g.screen, won = MACHINE.decision(g), tie = g.tie || [];
+    return '<div class="cards' + (cls ? " " + cls : "") + '">' + MACHINE.options(g).map(function (o) {
+      var c = {
+        letter: o.letter, value: o.value, action: "select", selected: won === o.value, land: true,
+        note: tie.indexOf(o.letter) !== -1 ? CONTENT.nav.tied : o.locked ? o.lockReason : null,
+        static: sc === "hook" || sc === "revote"
+      };
+      if (sc === "bills") c.html = D.statute(CONTENT.bills[o.value]); else c.text = optionText(g, sc, o.value);
+      return D.optionCard(c);
+    }).join("") + "</div>";
+  }
+
+  // §7.3 minority voice, after the result.
+  function voice(g) {
+    var C = CONTENT, st = MACHINE.standings(g), mi = MACHINE.minority(g);
+    var text = !st.total ? C.nav.voiceNoCounts :
+      mi ? fill(C.vote.minority, { option: mi.letter + " — " + optionText(g, g.screen, mi.value) }) : C.vote.unanimous;
+    return p(text, "voice");
+  }
+
+  // Tally strip before the result; the Speaker's casting vote on a tie; the minority voice after.
+  function voteAfter(g) {
+    var C = CONTENT, h = "";
+    if (MACHINE.decision(g)) return voice(g);
+    h += D.tallyStrip(MACHINE.options(g).filter(function (o) { return !o.locked; }), MACHINE.counts(g), "tally");
+    if (g.tie) h += '<p class="casting"><strong>' + D.esc(C.vote.casting) + ":</strong> " + D.esc(C.voteExtra.tie) + "</p>";
+    return h;
+  }
+
+  function setupHtml(g) {
+    var C = CONTENT, S = C.setupExtra, esc = D.esc;
+    function choice(label, action, value, on) {
+      return '<button type="button" class="choice" data-action="' + action + '" data-value="' + value + '" data-focus="' + action + "-" + value +
+        '" aria-pressed="' + on + '"><span class="choice__box" aria-hidden="true"></span>' + esc(label) + "</button>";
+    }
+    var h = '<div class="setup"><h1>' + esc(C.title) + '</h1><p class="setup__sub">' + esc(C.subtitle) + "</p><h2>" + esc(S.heading) + "</h2>";
+    h += "<fieldset><legend>" + esc(C.setup.constitution) + '</legend><div class="setup__choices">' +
+      ["random", "sealedChoose", "open"].map(function (m) { return choice(C.setup.modes[m], "set-mode", m, g.mode === m); }).join("") + "</div></fieldset>";
+    if (g.mode !== "random") {
+      h += "<fieldset><legend>" + esc(S.choose) + '</legend><div class="setup__choices">' + ["A", "B"].map(function (c) {
+        return choice(c + " — " + C.constitutions[c].name + " (" + C.constitutions[c].inspired + ")", "set-constitution", c, g.choice === c);
+      }).join("") + "</div></fieldset>";
+    }
+    h += '<label class="setup__label">' + esc(C.setup.classLabel) +
+      '<input type="text" data-field="label" data-focus="label" autocomplete="off"></label>';
+    h += '<div class="setup__actions">' + btn(C.setup.start, "start", null, "btn--primary") +
+      btn(C.setup.printCards, "stub", "print") + btn(C.setup.teacherNotes, "stub", "notes") + "</div>";
+    if (state.ui.note) h += p(S.stub, "setup__note");
+    return h + "</div>";
+  }
+
+  function stageHtml(g) {
+    var C = CONTENT, esc = D.esc, sc = g.screen;
+    switch (sc) {
+      case "setup": return setupHtml(g);
+      case "title":
+        return '<div class="titlepage"><h1>' + esc(C.title) + '</h1><p class="titlepage__sub">' + esc(C.subtitle) + "</p>" +
+          '<div class="titlepage__rule"></div>' + C.scenario.map(function (t) { return p(t, "scen"); }).join("") + "</div>";
+      case "hook":
+        return kicker(C.acts.opening) + '<h2 class="question">' + esc(C.hook.question) + "</h2>" + voteCards(g) + voteAfter(g);
+      case "branches":
+        return kicker(C.acts.opening) + "<h2>" + esc(C.branches.title) + '</h2><div class="branches">' + C.branches.items.map(function (b) {
+          return '<div class="branch">' + D.seal(b.author, 170) + "<p><strong>" + esc(b.name) + "</strong> — " + esc(b.line) + "</p></div>";
+        }).join("") + '</div><p class="closing">' + esc(C.branches.closing) + "</p>";
+      case "bills":
+        if (!g.bill) return kicker(actKicker("I")) + "<h2>" + esc(C.bills.question) + "</h2>" + voteCards(g, "cards--bills") + voteAfter(g);
+        // The result: the Bill has moved into the Law Book; the chamber fills and ENACTED lands.
+        return kicker(actKicker("I")) + '<div class="enact">' + D.hemicycle(true) + '<div class="enact__row"><p class="enact__title">' +
+          esc(C.bills[g.bill].title) + "</p>" + D.stamp("ENACTED", { land: true, scale: 1.8, salt: "enact" }) + "</div></div>" + voteAfter(g);
+      case "list": case "check":
+        return kicker(actKicker("II")) + p(C.minister.header, "lead") +
+          "<h2>" + esc(sc === "list" ? C.minister.listQuestion : C.minister.checkQuestion) + "</h2>" + voteCards(g, "cards--stack") + voteAfter(g);
+      case "clerk": {
+        var d = g.clerkCard.decisions;
+        return D.clerkCard({
+          kicker: actKicker(g.clerkCard.act),
+          decisions: Object.keys(d).map(function (k) { return { label: C.clerkExtra.labels[k], text: decisionText(g, k, d[k]) }; }),
+          reason: C.clerk.reasons[g.clerkCard.act]
+        });
+      }
+    }
+    return debugBody(g);
+  }
+
+  // Screens built in later phases: a plain working view so the whole session stays runnable.
+  function debugBody(g) {
     var C = CONTENT, h = "", sc = g.screen;
     switch (sc) {
-      case "setup":
-        h += p(C.setup.constitution) + ["random", "sealedChoose", "open"].map(function (m) {
-          return btn((g.mode === m ? "● " : "") + C.setup.modes[m], "set-mode", m);
-        }).join(" ");
-        if (g.mode !== "random") h += " " + ["A", "B"].map(function (c) { return btn((g.choice === c ? "● " : "") + c + " — " + C.constitutions[c].name, "set-constitution", c); }).join(" ");
-        h += '<p><label>' + D.esc(C.setup.classLabel) + ' <input type="text" data-field="label" value="' + D.esc(g.label) + '"></label></p>';
-        h += btn(C.setup.start, "start");
-        break;
-      case "title": h += "<h1>" + D.esc(C.title) + "</h1>" + p(C.subtitle) + C.scenario.map(p).join(""); break;
-      case "hook": case "revote": h += "<h2>" + D.esc(C.hook.question) + "</h2>"; break;
-      case "branches": h += C.branches.items.map(function (b) { return p(b.name + " — " + b.line); }).join("") + p(C.branches.closing); break;
-      case "list": h += p(C.minister.header) + "<h2>" + D.esc(C.minister.listQuestion) + "</h2>"; break;
-      case "check": h += p(C.minister.header) + "<h2>" + D.esc(C.minister.checkQuestion) + "</h2>"; break;
       case "gap": h += "<h2>" + D.esc(C.gap.prompt) + "</h2>"; break;
       case "unseal":
-        h += !g.opened ? D.envelope(false) + p("→") :
+        h += !g.opened ? D.envelope(false) :
           "<h2>" + D.esc(g.constitution + " — " + C.constitutions[g.constitution].name + " (" + C.constitutions[g.constitution].inspired + ")") + "</h2>" +
           p(C.constitutions[g.constitution].summary) + p(C.unseal.line);
         break;
@@ -1890,10 +2195,6 @@ const MACHINE = (function () {
       }
       case "case2": h += "<h2>" + D.esc(C.case2.name) + "</h2>" + p(C.case2.question[g.move]); break;
       case "nocase": h += p(C.noCase); break;
-      case "clerk":
-        h += D.seal("CLERK", 96) + D.stamp("CLERK") + "<h2>" + D.esc("Act " + g.clerkCard.act + " — " + C.acts[g.clerkCard.act]) + "</h2>" +
-          "<pre>" + D.esc(JSON.stringify(g.clerkCard.decisions)) + "</pre>" + p(C.clerk.reasons[g.clerkCard.act]) + p(C.clerk.script);
-        break;
       case "gazette": {
         var a = MODEL.authorship(MODEL.lawBook(g)), gs = MODEL.glimmerStatus(g);
         h += "<h1>" + D.esc(C.gazette.masthead) + "</h1><h2>" + D.esc(C.headlines[MODEL.headline(g)]) + "</h2>" +
@@ -1913,51 +2214,87 @@ const MACHINE = (function () {
           p(C.disclaimer);
         break;
       }
+      case "revote": h += "<h2>" + D.esc(C.hook.question) + "</h2>"; break;
       case "discussion":
         h += C.close.discussion.map(function (q, i) { return D.optionCard({ letter: MACHINE.LETTERS[i], text: q, value: String(i), action: "select", selected: g.discussion === i }); }).join("");
         break;
-      case "end": h += "<pre>" + D.esc(MODEL.toData(g, elapsed())) + "</pre>" + btn(C.close.restart, "confirm-ask", "restart"); break;
+      case "end": h += '<pre class="tw">' + D.esc(MODEL.toData(g, elapsed())) + "</pre>"; break;
     }
-
-    if (MACHINE.isVote(sc) || sc === "hook" || sc === "revote") {
+    if (MACHINE.hasTally(sc)) {
+      h += voteCards(g, MACHINE.isVote(sc) ? "cards--stack" : "") + voteAfter(g);
       var won = MACHINE.decision(g);
-      h += '<div class="cards">' + MACHINE.options(g).map(function (o) {
-        return D.optionCard({ letter: o.letter, text: optionText(g, sc, o.value) + (o.locked ? " [locked] " + o.lockReason : ""),
-          value: o.value, action: "select", selected: won === o.value, land: true });
-      }).join("") + "</div>";
-      if (!won) h += D.tallyStrip(MACHINE.options(g).filter(function (o) { return !o.locked; }), MACHINE.counts(g), "tally");
-      if (g.tie) h += p(C.vote.casting + ": " + C.voteExtra.tie + " (" + g.tie.join(", ") + ")");
-      if (won) {
-        var st = MACHINE.standings(g), mi = MACHINE.minority(g);
-        if (st.total) h += p(mi ? fill(C.vote.minority, { option: mi.letter }) : C.vote.unanimous);
-        if (sc === "case1" || sc === "case2") {
-          var sp = g[sc].split;
-          if (sp && sp[1]) h += p(fill(C.split, { n: sp[0], m: sp[1] }) + " " + C.dissent);
-        }
-        if (sc === "gap") h += D.stamp(g.moveResult, { land: true });
+      if (won && (sc === "case1" || sc === "case2")) {
+        var sp = g[sc].split;
+        if (sp && sp[1]) h += p(fill(C.split, { n: sp[0], m: sp[1] }) + " " + C.dissent);
       }
+      if (won && sc === "gap") h += D.stamp(g.moveResult, { land: true });
     }
     return h;
   }
 
-  function renderGame(app) {
-    app.__gallery = false;
-    var g = state.game, C = CONTENT, act = MACHINE.ACT_OF[g.screen], ui = state.ui;
-    var h = '<div class="debug"><p class="tw">[' + D.esc(SCREEN_NAMES[g.screen]) + "] " +
-      (g.constitution && (!g.sealed || g.opened) ? "const=" + g.constitution + " " : "") +
-      "votes=" + MACHINE.classVotes(g) + " skipped=" + (g.skipped.join(",") || "none") + "</p>";
-    h += screenBody(g);
-    if (g.screen !== "setup") {
-      h += '<p class="debug__bar">' + btn("← Back", "back") + " " + (g.screen !== "end" ? btn("Next →", "next") : "") +
-        (act ? " " + btn(C.clerk.button, "confirm-ask", "skip") : "") + "</p>";
-    }
+  function hint(g) {
+    var N = CONTENT.nav, sc = g.screen;
+    if (sc === "hook") return N.hintHook;
+    if (MACHINE.isVote(sc) && !MACHINE.decision(g)) return g.tie ? N.hintTie : N.hintVote;
+    return "";
+  }
+
+  function footHtml(g) {
+    var C = CONTENT, ui = state.ui, act = MACHINE.ACT_OF[g.screen];
     if (ui.confirm) {
-      var msg = ui.confirm === "skip" ? fill(C.clerk.confirm, { act: act }) + (act === "IV" ? " " + C.clerk.warnIV : "") : C.closeExtra.restartConfirm;
-      h += p(msg) + btn(C.clerkExtra.yes, ui.confirm === "skip" ? "skipAct" : "restart") + " " + btn(C.clerkExtra.no, "confirm-no");
+      var skip = ui.confirm === "skip";
+      var msg = skip ? fill(C.clerk.confirm, { act: act }) + (act === "IV" ? " " + C.clerk.warnIV : "") : C.closeExtra.restartConfirm;
+      return '<div class="confirm" role="group"><span class="confirm__msg">' + D.esc(msg) + "</span>" +
+        btn(skip ? C.clerkExtra.yes : C.closeExtra.restartYes, skip ? "skipAct" : "restart", null, "btn--primary", "data-autofocus") +
+        btn(C.clerkExtra.no, "confirm-no") + "</div>";
     }
-    if (g.bill) h += lawBookView(g);
-    h += "</div>";
-    patch(app, h);
+    var h = btn(C.nav.back, "back") + (g.screen !== "end" ? btn(C.nav.next, "next", null, "btn--primary") : "");
+    h += '<span class="foot__hint">' + D.esc(hint(g)) + "</span>";
+    if (canSkip(g)) h += btn(C.clerk.button + " " + C.nav.skipKey, "confirm-ask", "skip", "btn--skip");
+    return h;
+  }
+
+  function renderGame(app) {
+    var g = state.game;
+    if (!app.__game) {
+      app.__game = true;
+      app.className = "is-game";
+      app.innerHTML = '<div class="game"><header class="chrome" data-region="chrome"></header>' +
+        '<main class="game__main" data-region="main"><section class="stage" data-region="stage"></section><aside data-region="book"></aside></main>' +
+        '<footer class="foot" data-region="foot"></footer></div>';
+    }
+    function region(k) { return app.querySelector('[data-region="' + k + '"]'); }
+    var chrome = region("chrome"), main = region("main"), book = region("book"), foot = region("foot");
+    var place = placeOf(g), setup = g.screen === "setup";
+
+    chrome.hidden = setup;
+    if (!setup) {
+      if (!chrome.__mounted) {
+        chrome.__mounted = true;
+        chrome.innerHTML = D.ribbon() + '<div data-part="plate"></div>' + D.clock(elapsed(), true);
+      }
+      setRibbon(chrome.querySelector(".ribbon"), STAGE_OF.hasOwnProperty(place) ? STAGE_OF[place] : -1);
+      var role = ROLE_OF[place];
+      patch(chrome.querySelector('[data-part="plate"]'), role ? D.rolePlate(role[0], role[1]) : "");
+    }
+
+    // Stage and Law Book are patched separately, so a tally change does not re-land the Law Book's stamps.
+    var showBook = !!g.bill;
+    main.classList.toggle("has-book", showBook);
+    book.hidden = !showBook;
+    patch(book, showBook ? lawBookView(g, freshKeys(g)) : "");
+    var stage = region("stage");
+    patch(stage, stageHtml(g));
+    // The label's value stays out of the markup, so committing it (on blur) does not rebuild Setup
+    // between mousedown and click on Start.
+    var label = stage.querySelector('[data-field="label"]');
+    if (label && label !== document.activeElement && label.value !== g.label) label.value = g.label;
+    foot.hidden = setup;
+    patch(foot, setup ? "" : footHtml(g));
+    if (state.ui.confirm && !foot.contains(document.activeElement)) {
+      var yes = foot.querySelector("[data-autofocus]");
+      if (yes) yes.focus();
+    }
   }
 
   var SLOTS = ["chrome", "tokens", "seals", "stamps", "cards", "tally", "lawBook", "folders", "envelope", "glossary", "themes"];
@@ -2074,10 +2411,17 @@ const MACHINE = (function () {
     var typing = tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT";
     if (e.key === "Escape") { dispatch({ type: state.ui.confirm ? "confirm-no" : "glossary-close" }); return; }
     if (typing) return;
+    // One-step confirmation: Enter or Y confirms, N cancels; other keys wait.
+    if (state.ui.confirm && !state.gallery) {
+      if (e.key === "Enter" || e.key === "y" || e.key === "Y") { e.preventDefault(); dispatch({ type: state.ui.confirm === "skip" ? "skipAct" : "restart" }); }
+      else if (e.key === "n" || e.key === "N") { e.preventDefault(); dispatch({ type: "confirm-no" }); }
+      return;
+    }
     if (e.key === "g" || e.key === "G") { e.preventDefault(); dispatch({ type: "glossary-toggle" }); }
     else if (e.key === "d" || e.key === "D") { e.preventDefault(); dispatch({ type: "theme-toggle", effective: effectiveTheme() }); }
     if (state.gallery) return;
     var g = state.game;
+    if (g.screen === "setup") return;
     if (e.key === "ArrowRight" || e.key === " ") { e.preventDefault(); dispatch({ type: "next" }); }
     else if (e.key === "ArrowLeft") { e.preventDefault(); dispatch({ type: "back" }); }
     else if (e.key >= "1" && e.key <= "4") {
@@ -2085,7 +2429,7 @@ const MACHINE = (function () {
       if (g.screen === "discussion") dispatch({ type: "select", value: e.key - 1 });
       else if (o) dispatch({ type: "select", value: o.value });
     }
-    else if ((e.key === "k" || e.key === "K") && MACHINE.ACT_OF[g.screen]) { e.preventDefault(); dispatch({ type: "confirm-ask", value: "skip" }); }
+    else if ((e.key === "k" || e.key === "K") && canSkip(g)) { e.preventDefault(); dispatch({ type: "confirm-ask", value: "skip" }); }
     else if (e.key === "r" || e.key === "R") { e.preventDefault(); dispatch({ type: "confirm-ask", value: "restart" }); }
   });
 

@@ -156,3 +156,56 @@ test("dark theme is wired under the media query and data-theme", () => {
 test("authored CONTENT groups are flagged", () => {
   for (const k of ["seals", "ui", "gallery"]) assert.equal(CONTENT[k].authored, true, k);
 });
+
+test("option card: html body, display-only (static) cards and a note", () => {
+  const html = DESIGN.optionCard({ letter: "A", html: "<b>x</b>", value: "v", action: "select" });
+  assert.ok(html.includes("<b>x</b>") && html.startsWith("<button"));
+  const stat = DESIGN.optionCard({ letter: "D", text: "Not sure", static: true });
+  assert.ok(stat.startsWith('<div class="card card--static">') && !stat.includes("data-action"));
+  assert.ok(stat.includes(">D</text>"), "static card keeps letter and shape");
+  const tied = DESIGN.optionCard({ letter: "B", text: "x", value: "v", action: "select", note: "Tied" });
+  assert.ok(tied.includes('class="card__note">Tied<') && tied.includes("is-noted"));
+});
+
+test("statute sets each Bill with §1–§3 and the What this means line, verbatim", () => {
+  for (const id of ["b_narrow", "b_tough", "b_trust"]) {
+    const b = CONTENT.bills[id];
+    const html = DESIGN.statute(b);
+    assert.ok(html.includes(DESIGN.esc(b.title)));
+    b.sections.forEach((t, i) => assert.ok(html.includes(`§${i + 1}</span>${DESIGN.esc(t)}`), `${id} §${i + 1}`));
+    assert.ok(html.includes(`${CONTENT.bills.meansLabel}:</span> ${DESIGN.esc(b.means)}`));
+  }
+});
+
+test("hemicycle: seats fill only when asked, staggered", () => {
+  const empty = DESIGN.hemicycle(false), full = DESIGN.hemicycle(true);
+  assert.ok(!empty.includes("hemi--fill") && full.includes("hemi--fill"));
+  const seats = (full.match(/class="hemi__seat"/g) || []).length;
+  assert.ok(seats > 30, `${seats} seats`);
+  assert.equal(new Set(full.match(/--d:\d+ms/g)).size > 10, true);
+});
+
+test("Clerk result card: seal, decisions, reason and a landing DECIDED BY THE CLERK stamp", () => {
+  const html = DESIGN.clerkCard({ kicker: "Act II · Run the law", decisions: [{ label: "The age check", text: "A face scan" }], reason: "Because." });
+  assert.ok(html.includes("seal--CLERK"));
+  assert.ok(html.includes("<dt>The age check</dt><dd>A face scan</dd>"));
+  assert.ok(html.includes(`${CONTENT.clerkExtra.reason}:</span> Because.`));
+  assert.ok(html.includes('aria-label="DECIDED BY THE CLERK"') && html.includes("stamp--land"));
+});
+
+test("Law Book: optional title; new lines slide in and their stamps land", () => {
+  const html = DESIGN.lawBook([
+    { author: "PARL", num: "§1", text: "Old.", stamps: ["ENACTED"] },
+    { author: "MIN", num: "", text: "New.", stamps: ["REGULATION_IN_FORCE", "CLERK"], land: true },
+  ], "The Clear Lines Bill");
+  assert.ok(html.includes('<p class="lawbook__title">The Clear Lines Bill</p>'));
+  assert.equal((html.match(/prov--new/g) || []).length, 1);
+  assert.equal((html.match(/stamp--land/g) || []).length, 2);
+});
+
+test("Phase 3 authored CONTENT groups are flagged", () => {
+  for (const k of ["nav", "setupExtra", "clerkExtra"]) assert.equal(CONTENT[k].authored, true, k);
+  assert.equal(CONTENT.branches.title, "The three branches");
+  assert.equal(CONTENT.bills.question, "Choose a Bill");
+  assert.equal(CONTENT.clerk.button, "Skip act — the Clerk decides");
+});
