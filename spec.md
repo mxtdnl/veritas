@@ -128,24 +128,24 @@ Why `m_lite` works: Bills 1 and 3 ban *accounts*; Glimmer Lite has none. Bill 2 
 | `b_tough` | *Marlow v Attorney General* | Jo Marlow, 15, was charged with a crime for using a photo app. | "A criminal record at 15 can follow you for life. The punishment doesn't fit." | "Parliament was elected to protect children. Without a real penalty, the rule means nothing." | "Only deliberate, repeated rule-breaking after a written warning is a crime." |
 | `b_narrow`, `b_trust` | *Kim v Attorney General* | Rae Kim, 15, runs a popular wildlife-photo account. It has been closed. | "Young people have a right to express themselves and join communities." | "Parliament judged the harm to children to be greater." | "Under-16s may still have accounts that only post to approved school or club groups." |
 
-*Marlow* challenges §2 (the crime); *Kim* challenges §1 (the rule). Reinterpret replaces, and Strike down voids, that section only.
+*Marlow* challenges §2 (the crime); *Kim* challenges §1 (the rule). Reinterpret keeps that section's words and adds the court's reading beneath them ("Read by the Court: …"), so the change shows as a narrowing; Strike down voids that section only.
 
 Ruling options:
 
 | Option | A — Sovereign Parliament | B — Guardian Court | Result |
 |---|---|---|---|
 | **Uphold** — the law stands | ✓ | ✓ | Act stamped IN FORCE |
-| **Reinterpret** — read the law more narrowly so it respects rights | ✓ | ✓ | §1 or §2 text replaced; stamped REINTERPRETED |
+| **Reinterpret** — read the law more narrowly so it respects rights | ✓ | ✓ | §1 or §2 keeps its words, with the court's reading beneath; stamped REINTERPRETED |
 | **Declare incompatible** — say publicly it breaks rights, but it stays | ✓ | not offered | Stamped INCOMPATIBLE — STILL IN FORCE; line: "Only Parliament can change it." |
 | **Strike down** — cancel the section | 🔒 "In this constitution, judges cannot cancel an Act of Parliament." | ✓ | Section stamped VOID |
 
 The locked option stays visible under A. The facilitator asks: *"Why can't you press that?"*
 
-**Case 2 — the loophole (only if Act III was ARGUABLE, 3 min).** *Minister for Digital Affairs v Veritas Ventures Ltd*: "Glimmer now calls itself a messaging app / game — with the same photo feed. Is it covered by the law?"
+**Case 2 — the loophole (only if Act III was ARGUABLE and §1 still stands, 3 min).** *Minister for Digital Affairs v Veritas Ventures Ltd*: "Glimmer now calls itself a messaging app / game — with the same photo feed. Is it covered by the law?"
 - **Read the words** (literal): "Its main purpose is now messaging/gaming. Not covered." → LOOPHOLE stays open.
 - **Read the purpose** (purposive): "Everyone knows what this app is really for. Covered." → Glimmer CAUGHT and fined.
 
-If Act III was a clear LOOPHOLE (`m_lite`), show a single card instead (30 s): **"No case. The words are clear: Glimmer Lite has no accounts. Judges apply the words — only Parliament can close this gap."** If Act III was CAUGHT or COMPLIED, skip Case 2.
+If Act III was a clear LOOPHOLE (`m_lite`), show a single card instead (30 s): **"No case. The words are clear: Glimmer Lite has no accounts. Judges apply the words — only Parliament can close this gap."** If Case 1 struck down §1 and Act III was ARGUABLE or a LOOPHOLE, show a single card instead: **"No case. §1 is void, so there is no rule for Glimmer to break."** §2 and any Minister's list are then noted "No effect while §1 is void.", and Glimmer's status is NO RULE TO BREAK. If Act III was CAUGHT or COMPLIED, skip Case 2.
 
 **Precedent:** every ruling, including Uphold, is written onto the case folder in typewriter type and added to the Law Book with the **Court seal**: *"[Case name] — Held: {ruling}. Future courts in Veritas must follow this."*
 
@@ -162,6 +162,7 @@ Then the **"Same choices, three countries"** panel: one row per ruling the class
 |---|---|---|---|
 | What the court could do with Case 1 | Uphold / Reinterpret / Declare incompatible | Uphold / Reinterpret / Strike down | Uphold / Reinterpret / Strike down (Constitutional Council) |
 | What the class's choice becomes | mapped (§6) | mapped (§6) | mapped (§6) |
+| If the judges think Case 1's law breaks rights | They can say so publicly, but the law stays in force | They can cancel that part of the law | The Constitutional Council can cancel that part of the law |
 | Who could have made the age-check rule | The Minister, because the Act allowed it | The Minister, because the Act allowed it | The government — and in some areas it can make rules by decree without an Act |
 
 The live constitution column is highlighted. Footer: *"Veritas is imaginary. Real countries are more complicated."*
@@ -175,7 +176,7 @@ VOID → "COURT CANCELS PARLIAMENT'S LAW" · INCOMPATIBLE → "JUDGES: LAW BREAK
    - "Count the seals. Who wrote the law that applies to you this morning?"
    - "In one country the judges could cancel Parliament's law; in another they couldn't. Who should have the last word — the people you elect, or judges you don't?"
    - "Glimmer found a gap. Was it legal? Was it fair? Whose job is it to close it?"
-3. End screen with Restart and the DATA line.
+3. End screen with the learning outcome (§1.1, verbatim), Restart and the DATA line.
 
 ---
 
@@ -216,7 +217,7 @@ Functions:
 - `rulingOptions(constitution)` — §4.4 table, with `locked` and `lockReason`.
 - `lawBook(state)` — ordered provisions `{id, author: 'PARL'|'MIN'|'COURT', text, status}`; statuses: `ENACTED`, `IN_FORCE`, `REINTERPRETED`, `INCOMPATIBLE_IN_FORCE`, `VOID`, `REGULATION_IN_FORCE`, `PRECEDENT`.
 - `authorship(lawBook)` — counts of live rules by author (exclude VOID).
-- `glimmerStatus(state)` — final: COMPLIED, CAUGHT, LOOPHOLE (open), CLOSED BY COURT.
+- `glimmerStatus(state)` — final: COMPLIED, CAUGHT, LOOPHOLE (open), CLOSED BY COURT, NO RULE TO BREAK (§1 void).
 - `headline(state)` — §4.5.1.
 - `threeCountries(state)` — for each of A, B, C: available options and the mapped outcome. Mapping by intent: Uphold → Uphold; Reinterpret → Reinterpret; Declare incompatible (A) ↔ Strike down (B, C) — both are "the judges think this law breaks rights". Case 2 is unchanged across constitutions (interpretation is available in all three).
 - `autoDecide(act, state)` — returns the §7.5 decisions for the remaining votes in that act, given choices already made.
@@ -240,7 +241,7 @@ One A4 sheet per student, cut into four cards: **A** (square), **B** (circle), *
 After each full vote, the screen shows: *"Hear from someone who voted {minority option}."* If the vote was unanimous: *"Everyone agreed. Can anyone argue the other side?"*
 
 ### 7.4 Facilitator script
-Each screen has a collapsible script panel (key S) with: what to say (≤ 40 words), timing for that screen, and one likely student question with a short answer. Example for the Act IV lock: *Q: "Why can't the judges just cancel it?" A: "In this country, Parliament is the highest law-maker. In the UK, judges can't cancel an Act — they can only say it breaks rights."*
+Each screen has a collapsible script panel (key S) with: what to say (≤ 40 words), timing for that screen, and one likely student question with a short answer. Example for the Act IV lock: *Q: "Why can't the judges just cancel it?" A: "In this constitution, Parliament is the highest law-maker. In the UK, judges can't cancel an Act. They can read it in a way that respects rights, or say publicly that it breaks them."*
 
 ### 7.5 Skip Act
 For when time is tight. Every Act screen (Acts I–IV) shows a small **"Skip act — the Clerk decides"** button in the footer (key K). One press, with a one-step confirmation ("Skip Act III? The Clerk will choose for the class."), auto-decides **every remaining vote in that act** and shows a single result card. Then the session continues as normal.
@@ -254,10 +255,10 @@ For when time is tight. Every Act screen (Acts I–IV) shows a small **"Skip act
 | I — Make the law | `b_narrow` (Clear Lines Bill) | Leaves a gap for Act III and produces the *Kim* rights case | 4 min |
 | II — Run the law | List: `l_feeds` (only if `b_trust`) · Check: `k_face` | Keeps the Minister's rule visibly in the Law Book without adding a privacy subplot | 3 min |
 | III — Find the gap | `m_lite` if it is LOOPHOLE under the current Bill; otherwise `m_chat` | Prefers a clear loophole, which also removes Case 2 and saves more time | 3 min |
-| IV — Judge the law | Unseal still shown. Case 1: the "rights broken" ruling — Declare incompatible (A) or Strike down (B). Case 2, if any: Read the purpose | Produces the strongest constitutional contrast for the three-countries panel | 5 min |
+| IV — Judge the law | Unseal still shown. Case 1: the "rights broken" ruling — Declare incompatible (A) or Strike down (B). Case 2, if any (none once §1 is struck down): Read the purpose | Produces the strongest constitutional contrast for the three-countries panel | 5 min |
 
 Rules:
-- Skipping Act IV is allowed but the confirmation warns: *"Not recommended — this act carries the main lesson."*
+- Skipping Act IV is allowed but the confirmation warns: *"Not recommended — this act carries the main lesson."* The No-case card (not a vote) is still shown after the Clerk's Act IV card.
 - Acts can be skipped in any combination. Skipping an act part-way through keeps the votes already taken and auto-decides only the rest.
 - The Opening, Monday Morning and Close cannot be skipped (they are short and carry the comparison and the re-vote). To save time there, the facilitator skips partner talk.
 - Back after a skip restores the act's state before the skip.
@@ -325,7 +326,7 @@ Inline SVG line-engraving with cross-hatched shading. No gradients, drop shadows
 2. Every path's Law Book contains at least one live Minister regulation and at least one Court precedent (LM1).
 3. Under A, no path produces VOID; Strike down is visible and locked with the exact lock text.
 4. `m_lite` is LOOPHOLE under `b_narrow` and `b_trust`, CAUGHT under `b_tough`.
-5. Case 2 appears iff Act III result was ARGUABLE.
+5. Case 2 appears iff Act III result was ARGUABLE and Case 1 did not strike down §1.
 6. The three-countries panel always shows a different available option set for A versus B.
 7. DATA line round-trips through `parseData`.
 8. A timed rehearsal at default pacing completes in ≤ 30 minutes (build plan Phase 8).

@@ -191,3 +191,10 @@ test("M2/M5 layout: the game fits the viewport, columns scroll only inside, the 
   assert.ok(!/position:\s*fixed/.test(rule(".script")), "the script panel no longer overlays the stage");
   assert.match(rule(".script"), /max-height/);
 });
+
+test("spec v2 amendments: the copy in index.html matches spec.md", () => {
+  assert.ok(spec.includes(CONTENT.script.case1.a), "§7.4 lock answer");
+  assert.ok(spec.includes(CONTENT.noRule.card), "§4.4 no-rule card");
+  assert.ok(spec.includes(CONTENT.noRule.noEffect), "§4.4 no-effect note");
+  assert.ok(spec.includes(`| ${CONTENT.countriesExtra.rightsRow} | ${CONTENT.countriesExtra.rights.A} | ${CONTENT.countriesExtra.rights.B} | ${CONTENT.countriesExtra.rights.C} |`), "§4.5 row");
+});
