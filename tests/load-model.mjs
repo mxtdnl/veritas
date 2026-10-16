@@ -38,3 +38,13 @@ export function loadDesign(path = INDEX) {
     filename: "index.html",
   });
 }
+
+// MACHINE is a DOM-free sub-block of APP (the session state machine); it depends on CONTENT and MODEL.
+export function loadMachine(path = INDEX) {
+  const { html, content, model } = loadSource(path);
+  const machine = extractBlock(html, "MACHINE");
+  const context = vm.createContext({});
+  return vm.runInContext(`${content}\n${model}\n${machine}\n({ CONTENT, MODEL, MACHINE });`, context, {
+    filename: "index.html",
+  });
+}

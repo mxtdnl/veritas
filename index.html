@@ -290,6 +290,399 @@ const CONTENT = {
   title: "The Republic of Veritas",
   subtitle: "Who makes the law? Should I care?",
 
+  // Spec §3, verbatim.
+  scenario: [
+    "Veritas's Chief Medical Officer reports that teenagers are sleeping less and feeling worse. Many parents blame social media. Parliament has promised to act. The class decides what happens next.",
+    "Glimmer is Veritas's most popular photo-feed app, owned by Veritas Ventures Ltd. Many of its users are under 16."
+  ],
+
+  // Spec §2 act names, verbatim.
+  acts: {
+    opening: "Opening",
+    I: "Make the law",
+    II: "Run the law",
+    III: "Find the gap",
+    IV: "Judge the law",
+    monday: "Monday Morning",
+    close: "Close"
+  },
+
+  // Spec §8 Setup, verbatim.
+  setup: {
+    constitution: "Constitution:",
+    modes: {
+      random: "Sealed — random A/B",
+      sealedChoose: "Sealed — choose",
+      open: "Open — choose"
+    },
+    classLabel: "Class label (optional; used in seed and DATA line)",
+    start: "Start",
+    printCards: "Print voting cards",
+    teacherNotes: "Teacher notes"
+  },
+
+  // Spec §4.0, verbatim.
+  hook: {
+    question: "In a country like ours, who makes the law?",
+    options: [
+      { letter: "A", text: "Only Parliament" },
+      { letter: "B", text: "Parliament and the government" },
+      { letter: "C", text: "Parliament, the government and judges" },
+      { letter: "D", text: "Not sure" }
+    ]
+  },
+
+  // Spec §4.0 S2, verbatim.
+  branches: {
+    items: [
+      { author: "PARL", name: "Parliament", line: "the people we elect. They debate and pass laws called Acts." },
+      { author: "MIN", name: "The government", line: "ministers who run the country and put laws into action." },
+      { author: "COURT", name: "The courts", line: "judges who decide what the law means when people disagree." }
+    ],
+    closing: "Today, you will be all three. And a business."
+  },
+
+  // Spec §4.1, verbatim. sections[2] is the §3 every Bill shares.
+  bills: {
+    b_narrow: {
+      title: "The Clear Lines Bill",
+      sections: [
+        "Under-16s may not have an account on an app whose main purpose is posting things for the public to see.",
+        "Apps that break this rule are fined.",
+        "The Minister will decide how apps check users' ages."
+      ],
+      means: "Precise and fair to apps — but only covers apps that are mainly about posting."
+    },
+    b_tough: {
+      title: "The Tough Bill",
+      sections: [
+        "Under-16s may not use any app that lets users share things with other users.",
+        "An under-16 who breaks this rule commits a crime.",
+        "The Minister will decide how apps check users' ages."
+      ],
+      means: "Catches almost everything — including homework apps — and makes rule-breaking children criminals."
+    },
+    b_trust: {
+      title: "The Trust the Minister Bill",
+      sections: [
+        "Under-16s may not have an account on any app on the Minister's official list.",
+        "Apps that break this rule are fined.",
+        "The Minister will decide how apps check users' ages."
+      ],
+      means: "Parliament hands the Minister the power to decide which apps count."
+    },
+    meansLabel: "What this means"
+  },
+
+  // Spec §4.2. header, question, text and consequence are verbatim; regulation is the Law Book line.
+  minister: {
+    header: "Parliament has passed the Act. Now the Minister makes the detailed rules — and those rules are law too.",
+    listQuestion: "Which apps go on the list?",
+    checkQuestion: "How must apps check users' ages?"
+  },
+  lists: {
+    l_feeds: { text: "Photo and video feed apps", consequence: "Messaging apps and games not covered" },
+    l_wide: { text: "Feed apps, messaging apps and games", consequence: "Most apps covered" },
+    l_all: { text: "Every app where users share things — including homework apps", consequence: "Everything covered; overreach noted in Monday Morning" }
+  },
+  checks: {
+    k_tick: { text: "Users tick a box saying they are 16 or over", consequence: "The law exists on paper. Any 12-year-old can tick a box." },
+    k_face: { text: "A face scan estimates the user's age", consequence: "Most under-16s are stopped. Some 17-year-olds are wrongly blocked." },
+    k_id: { text: "Every user, of any age, uploads ID", consequence: "Under-16s are stopped. Millions of adults hand over their passport details. Sam Okafor, 34, is preparing a court case.", note: "(not heard today)" }
+  },
+  regulations: {
+    authored: true,
+    list: {
+      l_feeds: "The Minister's official list: photo and video feed apps.",
+      l_wide: "The Minister's official list: feed apps, messaging apps and games.",
+      l_all: "The Minister's official list: every app where users share things, including homework apps."
+    },
+    check: {
+      k_tick: "Apps must ask users to tick a box saying they are 16 or over.",
+      k_face: "Apps must use a face scan to estimate each user's age.",
+      k_id: "Apps must make every user, of any age, upload ID."
+    }
+  },
+
+  // Spec §4.3, verbatim (italics dropped).
+  gap: {
+    prompt: "You are Glimmer's board. Lawyers earn their money by reading the exact words. What did Parliament actually write?",
+    why: "Why m_lite works: Bills 1 and 3 ban accounts; Glimmer Lite has none. Bill 2 bans use, so it is caught. This is the cleanest demonstration that the exact words matter."
+  },
+  moves: {
+    m_comply: { text: "Follow the law: close under-16 accounts" },
+    m_chat: { text: "Relaunch as Glimmer Chat, \"a messaging app\" — same photo feed inside", app: "Glimmer Chat" },
+    m_quest: { text: "Put the feed inside a game, Glimmer Quest", app: "Glimmer Quest" },
+    m_lite: { text: "Glimmer Lite: no accounts — anyone can scroll without signing up", app: "Glimmer Lite" }
+  },
+
+  // Spec §5, verbatim. C is comparison only.
+  constitutions: {
+    A: {
+      name: "The Sovereign Parliament",
+      inspired: "loosely inspired by the UK",
+      summary: "Parliament is the highest law-maker. Judges must apply every Act. They can read an Act in a way that respects rights, and they can say publicly that it breaks rights — but they cannot cancel it."
+    },
+    B: {
+      name: "The Guardian Court",
+      inspired: "loosely inspired by the USA and Germany",
+      summary: "Veritas has a written Constitution, and it is the highest law. Judges can cancel — 'strike down' — any law that breaks it, even an Act of Parliament."
+    },
+    C: {
+      name: "The Strong President",
+      inspired: "loosely inspired by France",
+      note: "comparison only, never live",
+      summary: "An elected President leads the government, which can make some rules by decree without a vote in Parliament. A Constitutional Council can cancel Acts that break the Constitution."
+    }
+  },
+
+  // Spec §4.4, verbatim.
+  unseal: {
+    line: "Parliament, you passed your Act. Now we find out how much power the judges have over it."
+  },
+  cases: {
+    marlow: {
+      name: "Marlow v Attorney General",
+      ref: "VSC/2026/001",
+      facts: "Jo Marlow, 15, was charged with a crime for using a photo app.",
+      claimant: "A criminal record at 15 can follow you for life. The punishment doesn't fit.",
+      government: "Parliament was elected to protect children. Without a real penalty, the rule means nothing.",
+      reinterpret: "Only deliberate, repeated rule-breaking after a written warning is a crime."
+    },
+    kim: {
+      name: "Kim v Attorney General",
+      ref: "VSC/2026/001",
+      facts: "Rae Kim, 15, runs a popular wildlife-photo account. It has been closed.",
+      claimant: "Young people have a right to express themselves and join communities.",
+      government: "Parliament judged the harm to children to be greater.",
+      reinterpret: "Under-16s may still have accounts that only post to approved school or club groups."
+    },
+    claimantSays: "Claimant says",
+    governmentSays: "Government says"
+  },
+  rulings: {
+    uphold: { label: "Uphold", gloss: "the law stands" },
+    reinterpret: { label: "Reinterpret", gloss: "read the law more narrowly so it respects rights" },
+    declare: { label: "Declare incompatible", gloss: "say publicly it breaks rights, but it stays", result: "Only Parliament can change it." },
+    strike: { label: "Strike down", gloss: "cancel the section" }
+  },
+  lockText: "In this constitution, judges cannot cancel an Act of Parliament.",
+  lockQuestion: "Why can't you press that?",
+  case2: {
+    name: "Minister for Digital Affairs v Veritas Ventures Ltd",
+    ref: "VSC/2026/002",
+    question: {
+      m_chat: "Glimmer now calls itself a messaging app — with the same photo feed. Is it covered by the law?",
+      m_quest: "Glimmer now calls itself a game — with the same photo feed. Is it covered by the law?"
+    },
+    options: {
+      literal: {
+        label: "Read the words",
+        m_chat: "Its main purpose is now messaging. Not covered.",
+        m_quest: "Its main purpose is now gaming. Not covered.",
+        result: "LOOPHOLE stays open."
+      },
+      purposive: {
+        label: "Read the purpose",
+        m_chat: "Everyone knows what this app is really for. Covered.",
+        m_quest: "Everyone knows what this app is really for. Covered.",
+        result: "Glimmer CAUGHT and fined."
+      }
+    }
+  },
+  noCase: "No case. The words are clear: Glimmer Lite has no accounts. Judges apply the words — only Parliament can close this gap.",
+  precedent: "{case} — Held: {held}. Future courts in Veritas must follow this.",
+  // The {held} wording for each ruling.
+  held: {
+    authored: true,
+    uphold: "§{n} stands",
+    reinterpret: "§{n} must be read more narrowly, to respect rights",
+    declare: "§{n} breaks rights, but it stays in force",
+    strike: "§{n} is struck down",
+    literal: "{app} is not covered by the Act",
+    purposive: "{app} is covered by the Act, because its real purpose is the same"
+  },
+  split: "Decided {n} to {m}",
+  dissent: "In real courts, judges who disagree can publish a dissent.",
+
+  // Spec §7.1 and §7.3, verbatim.
+  vote: {
+    casting: "Speaker's casting vote",
+    minority: "Hear from someone who voted {option}.",
+    unanimous: "Everyone agreed. Can anyone argue the other side?"
+  },
+  voteExtra: {
+    authored: true,
+    tie: "It's a tie. The facilitator chooses one of the tied cards."
+  },
+
+  // Spec §7.5, verbatim. reasons are the "Reason it is chosen" column.
+  clerk: {
+    button: "Skip act — the Clerk decides",
+    confirm: "Skip Act {act}? The Clerk will choose for the class.",
+    warnIV: "Not recommended — this act carries the main lesson.",
+    script: "We're short of time, so the Clerk of Parliament has decided this one. In real life, if you don't take part, someone else decides for you.",
+    decided: "Decided by the Clerk",
+    reasons: {
+      I: "Leaves a gap for Act III and produces the Kim rights case",
+      II: "Keeps the Minister's rule visibly in the Law Book without adding a privacy subplot",
+      III: "Prefers a clear loophole, which also removes Case 2 and saves more time",
+      IV: "Produces the strongest constitutional contrast for the three-countries panel"
+    }
+  },
+  clerkExtra: {
+    authored: true,
+    yes: "Yes, skip",
+    no: "No, go back"
+  },
+
+  // Spec §4.5 and §4.5.1, verbatim.
+  gazette: {
+    masthead: "The Veritas Gazette",
+    authorship: "Rules in force in Veritas this morning: Parliament {a} · The Minister {b} · The Court {c}."
+  },
+  headlines: {
+    VOID: "COURT CANCELS PARLIAMENT'S LAW",
+    INCOMPATIBLE: "JUDGES: LAW BREAKS RIGHTS — BUT IT STAYS",
+    LOOPHOLE: "GLIMMER SLIPS THROUGH THE NET",
+    REINTERPRETED: "JUDGES REWRITE THE RULES",
+    CAUGHT: "GLIMMER CAUGHT OUT",
+    DEFAULT: "NEW ONLINE LAW STARTS TODAY"
+  },
+  glimmerStatus: {
+    authored: true,
+    heading: "Glimmer — a business, not a law-maker",
+    COMPLIED: "Glimmer followed the law and closed its under-16 accounts.",
+    CAUGHT: "Glimmer's move was caught by the words of the law.",
+    LOOPHOLE: "The gap is still open. Glimmer is not covered by the law.",
+    CLOSED_BY_COURT: "The court closed the gap. Glimmer is covered by the law and fined."
+  },
+
+  // Spec §4.5 table, verbatim.
+  countries: {
+    title: "Same choices, three countries",
+    columns: {
+      A: "A — Sovereign Parliament (UK-like)",
+      B: "B — Guardian Court (US/Germany-like)",
+      C: "C — Strong President (France-like)"
+    },
+    rows: {
+      options: "What the court could do with Case 1",
+      case1: "What the class's choice becomes",
+      ageCheck: "Who could have made the age-check rule"
+    },
+    options: {
+      A: "Uphold / Reinterpret / Declare incompatible",
+      B: "Uphold / Reinterpret / Strike down",
+      C: "Uphold / Reinterpret / Strike down (Constitutional Council)"
+    },
+    ageCheck: {
+      A: "The Minister, because the Act allowed it",
+      B: "The Minister, because the Act allowed it",
+      C: "The government — and in some areas it can make rules by decree without an Act"
+    }
+  },
+  countriesExtra: {
+    authored: true,
+    case2Row: "What the class's Case 2 choice becomes"
+  },
+  disclaimer: "Veritas is imaginary. Real countries are more complicated.",
+
+  // Spec §4.6, verbatim.
+  close: {
+    revote: "In a country like ours, who makes the law?",
+    discussion: [
+      "Count the seals. Who wrote the law that applies to you this morning?",
+      "In one country the judges could cancel Parliament's law; in another they couldn't. Who should have the last word — the people you elect, or judges you don't?",
+      "Glimmer found a gap. Was it legal? Was it fair? Whose job is it to close it?"
+    ],
+    restart: "Restart"
+  },
+  closeExtra: {
+    authored: true,
+    before: "Before",
+    after: "After",
+    restartConfirm: "Restart the session? This clears every vote.",
+    dataLabel: "DATA line"
+  },
+
+  // Spec §8 glossary terms; definitions are authored (each ≤ 20 words).
+  glossary: [
+    { term: "Act", authored: true, def: "A law passed by Parliament. A Bill becomes an Act once Parliament votes for it." },
+    { term: "Bill", authored: true, def: "A proposed law. Parliament debates it and votes on it. If it passes, it becomes an Act." },
+    { term: "Parliament", authored: true, def: "The people we elect to make laws. They debate Bills and vote on them." },
+    { term: "Government", authored: true, def: "The ministers who run the country and put laws into action." },
+    { term: "Minister", authored: true, def: "A member of the government in charge of one area, such as digital affairs." },
+    { term: "Regulation", authored: true, def: "A detailed rule made by a minister, using a power an Act gives them. It is law too." },
+    { term: "Court", authored: true, def: "Where judges decide what the law means when people disagree." },
+    { term: "Constitution", authored: true, def: "A country's most basic rules. They say who makes law and who has the last word." },
+    { term: "Strike down", authored: true, def: "When judges cancel a law because it breaks the constitution. Only some countries allow this." },
+    { term: "Reinterpret", authored: true, def: "When judges read a law's words more narrowly, so that it respects people's rights." },
+    { term: "Precedent", authored: true, def: "A court decision that future courts must follow in similar cases. Veritas works this way." },
+    { term: "Loophole", authored: true, def: "A gap in the words of a law that lets someone avoid it without breaking it." }
+  ],
+
+  // Spec §7.4: one entry per screen. Authored unless noted; say ≤ 40 words.
+  script: {
+    setup: { authored: true, timing: "Before class",
+      say: "Choose how the constitution is set. Sealed and random is the default. Add a class label if you want one. Then press Start.",
+      q: "Should the constitution be sealed?", a: "Usually yes. A sealed draw means nobody, not even you, knows how much power the judges have until Act IV." },
+    title: { authored: true, timing: "0:20",
+      say: "Welcome to the Republic of Veritas. For thirty minutes, this class runs a country. Our question: who makes the law? And should you care?",
+      q: "Is Veritas a real country?", a: "No. Veritas is imaginary. Real countries are more complicated." },
+    hook: { authored: true, timing: "1:30",
+      say: "Quick vote, no talking. In a country like ours, who makes the law? Cards up on three. I won't tell you the answer yet.",
+      q: "What's the right answer?", a: "Hold that thought. We'll vote again at the end and see if anything changed." },
+    branches: { authored: true, timing: "1:10",
+      say: "Every country has three branches. Parliament passes Acts. The government puts laws into action. The courts decide what the law means. Today, you will be all three. And a business.",
+      q: "Is the government the same as Parliament?", a: "No. Parliament is everyone we elect. The government is the ministers who run the country." },
+    bills: { authored: true, timing: "5:00",
+      say: "You are now Members of Parliament. Teenagers are sleeping less and feeling worse. Read the three Bills. Talk to a partner for a minute, then vote.",
+      q: "Why does every Bill have the same §3?", a: "§3 hands the detail to the Minister. That power comes from the Act. You'll use it next." },
+    list: { authored: true, timing: "2:00",
+      say: "You are now the Minister. Parliament said: under-16s can't have accounts on apps on your list. So you decide which apps go on it.",
+      q: "Can a minister really make law?", a: "Yes, when an Act gives them the power. Here, Parliament's Act lets the Minister write the list." },
+    check: { authored: true, timing: "2:00 (4:00 without the list vote)",
+      say: "Still the Minister. §3 says you decide how apps check ages. Your rule goes into the Law Book. It is law too, even though Parliament never voted on it.",
+      q: "Why didn't Parliament just decide this itself?", a: "Parliament chose to give that power to the Minister in §3. The Minister can only act within that power." },
+    gap: { authored: true, timing: "4:00",
+      say: "You are now Glimmer's board. You want to keep your users. Read Parliament's exact words. Is there a gap? Choose your move.",
+      q: "Isn't finding a loophole cheating?", a: "Using a gap in the words is not breaking the law. Whether it's fair is a different question. We'll come back to it." },
+    unseal: { authored: true, timing: "1:00",
+      say: "You are now Supreme Court judges. Open the envelope and read the constitution aloud. Then: \"Parliament, you passed your Act. Now we find out how much power the judges have over it.\"",
+      q: "Why is it sealed?", a: "So nobody knew, when they wrote the Act, how much power the judges would have." },
+    case1: { authored: true, timing: "4:00",
+      say: "Someone says the Act breaks their rights. Read both sides. Talk to a partner. As judges, choose your ruling. Whatever you decide becomes precedent.",
+      // Spec §7.4 example (verbatim) for constitution A.
+      q: "Why can't the judges just cancel it?", a: "In this country, Parliament is the highest law-maker. In the UK, judges can't cancel an Act — they can only say it breaks rights.",
+      qB: "Can judges really cancel a law Parliament voted for?", aB: "Under this constitution, yes, if it breaks the written Constitution. Not every country lets judges do this." },
+    case2: { authored: true, timing: "3:00",
+      say: "The Minister has taken Glimmer to court. Same photo feed, new label. Do you read the exact words, or what Parliament was trying to do?",
+      q: "Which way is right?", a: "Judges disagree about this. Reading the words respects what Parliament wrote. Reading the purpose respects what it meant." },
+    nocase: { authored: true, timing: "0:30",
+      say: "Read the card aloud. The words are clear, so the judges cannot help. Only Parliament can close this gap, by changing the Act.",
+      q: "Why can't the judges just stop Glimmer?", a: "Judges cannot rewrite clear words. Closing a gap the words plainly leave is Parliament's job." },
+    clerk: { timing: "0:20",
+      // Spec §7.5 script line, verbatim.
+      say: "We're short of time, so the Clerk of Parliament has decided this one. In real life, if you don't take part, someone else decides for you.",
+      authored: true, q: "Who is the Clerk?", a: "In Veritas, the Clerk decides for the class when time is short." },
+    gazette: { authored: true, timing: "1:30",
+      say: "It's Monday morning. You are now citizens. Here is the law as it stands. Count the seals: Parliament, the Minister and the Court all wrote some of it.",
+      q: "Is a court ruling really a law?", a: "In Veritas, yes. Future courts must follow it. That is called precedent." },
+    countries: { authored: true, timing: "1:30",
+      say: "Same choices, three countries. Look at what your ruling would have become elsewhere. The constitution decides who has the last word.",
+      q: "So which country does it best?", a: "That is a real debate with no settled answer. Each system gives the last word to different people." },
+    revote: { authored: true, timing: "1:30",
+      say: "Same question as the start. In a country like ours, who makes the law? Cards up on three.",
+      q: "So what's the answer?", a: "Parliament, the government and the courts all make law. The constitution decides who has the last word." },
+    discussion: { authored: true, timing: "1:30",
+      say: "One last question. Talk to a partner for thirty seconds, then I'll take two or three answers.",
+      q: "Does this affect me?", a: "Yes. These rules are about your phones, and every branch had a hand in them." },
+    end: { authored: true, timing: "—",
+      say: "Thank you, citizens of Veritas. Copy the DATA line if you want a record of this session.",
+      q: "Can we play again with the other constitution?", a: "Yes. Press Restart and choose the other constitution at setup." }
+  },
+
   // Spec §8 (persistent chrome), verbatim.
   chrome: {
     stages: ["Bill", "Rules", "Gap", "Court", "Monday"],
@@ -443,7 +836,252 @@ const MODEL = (function () {
     return h >>> 0;
   }
 
-  return { mulberry32: mulberry32, hashString: hashString };
+  var BILLS = ["b_narrow", "b_tough", "b_trust"];
+  var LISTS = ["l_feeds", "l_wide", "l_all"];
+  var CHECKS = ["k_tick", "k_face", "k_id"];
+  var MOVES = ["m_comply", "m_chat", "m_quest", "m_lite"];
+  var CASE2_RULINGS = ["literal", "purposive"];
+  var ACTS = ["I", "II", "III", "IV"];
+  // The section of the Act each Case 1 challenges (spec §4.4).
+  var CASE_SECTION = { marlow: 2, kim: 1 };
+  var RULING_STATUS = { uphold: "IN_FORCE", reinterpret: "REINTERPRETED", declare: "INCOMPATIBLE_IN_FORCE", strike: "VOID" };
+
+  function oneOf(list, v, what) {
+    if (list.indexOf(v) === -1) throw new Error("Unknown " + what + ": " + v);
+  }
+  function fill(tpl, vars) {
+    return tpl.replace(/\{(\w+)\}/g, function (m, k) { return vars[k] != null ? vars[k] : m; });
+  }
+
+  // 'A' or 'B', from the seed.
+  function constitutionDraw(seed) {
+    return mulberry32(seed)() < 0.5 ? "A" : "B";
+  }
+  // Seed from the date and class label (spec §10). date: "YYYY-MM-DD".
+  function seedFrom(date, label) {
+    return hashString(String(date) + "|" + String(label || ""));
+  }
+
+  // Spec §4.3.
+  function moveResult(bill, list, move) {
+    oneOf(BILLS, bill, "bill");
+    oneOf(MOVES, move, "move");
+    if (bill === "b_trust") oneOf(LISTS, list, "list");
+    if (move === "m_comply") return "COMPLIED";
+    if (bill === "b_tough") return "CAUGHT";
+    if (move === "m_lite") return "LOOPHOLE";
+    if (bill === "b_narrow") return "ARGUABLE";
+    return list === "l_feeds" ? "ARGUABLE" : "CAUGHT";
+  }
+
+  function case1For(bill) {
+    oneOf(BILLS, bill, "bill");
+    return bill === "b_tough" ? "marlow" : "kim";
+  }
+  function caseSection(id) { return CASE_SECTION[id]; }
+
+  // Spec §4.4. C (comparison only) offers the same set as B.
+  function rulingOptions(constitution) {
+    oneOf(["A", "B", "C"], constitution, "constitution");
+    var opts = [{ id: "uphold", locked: false }, { id: "reinterpret", locked: false }];
+    if (constitution === "A") {
+      opts.push({ id: "declare", locked: false });
+      opts.push({ id: "strike", locked: true, lockReason: CONTENT.lockText });
+    } else {
+      opts.push({ id: "strike", locked: false });
+    }
+    return opts;
+  }
+
+  function precedentText(caseName, held) {
+    return fill(CONTENT.precedent, { "case": caseName, held: held });
+  }
+
+  // Ordered provisions: the Act's three sections, the Minister's regulations, then precedents.
+  function lawBook(s) {
+    var out = [], clerk = s.byClerk || {};
+    if (!s.bill) return out;
+    var bill = CONTENT.bills[s.bill];
+    var c1 = s.case1 && s.case1.ruling ? s.case1 : null;
+    var challenged = c1 ? CASE_SECTION[c1.id] : 0;
+    for (var n = 1; n <= 3; n++) {
+      var p = { id: "act-" + n, author: "PARL", num: "§" + n, text: bill.sections[n - 1], status: "ENACTED", byClerk: !!clerk.bill };
+      if (n === challenged) {
+        p.status = RULING_STATUS[c1.ruling];
+        if (c1.ruling === "reinterpret") { p.original = p.text; p.text = CONTENT.cases[c1.id].reinterpret; }
+        p.byClerk = p.byClerk || !!clerk.case1;
+      }
+      out.push(p);
+    }
+    if (s.list) out.push({ id: "reg-list", author: "MIN", num: "", text: CONTENT.regulations.list[s.list], status: "REGULATION_IN_FORCE", byClerk: !!clerk.list });
+    if (s.check) out.push({ id: "reg-check", author: "MIN", num: "", text: CONTENT.regulations.check[s.check], status: "REGULATION_IN_FORCE", byClerk: !!clerk.check });
+    if (c1) {
+      out.push({
+        id: "prec-1", author: "COURT", num: "", status: "PRECEDENT", byClerk: !!clerk.case1,
+        text: precedentText(CONTENT.cases[c1.id].name, fill(CONTENT.held[c1.ruling], { n: challenged }))
+      });
+    }
+    if (s.case2 && s.case2.ruling) {
+      out.push({
+        id: "prec-2", author: "COURT", num: "", status: "PRECEDENT", byClerk: !!clerk.case2,
+        text: precedentText(CONTENT.case2.name, fill(CONTENT.held[s.case2.ruling], { app: CONTENT.moves[s.move].app }))
+      });
+    }
+    return out;
+  }
+
+  // Live rules by author (VOID excluded).
+  function authorship(book) {
+    var c = { PARL: 0, MIN: 0, COURT: 0 };
+    book.forEach(function (p) { if (p.status !== "VOID") c[p.author] += 1; });
+    return c;
+  }
+
+  // Final status: COMPLIED, CAUGHT, LOOPHOLE (open) or CLOSED_BY_COURT; null before Act III.
+  function glimmerStatus(s) {
+    if (!s.move) return null;
+    var r = s.moveResult || moveResult(s.bill, s.list, s.move);
+    if (r !== "ARGUABLE") return r;
+    if (!s.case2 || !s.case2.ruling) return null;
+    return s.case2.ruling === "purposive" ? "CLOSED_BY_COURT" : "LOOPHOLE";
+  }
+
+  // Spec §4.5.1, in priority order. Returns a key of CONTENT.headlines.
+  function headline(s) {
+    var statuses = lawBook(s).map(function (p) { return p.status; });
+    var g = glimmerStatus(s);
+    if (statuses.indexOf("VOID") !== -1) return "VOID";
+    if (statuses.indexOf("INCOMPATIBLE_IN_FORCE") !== -1) return "INCOMPATIBLE";
+    if (g === "LOOPHOLE") return "LOOPHOLE";
+    if (statuses.indexOf("REINTERPRETED") !== -1) return "REINTERPRETED";
+    if (g === "CAUGHT" || g === "CLOSED_BY_COURT") return "CAUGHT";
+    return "DEFAULT";
+  }
+
+  // Map a Case 1 ruling by intent: Declare incompatible (A) <-> Strike down (B, C).
+  function mapRuling(ruling, constitution) {
+    if (ruling === "declare" && constitution !== "A") return "strike";
+    if (ruling === "strike" && constitution === "A") return "declare";
+    return ruling;
+  }
+
+  // Spec §4.5 panel. Case 2 is unchanged across constitutions.
+  function threeCountries(s) {
+    var r = s.case1 && s.case1.ruling;
+    var r2 = s.case2 && s.case2.ruling;
+    return ["A", "B", "C"].map(function (c) {
+      return {
+        id: c,
+        live: c === s.constitution,
+        options: rulingOptions(c).filter(function (o) { return !o.locked; }).map(function (o) { return o.id; }),
+        case1: r ? mapRuling(r, c) : null,
+        case2: r2 || null
+      };
+    });
+  }
+
+  // Spec §7.5: the Clerk's decisions for the votes still open in an act.
+  function autoDecide(act, s) {
+    oneOf(ACTS, act, "act");
+    var d = {};
+    if (act === "I") {
+      if (!s.bill) d.bill = "b_narrow";
+    } else if (act === "II") {
+      if (s.bill === "b_trust" && !s.list) d.list = "l_feeds";
+      if (!s.check) d.check = "k_face";
+    } else if (act === "III") {
+      if (!s.move) d.move = moveResult(s.bill, s.list, "m_lite") === "LOOPHOLE" ? "m_lite" : "m_chat";
+    } else {
+      if (!s.case1 || !s.case1.ruling) d.case1 = { id: case1For(s.bill), ruling: s.constitution === "A" ? "declare" : "strike" };
+      if (moveResult(s.bill, s.list, s.move) === "ARGUABLE" && !(s.case2 && s.case2.ruling)) d.case2 = { ruling: "purposive" };
+    }
+    return d;
+  }
+
+  // DATA line (spec §8). Missing values are written "none"; a ruling with no split as "-".
+  var TALLY = ["A", "B", "C", "D"];
+  function tallyOut(t) { return t ? TALLY.map(function (k) { return t[k] || 0; }).join(",") : "none"; }
+  function tallyIn(v) {
+    if (v === "none") return null;
+    var n = v.split(",").map(Number), t = {};
+    TALLY.forEach(function (k, i) { t[k] = n[i] || 0; });
+    return t;
+  }
+  function splitOut(sp) { return sp ? sp[0] + "-" + sp[1] : "-"; }
+  function splitIn(v) { if (v === "-") return null; var p = v.split("-").map(Number); return [p[0], p[1]]; }
+  function labelOut(l) { return String(l || "").replace(/[%|\r\n]/g, encodeURIComponent); }
+  function mmss(sec) {
+    sec = Math.max(0, Math.floor(sec || 0));
+    var m = Math.floor(sec / 60), r = sec % 60;
+    return (m < 10 ? "0" : "") + m + ":" + (r < 10 ? "0" : "") + r;
+  }
+
+  function toData(s, elapsedSec) {
+    var c1 = s.case1 && s.case1.ruling ? s.case1.id + ":" + s.case1.ruling + ":" + splitOut(s.case1.split) : "none";
+    var c2 = s.case2 && s.case2.ruling ? s.case2.ruling + ":" + splitOut(s.case2.split) : "none";
+    var skipped = ACTS.filter(function (a) { return (s.skipped || []).indexOf(a) !== -1; });
+    return [
+      "DATA", "veritas", "v2",
+      "class=" + labelOut(s.label),
+      "seed=" + (s.seed >>> 0),
+      "const=" + s.constitution,
+      "sealed=" + (s.sealed ? 1 : 0),
+      "hook=" + tallyOut(s.hook),
+      "bill=" + (s.bill || "none"),
+      "list=" + (s.list || "none"),
+      "check=" + (s.check || "none"),
+      "move=" + (s.move || "none"),
+      "moveResult=" + (s.moveResult || "none"),
+      "case1=" + c1,
+      "case2=" + c2,
+      "revote=" + tallyOut(s.revote),
+      "skipped=" + (skipped.length ? skipped.join(",") : "none"),
+      "elapsed=" + mmss(elapsedSec != null ? elapsedSec : s.elapsed)
+    ].join("|");
+  }
+
+  function parseData(line) {
+    var parts = String(line).trim().split("|");
+    if (parts[0] !== "DATA" || parts[1] !== "veritas" || parts[2] !== "v2") throw new Error("Not a Veritas v2 DATA line");
+    var f = {};
+    parts.slice(3).forEach(function (kv) {
+      var i = kv.indexOf("=");
+      if (i === -1) throw new Error("Bad DATA field: " + kv);
+      f[kv.slice(0, i)] = kv.slice(i + 1);
+    });
+    function opt(v) { return v === "none" ? null : v; }
+    var c1 = null, c2 = null, p;
+    if (f.case1 !== "none") { p = f.case1.split(":"); c1 = { id: p[0], ruling: p[1] }; if (splitIn(p[2])) c1.split = splitIn(p[2]); }
+    if (f.case2 !== "none") { p = f.case2.split(":"); c2 = { ruling: p[0] }; if (splitIn(p[1])) c2.split = splitIn(p[1]); }
+    var t = f.elapsed.split(":");
+    return {
+      label: decodeURIComponent(f["class"]),
+      seed: Number(f.seed),
+      constitution: f["const"],
+      sealed: f.sealed === "1",
+      hook: tallyIn(f.hook),
+      bill: opt(f.bill),
+      list: opt(f.list),
+      check: opt(f.check),
+      move: opt(f.move),
+      moveResult: opt(f.moveResult),
+      case1: c1,
+      case2: c2,
+      revote: tallyIn(f.revote),
+      skipped: f.skipped === "none" ? [] : f.skipped.split(","),
+      elapsed: Number(t[0]) * 60 + Number(t[1])
+    };
+  }
+
+  return {
+    mulberry32: mulberry32, hashString: hashString,
+    BILLS: BILLS, LISTS: LISTS, CHECKS: CHECKS, MOVES: MOVES, CASE2_RULINGS: CASE2_RULINGS, ACTS: ACTS,
+    constitutionDraw: constitutionDraw, seedFrom: seedFrom,
+    moveResult: moveResult, case1For: case1For, caseSection: caseSection, rulingOptions: rulingOptions,
+    lawBook: lawBook, authorship: authorship, glimmerStatus: glimmerStatus, headline: headline,
+    mapRuling: mapRuling, threeCountries: threeCountries, autoDecide: autoDecide,
+    toData: toData, parseData: parseData
+  };
 })();
 /* MODEL:END */
 
@@ -812,6 +1450,258 @@ const DESIGN = (function () {
 })();
 /* DESIGN:END */
 
+/* MACHINE:START */
+// Session state machine (spec §8 screen sequence, §7.1 ties, §7.5 Skip Act).
+// Pure: step(state, action) returns a new state. No DOM access, so tests can load it in node:vm.
+const MACHINE = (function () {
+  var M = MODEL;
+  var LETTERS = ["A", "B", "C", "D"];
+  var ACT_OF = { bills: "I", list: "II", check: "II", gap: "III", unseal: "IV", case1: "IV", case2: "IV", nocase: "IV" };
+  // Vote screens and the state key each one decides.
+  var VOTE_KEY = { bills: "bill", list: "list", check: "check", gap: "move", case1: "case1", case2: "case2" };
+  var DECISION_ORDER = ["bill", "list", "check", "move", "case1", "case2"];
+  // Edits that do not enter the Back history.
+  var NO_HISTORY = { tally: 1, "set-mode": 1, "set-constitution": 1, "set-label": 1 };
+
+  function assign(a, b) { return Object.assign({}, a, b); }
+
+  // opts: { seed (from ?seed=), label, mode: 'random'|'sealedChoose'|'open', constitution }
+  function initial(opts) {
+    opts = opts || {};
+    var fixed = opts.seed != null && !isNaN(opts.seed);
+    return {
+      screen: "setup",
+      seed: fixed ? opts.seed >>> 0 : null, seedFixed: fixed,
+      label: opts.label || "", mode: opts.mode || "random", choice: opts.constitution || "A",
+      constitution: null, sealed: true, opened: false,
+      hook: null, revote: null,
+      bill: null, list: null, check: null, move: null, moveResult: null,
+      case1: null, case2: null,
+      byClerk: {}, skipped: [],
+      tallies: {}, tie: null, clerkCard: null, discussion: null,
+      history: []
+    };
+  }
+
+  // Cards on a screen: [{ letter, value, locked, lockReason }].
+  function options(s, screen) {
+    screen = screen || s.screen;
+    var values;
+    switch (screen) {
+      case "hook": case "revote": values = LETTERS; break;
+      case "bills": values = M.BILLS; break;
+      case "list": values = M.LISTS; break;
+      case "check": values = M.CHECKS; break;
+      case "gap": values = M.MOVES; break;
+      case "case1":
+        return M.rulingOptions(s.constitution).map(function (o, i) {
+          return { letter: LETTERS[i], value: o.id, locked: o.locked, lockReason: o.lockReason };
+        });
+      case "case2": values = M.CASE2_RULINGS; break;
+      default: return [];
+    }
+    return values.map(function (v, i) { return { letter: LETTERS[i], value: v, locked: false }; });
+  }
+
+  function isVote(screen) { return VOTE_KEY.hasOwnProperty(screen); }
+  function hasTally(screen) { return isVote(screen) || screen === "hook" || screen === "revote"; }
+
+  function decision(s, screen) {
+    var k = VOTE_KEY[screen || s.screen];
+    if (!k) return null;
+    if (k === "case1" || k === "case2") return s[k] && s[k].ruling ? s[k].ruling : null;
+    return s[k];
+  }
+
+  function counts(s, screen) {
+    var t = s.tallies[screen || s.screen] || {}, out = {};
+    LETTERS.forEach(function (L) { out[L] = t[L] || 0; });
+    return out;
+  }
+
+  // Highest count among unlocked cards: { total, max, winners: [letters] }.
+  function standings(s) {
+    var c = counts(s), opts = options(s).filter(function (o) { return !o.locked; });
+    var total = 0, max = 0;
+    opts.forEach(function (o) { total += c[o.letter]; if (c[o.letter] > max) max = c[o.letter]; });
+    var winners = total ? opts.filter(function (o) { return c[o.letter] === max; }).map(function (o) { return o.letter; }) : [];
+    return { total: total, max: max, winners: winners };
+  }
+
+  // Set one decision (by the class, or by the Clerk) and keep derived fields in step.
+  function apply(s, key, value, split, byClerk) {
+    var patch = {}, flags = assign(s.byClerk, {});
+    if (byClerk) flags[key] = true; else delete flags[key];
+    patch.byClerk = flags;
+    if (key === "case1") {
+      patch.case1 = { id: M.case1For(s.bill), ruling: value.ruling || value };
+      if (split) patch.case1.split = split;
+    } else if (key === "case2") {
+      patch.case2 = { ruling: value.ruling || value };
+      if (split) patch.case2.split = split;
+    } else {
+      patch[key] = value;
+      if (key === "move") patch.moveResult = M.moveResult(s.bill, s.list, value);
+    }
+    return assign(s, patch);
+  }
+
+  function decide(s, value, st) {
+    var split = st && st.total ? [st.max, st.total - st.max] : null;
+    return assign(apply(s, VOTE_KEY[s.screen], value, split, false), { tie: null });
+  }
+
+  function nextScreen(s, screen) {
+    switch (screen) {
+      case "title": return "hook";
+      case "hook": return "branches";
+      case "branches": return "bills";
+      case "bills": return s.bill === "b_trust" ? "list" : "check";
+      case "list": return "check";
+      case "check": return "gap";
+      case "gap": return "unseal";
+      case "unseal": return "case1";
+      case "case1": return s.moveResult === "ARGUABLE" ? "case2" : s.moveResult === "LOOPHOLE" ? "nocase" : "gazette";
+      case "case2": case "nocase": return "gazette";
+      case "gazette": return "countries";
+      case "countries": return "revote";
+      case "revote": return "discussion";
+      case "discussion": return "end";
+    }
+    return null;
+  }
+
+  // First screen after an act.
+  function afterAct(s, act) {
+    return { I: nextScreen(s, "bills"), II: "gap", III: "unseal", IV: "gazette" }[act];
+  }
+
+  function go(s, screen) { return screen ? assign(s, { screen: screen, tie: null, clerkCard: null }) : s; }
+
+  function select(s, value) {
+    if (s.screen === "discussion") {
+      var i = Number(value);
+      return i >= 0 && i < CONTENT.close.discussion.length ? assign(s, { discussion: i }) : s;
+    }
+    if (!isVote(s.screen)) return s;
+    var opt = options(s).filter(function (o) { return o.value === value; })[0];
+    if (!opt || opt.locked) return s;
+    var st = standings(s);
+    // With counts entered, only a highest card can win; on a tie, the click is the Speaker's casting vote.
+    if (st.total && st.winners.indexOf(opt.letter) === -1) return s;
+    if (decision(s) === value) return s;
+    return decide(s, value, st);
+  }
+
+  function next(s) {
+    var screen = s.screen;
+    if (screen === "setup" || screen === "end") return s;
+    if (screen === "hook" || screen === "revote") {
+      var patch = {};
+      patch[screen] = counts(s);
+      return go(assign(s, patch), nextScreen(s, screen));
+    }
+    if (isVote(screen) && !decision(s)) {
+      var st = standings(s);
+      if (!st.total) return s;
+      if (st.winners.length > 1) {
+        return s.tie && s.tie.join() === st.winners.join() ? s : assign(s, { tie: st.winners });
+      }
+      var letter = st.winners[0];
+      return decide(s, options(s).filter(function (o) { return o.letter === letter; })[0].value, st);
+    }
+    if (screen === "unseal" && s.sealed && !s.opened) return assign(s, { opened: true });
+    if (screen === "clerk") return go(s, afterAct(s, s.clerkCard.act));
+    return go(s, nextScreen(s, screen));
+  }
+
+  function skipAct(s) {
+    var act = ACT_OF[s.screen];
+    if (!act) return s;
+    // Act IV: the constitution is always unsealed before the Clerk rules.
+    if (act === "IV" && s.sealed && !s.opened) return s;
+    var d = M.autoDecide(act, s);
+    var keys = DECISION_ORDER.filter(function (k) { return d.hasOwnProperty(k); });
+    if (!keys.length) return s;
+    var out = s;
+    keys.forEach(function (k) { out = apply(out, k, d[k], null, true); });
+    var skipped = out.skipped.indexOf(act) === -1 ? out.skipped.concat([act]) : out.skipped;
+    return assign(out, { skipped: skipped, tie: null, screen: "clerk", clerkCard: { act: act, decisions: d } });
+  }
+
+  function start(s, a) {
+    if (s.screen !== "setup") return s;
+    var seed = s.seedFixed ? s.seed : M.seedFrom(a.date || "", s.label);
+    var sealed = s.mode !== "open";
+    var constitution = s.mode === "random" ? M.constitutionDraw(seed) : s.choice;
+    return assign(s, { seed: seed, constitution: constitution, sealed: sealed, opened: !sealed, screen: "title" });
+  }
+
+  function reduce(s, a) {
+    switch (a.type) {
+      case "set-mode":
+        return s.screen === "setup" && (a.value === "random" || a.value === "sealedChoose" || a.value === "open") ? assign(s, { mode: a.value }) : s;
+      case "set-constitution":
+        return s.screen === "setup" && (a.value === "A" || a.value === "B") ? assign(s, { choice: a.value }) : s;
+      case "set-label":
+        return s.screen === "setup" ? assign(s, { label: String(a.value || "") }) : s;
+      case "start": return start(s, a);
+      case "tally": {
+        if (!hasTally(s.screen) || LETTERS.indexOf(a.option) === -1) return s;
+        if (isVote(s.screen) && decision(s)) return s;
+        var t = counts(s), tallies = assign(s.tallies, {});
+        t[a.option] = Math.max(0, Math.floor(a.value != null ? a.value : t[a.option] + (a.delta || 0)));
+        tallies[s.screen] = t;
+        return assign(s, { tallies: tallies, tie: null });
+      }
+      case "select": return select(s, a.value);
+      case "next": return next(s);
+      case "skipAct": return skipAct(s);
+      case "restart":
+        return initial({ seed: s.seedFixed ? s.seed : null, label: s.label, mode: s.mode, constitution: s.choice });
+    }
+    return s;
+  }
+
+  // Applies an action; every change except NO_HISTORY edits pushes the previous state for Back.
+  function step(s, a) {
+    if (a.type === "back") {
+      if (!s.history.length) return s;
+      return assign(s.history[s.history.length - 1], { history: s.history.slice(0, -1) });
+    }
+    var n = reduce(s, a);
+    if (n === s || a.type === "restart" || NO_HISTORY[a.type]) return n;
+    return assign(n, { history: s.history.concat([assign(s, { history: [] })]) });
+  }
+
+  // Votes the class itself took (Clerk decisions excluded).
+  function classVotes(s) {
+    var n = (s.hook ? 1 : 0) + (s.revote ? 1 : 0);
+    DECISION_ORDER.forEach(function (k) {
+      var made = k === "case1" || k === "case2" ? !!(s[k] && s[k].ruling) : !!s[k];
+      if (made && !s.byClerk[k]) n += 1;
+    });
+    return n;
+  }
+
+  // §7.3: the option with the fewest (non-zero) votes after the winner; null if unanimous or no counts.
+  function minority(s, screen) {
+    screen = screen || s.screen;
+    var c = counts(s, screen), won = decision(s, screen);
+    var others = options(s, screen).filter(function (o) { return !o.locked && o.value !== won && c[o.letter] > 0; });
+    if (!others.length) return null;
+    others.sort(function (x, y) { return c[y.letter] - c[x.letter]; });
+    return others[0];
+  }
+
+  return {
+    LETTERS: LETTERS, ACT_OF: ACT_OF, VOTE_KEY: VOTE_KEY,
+    initial: initial, step: step, reduce: reduce, options: options, decision: decision, counts: counts,
+    standings: standings, nextScreen: nextScreen, isVote: isVote, hasTally: hasTally, classVotes: classVotes, minority: minority
+  };
+})();
+/* MACHINE:END */
+
 (function () {
   var D = DESIGN;
   var isGallery = false;
@@ -819,13 +1709,19 @@ const DESIGN = (function () {
 
   var STAGE_ROLES = [["PARL", "PARL"], ["MIN", "MIN"], ["GLIMMER", "GLIMMER"], ["COURT", "COURT"], ["CITIZENS", null]];
   // UI-only actions do not enter the Back history.
-  var UI_ACTIONS = { "glossary-toggle": 1, "glossary-close": 1, "theme-toggle": 1 };
+  var UI_ACTIONS = { "glossary-toggle": 1, "glossary-close": 1, "theme-toggle": 1, "confirm-ask": 1, "confirm-no": 1 };
   var startedAt = Date.now();
+  var urlSeed = null;
+  try {
+    var qs = new URLSearchParams(window.location.search).get("seed");
+    if (qs != null && qs !== "" && !isNaN(Number(qs))) urlSeed = Number(qs);
+  } catch (e) { urlSeed = null; }
 
   var state = {
-    screen: isGallery ? "gallery" : "title",
+    screen: isGallery ? "gallery" : "game",
     history: [],
-    ui: { glossary: false, theme: null },
+    ui: { glossary: false, theme: null, confirm: null },
+    game: MACHINE.initial({ seed: urlSeed }),
     gallery: isGallery ? { stage: 0, selected: "C", tally: { A: 3, B: 5, C: 14, D: 2 }, envOpen: false, landN: 0 } : null
   };
 
@@ -838,8 +1734,14 @@ const DESIGN = (function () {
       case "glossary-toggle": return assign(s, { ui: assign(ui, { glossary: !ui.glossary }) });
       case "glossary-close": return ui.glossary ? assign(s, { ui: assign(ui, { glossary: false }) }) : s;
       case "theme-toggle": return assign(s, { ui: assign(ui, { theme: a.effective === "dark" ? "light" : "dark" }) });
+      case "confirm-ask": return assign(s, { ui: assign(ui, { confirm: a.value }) });
+      case "confirm-no": return ui.confirm ? assign(s, { ui: assign(ui, { confirm: null }) }) : s;
     }
-    if (!g) return s;
+    if (!g) {
+      var game = MACHINE.step(s.game, a);
+      if (a.type === "start" && game !== s.game) startedAt = Date.now();
+      return game === s.game && !ui.confirm ? s : assign(s, { game: game, ui: assign(ui, { confirm: null }) });
+    }
     switch (a.type) {
       case "g-stage": return assign(s, { gallery: assign(g, { stage: clamp(g.stage + a.delta, 0, 4) }) });
       case "g-select": return assign(s, { gallery: assign(g, { selected: a.value }) });
@@ -856,7 +1758,8 @@ const DESIGN = (function () {
   function dispatch(action) {
     var next = reduce(state, action);
     if (next === state) return state;
-    if (!UI_ACTIONS[action.type]) next = assign(next, { history: state.history.concat([state]) });
+    // The game keeps its own Back history (MACHINE.step); the gallery keeps this one.
+    if (state.gallery && !UI_ACTIONS[action.type]) next = assign(next, { history: state.history.concat([state]) });
     state = next;
     render();
     return state;
@@ -920,9 +1823,141 @@ const DESIGN = (function () {
     }
   }
 
-  function renderTitle(app) {
+  // Phase 2 debug view: the state machine, unstyled beyond the Phase 1 components.
+  var SCREEN_NAMES = {
+    setup: "Setup", title: "Title", hook: "Hook vote", branches: "Three branches", bills: "Act I Bills",
+    list: "Act II List", check: "Act II Age check", gap: "Act III Gap", unseal: "Act IV Unseal", case1: "Case 1",
+    case2: "Case 2", nocase: "No-case card", clerk: "Clerk result", gazette: "Gazette", countries: "Three countries",
+    revote: "Re-vote", discussion: "Discussion", end: "End"
+  };
+
+  function optionText(g, screen, value) {
+    var C = CONTENT;
+    switch (screen) {
+      case "hook": case "revote": return C.hook.options[MACHINE.LETTERS.indexOf(value)].text;
+      case "bills": return C.bills[value].title + " — §1 " + C.bills[value].sections[0] + " §2 " + C.bills[value].sections[1] +
+        " §3 " + C.bills[value].sections[2] + " " + C.bills.meansLabel + ": " + C.bills[value].means;
+      case "list": return C.lists[value].text;
+      case "check": return C.checks[value].text;
+      case "gap": return C.moves[value].text;
+      case "case1": return C.rulings[value].label + " — " + C.rulings[value].gloss;
+      case "case2": return C.case2.options[value].label + ": " + C.case2.options[value][g.move];
+    }
+    return value;
+  }
+
+  function p(text) { return "<p>" + D.esc(text) + "</p>"; }
+  function btn(label, action, value) {
+    return '<button type="button" class="btn" data-action="' + action + '"' + (value != null ? ' data-value="' + D.esc(value) + '"' : "") + ">" + D.esc(label) + "</button>";
+  }
+  function fill(t, v) { return t.replace(/\{(\w+)\}/g, function (m, k) { return v[k] != null ? v[k] : m; }); }
+
+  function lawBookView(g) {
+    return D.lawBook(MODEL.lawBook(g).map(function (pr) {
+      var st = pr.status === "PRECEDENT" ? [] : [pr.status];
+      if (pr.byClerk) st.push("CLERK");
+      return { author: pr.author, num: pr.num, text: pr.text, stamps: st, struck: pr.status === "VOID" };
+    }));
+  }
+
+  function screenBody(g) {
+    var C = CONTENT, h = "", sc = g.screen;
+    switch (sc) {
+      case "setup":
+        h += p(C.setup.constitution) + ["random", "sealedChoose", "open"].map(function (m) {
+          return btn((g.mode === m ? "● " : "") + C.setup.modes[m], "set-mode", m);
+        }).join(" ");
+        if (g.mode !== "random") h += " " + ["A", "B"].map(function (c) { return btn((g.choice === c ? "● " : "") + c + " — " + C.constitutions[c].name, "set-constitution", c); }).join(" ");
+        h += '<p><label>' + D.esc(C.setup.classLabel) + ' <input type="text" data-field="label" value="' + D.esc(g.label) + '"></label></p>';
+        h += btn(C.setup.start, "start");
+        break;
+      case "title": h += "<h1>" + D.esc(C.title) + "</h1>" + p(C.subtitle) + C.scenario.map(p).join(""); break;
+      case "hook": case "revote": h += "<h2>" + D.esc(C.hook.question) + "</h2>"; break;
+      case "branches": h += C.branches.items.map(function (b) { return p(b.name + " — " + b.line); }).join("") + p(C.branches.closing); break;
+      case "list": h += p(C.minister.header) + "<h2>" + D.esc(C.minister.listQuestion) + "</h2>"; break;
+      case "check": h += p(C.minister.header) + "<h2>" + D.esc(C.minister.checkQuestion) + "</h2>"; break;
+      case "gap": h += "<h2>" + D.esc(C.gap.prompt) + "</h2>"; break;
+      case "unseal":
+        h += !g.opened ? D.envelope(false) + p("→") :
+          "<h2>" + D.esc(g.constitution + " — " + C.constitutions[g.constitution].name + " (" + C.constitutions[g.constitution].inspired + ")") + "</h2>" +
+          p(C.constitutions[g.constitution].summary) + p(C.unseal.line);
+        break;
+      case "case1": {
+        var cs = C.cases[MODEL.case1For(g.bill)];
+        h += D.caseFolder({ ref: cs.ref, name: cs.name, facts: cs.facts, held: "",
+          args: [{ who: C.cases.claimantSays, text: cs.claimant }, { who: C.cases.governmentSays, text: cs.government }] });
+        break;
+      }
+      case "case2": h += "<h2>" + D.esc(C.case2.name) + "</h2>" + p(C.case2.question[g.move]); break;
+      case "nocase": h += p(C.noCase); break;
+      case "clerk":
+        h += D.seal("CLERK", 96) + D.stamp("CLERK") + "<h2>" + D.esc("Act " + g.clerkCard.act + " — " + C.acts[g.clerkCard.act]) + "</h2>" +
+          "<pre>" + D.esc(JSON.stringify(g.clerkCard.decisions)) + "</pre>" + p(C.clerk.reasons[g.clerkCard.act]) + p(C.clerk.script);
+        break;
+      case "gazette": {
+        var a = MODEL.authorship(MODEL.lawBook(g)), gs = MODEL.glimmerStatus(g);
+        h += "<h1>" + D.esc(C.gazette.masthead) + "</h1><h2>" + D.esc(C.headlines[MODEL.headline(g)]) + "</h2>" +
+          p(fill(C.gazette.authorship, { a: a.PARL, b: a.MIN, c: a.COURT })) +
+          p(C.glimmerStatus.heading + ": " + C.glimmerStatus[gs]);
+        break;
+      }
+      case "countries": {
+        var cols = MODEL.threeCountries(g), CO = C.countries;
+        h += "<h2>" + D.esc(CO.title) + '</h2><table><tr><th></th>' + cols.map(function (c) {
+          return "<th>" + (c.live ? "✱ " : "") + D.esc(CO.columns[c.id]) + "</th>";
+        }).join("") + "</tr>" +
+          "<tr><th>" + D.esc(CO.rows.options) + "</th>" + cols.map(function (c) { return "<td>" + D.esc(CO.options[c.id]) + "</td>"; }).join("") + "</tr>" +
+          "<tr><th>" + D.esc(CO.rows.case1) + "</th>" + cols.map(function (c) { return "<td>" + D.esc(C.rulings[c.case1].label) + "</td>"; }).join("") + "</tr>" +
+          (g.case2 ? "<tr><th>" + D.esc(C.countriesExtra.case2Row) + "</th>" + cols.map(function (c) { return "<td>" + D.esc(C.case2.options[c.case2].label) + "</td>"; }).join("") + "</tr>" : "") +
+          "<tr><th>" + D.esc(CO.rows.ageCheck) + "</th>" + cols.map(function (c) { return "<td>" + D.esc(CO.ageCheck[c.id]) + "</td>"; }).join("") + "</tr></table>" +
+          p(C.disclaimer);
+        break;
+      }
+      case "discussion":
+        h += C.close.discussion.map(function (q, i) { return D.optionCard({ letter: MACHINE.LETTERS[i], text: q, value: String(i), action: "select", selected: g.discussion === i }); }).join("");
+        break;
+      case "end": h += "<pre>" + D.esc(MODEL.toData(g, elapsed())) + "</pre>" + btn(C.close.restart, "confirm-ask", "restart"); break;
+    }
+
+    if (MACHINE.isVote(sc) || sc === "hook" || sc === "revote") {
+      var won = MACHINE.decision(g);
+      h += '<div class="cards">' + MACHINE.options(g).map(function (o) {
+        return D.optionCard({ letter: o.letter, text: optionText(g, sc, o.value) + (o.locked ? " [locked] " + o.lockReason : ""),
+          value: o.value, action: "select", selected: won === o.value, land: true });
+      }).join("") + "</div>";
+      if (!won) h += D.tallyStrip(MACHINE.options(g).filter(function (o) { return !o.locked; }), MACHINE.counts(g), "tally");
+      if (g.tie) h += p(C.vote.casting + ": " + C.voteExtra.tie + " (" + g.tie.join(", ") + ")");
+      if (won) {
+        var st = MACHINE.standings(g), mi = MACHINE.minority(g);
+        if (st.total) h += p(mi ? fill(C.vote.minority, { option: mi.letter }) : C.vote.unanimous);
+        if (sc === "case1" || sc === "case2") {
+          var sp = g[sc].split;
+          if (sp && sp[1]) h += p(fill(C.split, { n: sp[0], m: sp[1] }) + " " + C.dissent);
+        }
+        if (sc === "gap") h += D.stamp(g.moveResult, { land: true });
+      }
+    }
+    return h;
+  }
+
+  function renderGame(app) {
     app.__gallery = false;
-    patch(app, "<h1>" + D.esc(CONTENT.title) + "</h1><p>" + D.esc(CONTENT.subtitle) + "</p>");
+    var g = state.game, C = CONTENT, act = MACHINE.ACT_OF[g.screen], ui = state.ui;
+    var h = '<div class="debug"><p class="tw">[' + D.esc(SCREEN_NAMES[g.screen]) + "] " +
+      (g.constitution && (!g.sealed || g.opened) ? "const=" + g.constitution + " " : "") +
+      "votes=" + MACHINE.classVotes(g) + " skipped=" + (g.skipped.join(",") || "none") + "</p>";
+    h += screenBody(g);
+    if (g.screen !== "setup") {
+      h += '<p class="debug__bar">' + btn("← Back", "back") + " " + (g.screen !== "end" ? btn("Next →", "next") : "") +
+        (act ? " " + btn(C.clerk.button, "confirm-ask", "skip") : "") + "</p>";
+    }
+    if (ui.confirm) {
+      var msg = ui.confirm === "skip" ? fill(C.clerk.confirm, { act: act }) + (act === "IV" ? " " + C.clerk.warnIV : "") : C.closeExtra.restartConfirm;
+      h += p(msg) + btn(C.clerkExtra.yes, ui.confirm === "skip" ? "skipAct" : "restart") + " " + btn(C.clerkExtra.no, "confirm-no");
+    }
+    if (g.bill) h += lawBookView(g);
+    h += "</div>";
+    patch(app, h);
   }
 
   var SLOTS = ["chrome", "tokens", "seals", "stamps", "cards", "tally", "lawBook", "folders", "envelope", "glossary", "themes"];
@@ -994,7 +2029,7 @@ const DESIGN = (function () {
     if (state.ui.theme) root.setAttribute("data-theme", state.ui.theme); else root.removeAttribute("data-theme");
     renderGlossary();
     var app = document.getElementById("app");
-    if (state.screen === "gallery") renderGallery(app); else renderTitle(app);
+    if (state.screen === "gallery") renderGallery(app); else renderGame(app);
     runEnters(app);
   }
 
@@ -1020,24 +2055,38 @@ const DESIGN = (function () {
     if (el.hasAttribute("data-value")) action.value = el.getAttribute("data-value");
     if (el.hasAttribute("data-option")) action.option = el.getAttribute("data-option");
     if (type === "theme-toggle") action.effective = effectiveTheme();
+    if (type === "start") action.date = new Date().toISOString().slice(0, 10);
     dispatch(action);
   });
 
   document.addEventListener("change", function (e) {
+    var field = e.target.closest("[data-field]");
+    if (field) { dispatch({ type: "set-" + field.getAttribute("data-field"), value: field.value }); return; }
     var el = e.target.closest("[data-tally]");
-    if (!el || !state.gallery) return;
+    if (!el) return;
     var v = parseInt(el.value, 10);
-    dispatch({ type: "g-tally", option: el.getAttribute("data-tally"), value: isNaN(v) ? 0 : v });
+    dispatch({ type: state.gallery ? "g-tally" : "tally", option: el.getAttribute("data-tally"), value: isNaN(v) ? 0 : v });
   });
 
   document.addEventListener("keydown", function (e) {
     if (e.ctrlKey || e.metaKey || e.altKey) return;
     var tag = e.target && e.target.tagName;
     var typing = tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT";
-    if (e.key === "Escape") { dispatch({ type: "glossary-close" }); return; }
+    if (e.key === "Escape") { dispatch({ type: state.ui.confirm ? "confirm-no" : "glossary-close" }); return; }
     if (typing) return;
     if (e.key === "g" || e.key === "G") { e.preventDefault(); dispatch({ type: "glossary-toggle" }); }
     else if (e.key === "d" || e.key === "D") { e.preventDefault(); dispatch({ type: "theme-toggle", effective: effectiveTheme() }); }
+    if (state.gallery) return;
+    var g = state.game;
+    if (e.key === "ArrowRight" || e.key === " ") { e.preventDefault(); dispatch({ type: "next" }); }
+    else if (e.key === "ArrowLeft") { e.preventDefault(); dispatch({ type: "back" }); }
+    else if (e.key >= "1" && e.key <= "4") {
+      var o = MACHINE.options(g)[Number(e.key) - 1];
+      if (g.screen === "discussion") dispatch({ type: "select", value: e.key - 1 });
+      else if (o) dispatch({ type: "select", value: o.value });
+    }
+    else if ((e.key === "k" || e.key === "K") && MACHINE.ACT_OF[g.screen]) { e.preventDefault(); dispatch({ type: "confirm-ask", value: "skip" }); }
+    else if (e.key === "r" || e.key === "R") { e.preventDefault(); dispatch({ type: "confirm-ask", value: "restart" }); }
   });
 
   render();
