@@ -4,6 +4,35 @@ This is a calculation, not a timed run. It reads the real screens in a headless 
 
 No copy was changed. Overruns are flagged only.
 
+## Re-count after the minor-findings fixes
+
+Copy and timing changed after Phase 8 (REVIEW.md m1–m19): the Title slot is now 0:40 and the Branches slot 0:50, and list cards show their consequence. The count below comes from `tests/rehearsal-count.mjs`, a re-implementation of the method described here; the Phase 8 script was never committed. Its exclusions differ slightly, so its word counts are a little lower than the Phase 8 tables (for example, Bills 139 against 167). Compare rows within one table, not across the two. Worst case per screen is the tightest margin against that screen's slot, at 1920×1080, over 240 played paths (70 with distinct word counts).
+
+| Screen | Screen words | Script words | Read aloud | Vote rhythm | Estimate | Slot | Margin |
+|---|---|---|---|---|---|---|---|
+| title | 56 | 24 | 0:37 | — | 0:37 | 0:40 | +0:03 |
+| hook | 18 | 24 | 0:19 | 0:40 | 0:59 | 1:30 | +0:31 |
+| branches | 44 | 29 | 0:34 | — | 0:34 | 0:50 | +0:16 |
+| bills | 139 | 26 | 1:16 | 1:40 | 2:56 | 5:00 | +2:04 |
+| check | 44 | 29 | 0:34 | 1:40 | 2:14 | 2:00 | −0:14 **OVER** |
+| gap | 50 | 22 | 0:33 | 1:40 | 2:13 | 4:00 | +1:47 |
+| unseal | 43 | 32 | 0:35 | — | 0:35 | 1:00 | +0:25 |
+| case1 | 78 | 29 | 0:49 | 1:40 | 2:29 | 4:00 | +1:31 |
+| gazette | 41 | 28 | 0:32 | — | 0:32 | 1:30 | +0:58 |
+| countries | 128 | 21 | 1:09 | — | 1:09 | 1:30 | +0:21 |
+| revote | 18 | 18 | 0:17 | 0:40 | 0:57 | 1:30 | +0:33 |
+| discussion | 58 | 17 | 0:35 | — | 0:35 | 1:30 | +0:55 |
+| end | 36 | 17 | 0:24 | — | 0:24 | — | — |
+| case2 | 51 | 25 | 0:35 | 1:40 | 2:15 | 3:00 | +0:45 |
+| nocase | 21 | 23 | 0:20 | — | 0:20 | 0:30 | +0:10 |
+| list | 54 | 24 | 0:36 | 1:40 | 2:16 | 2:00 | −0:16 **OVER** |
+
+Longest path: **20:40** (A, `b_trust`, `l_feeds`, `k_id`, `m_chat`, Declare incompatible, Case 2 heard). No console errors.
+
+Still over: **Act II List** (−0:16) and **Age check after a list vote** (−0:14). Both scripts already say "skip partner talk if behind", which saves 1:00 each; the §2 act slots were left unchanged. The Clerk result card (spec §7.5, ≈ 20 s) is not in this count; Phase 8 measured it at 0:23–0:29, and it was left at the spec's figure.
+
+The Phase 8 tables below are kept as the original record.
+
 ## Method
 
 - **Paths.** 140 distinct session paths were played through `index.html` at 1920×1080 with Constitution A or B sealed-and-chosen: 5 Bill/list combinations × 4 Glimmer moves × 2 constitutions × 3 available Case 1 rulings × 2 Case 2 rulings (where Case 2 appears). Two extra runs confirmed that the age-check choice does not change any word count. No console errors on any run. No Skip Act on these paths (skipping only saves time).
@@ -103,4 +132,4 @@ Entering tally counts or clicking a winner, stamp animations (160 ms each), the 
 
 ## Repeating the count
 
-The counting script is not in the repository. It loads `index.html` from `file://` in headless Chromium, plays each path with the keyboard and the saved game state (`veritas:v2:session`), and counts words with the exclusions above. It needs re-running if any CONTENT string changes.
+Run `node tests/rehearsal-count.mjs` (add `--overflow` to also report per-screen overflow at 1280×720 and 1920×1080). It needs Playwright and a Chromium build; set `PLAYWRIGHT` to the module path and `CHROMIUM` to the executable if they are not found. It is not part of `node --test`. Re-run it whenever a CONTENT string changes.

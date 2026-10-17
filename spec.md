@@ -80,7 +80,7 @@ Screen: three Bill cards side by side, each set as a short statute with a title,
 
 | ID | Bill | §1 The rule | §2 Enforcement | Every Bill also says | What this means |
 |---|---|---|---|---|---|
-| `b_narrow` | The Clear Lines Bill | "Under-16s may not have an account on an app whose main purpose is posting things for the public to see." | "Apps that break this rule are fined." | §3 "The Minister will decide how apps check users' ages." | "Precise and fair to apps — but only covers apps that are mainly about posting." |
+| `b_narrow` | The Clear Lines Bill | "Under-16s may not have an account on an app whose main purpose is posting things for the public to see." | "Apps that break this rule are fined." | §3 "The Minister will decide how apps check users' ages." | "Precise — but only covers apps that are mainly about posting." |
 | `b_tough` | The Tough Bill | "Under-16s may not use any app that lets users share things with other users." | "An under-16 who breaks this rule commits a crime." | §3 (same) | "Catches almost everything — including homework apps — and makes rule-breaking children criminals." |
 | `b_trust` | The Trust the Minister Bill | "Under-16s may not have an account on any app on the Minister's official list." | "Apps that break this rule are fined." | §3 (same) | "Parliament hands the Minister the power to decide which apps count." |
 
@@ -89,11 +89,13 @@ Screen header: "Parliament has passed the Act. Now the Minister makes the detail
 
 **Vote A (only if `b_trust`): Which apps go on the list?**
 
-| ID | Option | Consequence |
+| ID | Option | Consequence (shown on the card) |
 |---|---|---|
-| `l_feeds` | Photo and video feed apps | Messaging apps and games not covered |
-| `l_wide` | Feed apps, messaging apps and games | Most apps covered |
-| `l_all` | Every app where users share things — including homework apps | Everything covered; overreach noted in Monday Morning |
+| `l_feeds` | Photo and video feed apps | "Messaging apps and games are not covered." |
+| `l_wide` | Feed apps, messaging apps and games | "Most apps are covered." |
+| `l_all` | Every app where users share things — including homework apps | "Everything is covered, including homework apps." |
+
+Each list card shows its consequence beneath the option, in italics. The `l_all` overreach is also noted in Monday Morning.
 
 **Vote B (always): How must apps check users' ages?**
 
@@ -142,14 +144,16 @@ Ruling options:
 The locked option stays visible under A. The facilitator asks: *"Why can't you press that?"*
 
 **Case 2 — the loophole (only if Act III was ARGUABLE and §1 still stands, 3 min).** *Minister for Digital Affairs v Veritas Ventures Ltd*: "Glimmer now calls itself a messaging app / game — with the same photo feed. Is it covered by the law?"
-- **Read the words** (literal): "Its main purpose is now messaging/gaming. Not covered." → LOOPHOLE stays open.
+- **Read the words** (literal), quoting the words of the Bill in force → LOOPHOLE stays open.
+  - `b_narrow`: "Its main purpose is now messaging/gaming. Not covered."
+  - `b_trust` (`l_feeds`): "It is now a messaging app / a game, not a photo feed app. Not covered."
 - **Read the purpose** (purposive): "Everyone knows what this app is really for. Covered." → Glimmer CAUGHT and fined.
 
 If Act III was a clear LOOPHOLE (`m_lite`), show a single card instead (30 s): **"No case. The words are clear: Glimmer Lite has no accounts. Judges apply the words — only Parliament can close this gap."** If Case 1 struck down §1 and Act III was ARGUABLE or a LOOPHOLE, show a single card instead: **"No case. §1 is void, so there is no rule for Glimmer to break."** §2 and any Minister's list are then noted "No effect while §1 is void.", and Glimmer's status is NO RULE TO BREAK. If Act III was CAUGHT or COMPLIED, skip Case 2.
 
 **Precedent:** every ruling, including Uphold, is written onto the case folder in typewriter type and added to the Law Book with the **Court seal**: *"[Case name] — Held: {ruling}. Future courts in Veritas must follow this."*
 
-**Judges' split:** if the vote was not unanimous, show "Decided {n} to {m}" and invite one dissenting voice: *"In real courts, judges who disagree can publish a dissent."*
+**Judges' split:** if the vote was not unanimous, show "Decided {n} to {m}" and invite one dissenting voice: *"In many real courts, judges who disagree can publish a dissent."*
 
 ### 4.5 Monday Morning (3 min)
 **The Veritas Gazette** front page: masthead, headline (§4.5.1), and the Law Book as it actually stands below the fold. Every line carries its author's seal and its status stamp. Struck rows remain visible, crossed through.
@@ -168,7 +172,7 @@ Then the **"Same choices, three countries"** panel: one row per ruling the class
 The live constitution column is highlighted. Footer: *"Veritas is imaginary. Real countries are more complicated."*
 
 #### 4.5.1 Headline priority
-VOID → "COURT CANCELS PARLIAMENT'S LAW" · INCOMPATIBLE → "JUDGES: LAW BREAKS RIGHTS — BUT IT STAYS" · LOOPHOLE open → "GLIMMER SLIPS THROUGH THE NET" · REINTERPRETED → "JUDGES REWRITE THE RULES" · CAUGHT → "GLIMMER CAUGHT OUT" · otherwise → "NEW ONLINE LAW STARTS TODAY".
+VOID → "COURT CANCELS PARLIAMENT'S LAW" · INCOMPATIBLE → "JUDGES: LAW BREAKS RIGHTS — BUT IT STAYS" · LOOPHOLE open → "GLIMMER SLIPS THROUGH THE NET" · REINTERPRETED → "JUDGES NARROW THE LAW" · CAUGHT → "GLIMMER CAUGHT OUT" · otherwise → "NEW ONLINE LAW STARTS TODAY".
 
 ### 4.6 Close (3 min)
 1. **Re-vote** the opening question. Show both tallies side by side as two rows of counters. (The intended shift is towards C.)
@@ -246,7 +250,7 @@ Each screen has a collapsible script panel (key S) with: what to say (≤ 40 wor
 ### 7.5 Skip Act
 For when time is tight. Every Act screen (Acts I–IV) shows a small **"Skip act — the Clerk decides"** button in the footer (key K). One press, with a one-step confirmation ("Skip Act III? The Clerk will choose for the class."), auto-decides **every remaining vote in that act** and shows a single result card. Then the session continues as normal.
 
-**Result card (≈ 20 s):** the Clerk's seal, the decision(s) taken, a one-line reason, and a **DECIDED BY THE CLERK** stamp. The same stamp marks those lines in the Law Book through to Monday Morning. Script line: *"We're short of time, so the Clerk of Parliament has decided this one. In real life, if you don't take part, someone else decides for you."*
+**Result card (≈ 20 s):** the Clerk's seal, the decision(s) taken, a one-line reason, and a **DECIDED BY THE CLERK** stamp. The same stamp marks those lines in the Law Book through to Monday Morning. Script line: *"We're short of time, so the Clerk has decided this one. In Veritas, the Clerk stands in when time is short. In real life, if you don't take part, someone else decides for you."*
 
 **Auto-decisions** are fixed (not random) and chosen to keep every learning moment visible:
 
